@@ -1,4 +1,7 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,6 +40,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
+      alignment: Alignment.center,
       children: [
         Container(
           width: MediaQuery.of(context).size.width,
@@ -52,20 +56,49 @@ class SplashScreen extends StatelessWidget {
             color: const Color(0xFF42455E),
           ),
         ),
-        Container(
-          child: IconButton(
-            icon: const Icon(Icons.lightbulb_outline_rounded),
-            onPressed: () {},
-            color: Colors.white,
+        Positioned(
+          height: MediaQuery.of(context).size.width * 0.35,
+          width: MediaQuery.of(context).size.width * 0.35,
+          top: 150,
+          child: SvgPicture.asset('agami_logo.svg'),
+        ),
+        Positioned(
+          top: 20,
+          right: 20,
+          child: Container(
+            height: 50,
+            width: 50,
+            margin: const EdgeInsets.only(top: 15, right: 15),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                border: Border.all(
+                    color: const Color(0xFF2D2F41),
+                    width: 5,
+                    style: BorderStyle.solid)),
+            child: IconButton(
+              icon: const Icon(Icons.lightbulb_outline_rounded),
+              onPressed: () {},
+              color: Colors.white,
+            ),
           ),
-          margin: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              border: Border.all(
-                  color: Colors.amber, width: 5, style: BorderStyle.solid)),
         ),
-        CustomPaint(
-          painter: WirePainter(),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: CustomPaint(
+            painter: WirePainter(),
+          ),
         ),
+        Container(
+          alignment: Alignment.bottomCenter,
+          margin: const EdgeInsets.all(30),
+          child: const Text('Powered by Agami Labs',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontFamily: 'Roboto Condensed')),
+        )
       ],
     ));
   }
@@ -74,12 +107,16 @@ class SplashScreen extends StatelessWidget {
 class WirePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint linepaint = Paint();
-    linepaint.strokeWidth = 6;
-    linepaint.color = const Color(0xFF2D2F41);
-    linepaint.style = PaintingStyle.stroke;
-    linepaint.strokeCap = StrokeCap.round;
-    canvas.drawLine(Offset(8, size.width), const Offset(100, 100), linepaint);
+    Path path = Path();
+    //linepaint.strokeWidth = 6;
+    //linepaint.color = const Color(0xFF2D2F41);
+    //linepaint.style = PaintingStyle.stroke;
+    //linepaint.strokeCap = StrokeCap.round;
+
+    path.moveTo(size.width - 50, 82);
+    path.lineTo(size.width - 50, size.height - 100);
+    path.quadraticBezierTo(
+        size.width - 50, size.height - 100, size.width - 60, size.height - 90);
   }
 
   @override
