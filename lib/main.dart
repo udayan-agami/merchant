@@ -52,9 +52,20 @@ class SplashScreen extends StatelessWidget {
             color: const Color(0xFF42455E),
           ),
         ),
+        Container(
+          child: IconButton(
+            icon: const Icon(Icons.lightbulb_outline_rounded),
+            onPressed: () {},
+            color: Colors.white,
+          ),
+          margin: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: Colors.amber, width: 5, style: BorderStyle.solid)),
+        ),
         CustomPaint(
           painter: WirePainter(),
-        )
+        ),
       ],
     ));
   }
