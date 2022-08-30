@@ -1,6 +1,6 @@
+import 'package:chart_sparkline/chart_sparkline.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class Dashboard extends StatefulWidget {
@@ -39,7 +39,8 @@ class _DashboardState extends State<Dashboard> {
             )
           ],
         ),
-        body: Column(
+        body: SafeArea(
+            child: Column(
           children: [
             Container(
               color: const Color(0xFF050933),
@@ -200,13 +201,120 @@ class _DashboardState extends State<Dashboard> {
             ),
             Container(
               margin: const EdgeInsets.all(10),
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
               decoration: BoxDecoration(
                   color: const Color(0xFF181D5A),
                   borderRadius: BorderRadius.circular(15)),
-              child: Text('fo'),
-            )
+              child: graphData(),
+            ),
           ],
-        ));
+        )));
+  }
+}
+
+class graphData extends StatefulWidget {
+  const graphData({Key? key}) : super(key: key);
+
+  @override
+  State<graphData> createState() => _graphDataState();
+}
+
+class _graphDataState extends State<graphData> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Sparkline(
+          data: [2300, 5000, 2000, 200, 301, 0, 750],
+          // backgroundColor: Colors.red,
+          // lineColor: Colors.lightGreen[500]!,
+          // fillMode: FillMode.below,
+          // fillColor: Colors.lightGreen[200]!,
+          // pointsMode: PointsMode.all,
+          // pointSize: 5.0,
+          // pointColor: Colors.amber,
+          useCubicSmoothing: true,
+          lineWidth: 4.0,
+          cubicSmoothingFactor: 0.1,
+          // gridLinelabelPrefix: '\$',
+          // gridLineLabelPrecision: 3,
+          // enableGridLines: true,
+          // averageLine: true,
+          // averageLabel: true,
+          // kLine: ['max', 'min', 'first', 'last'],
+          // // max: 50.5,
+          // // min: 10.0,
+          // enableThreshold: true,
+          // thresholdSize: 0.1,
+          lineGradient: const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [Color(0xFFD66B5F), Color(0xFFE1D044)],
+          ),
+          // fillGradient: LinearGradient(
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter,
+          //   colors: [Colors.red[800]!, Colors.red[200]!],
+          // ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Text(
+                '23',
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontFamily: 'Roboto Condensed',
+                    fontSize: 12),
+              ),
+              Text(
+                '24',
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontFamily: 'Roboto Condensed',
+                    fontSize: 12),
+              ),
+              Text(
+                '25',
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontFamily: 'Roboto Condensed',
+                    fontSize: 12),
+              ),
+              Text(
+                '26',
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontFamily: 'Roboto Condensed',
+                    fontSize: 12),
+              ),
+              Text(
+                '27',
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontFamily: 'Roboto Condensed',
+                    fontSize: 12),
+              ),
+              Text(
+                '28',
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontFamily: 'Roboto Condensed',
+                    fontSize: 12),
+              ),
+              Text(
+                '29',
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontFamily: 'Roboto Condensed',
+                    fontSize: 12),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
   }
 }
