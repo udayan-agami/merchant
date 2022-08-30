@@ -1,6 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -38,152 +40,182 @@ class _DashboardState extends State<Dashboard> {
             )
           ],
         ),
-        body: Column(
-          children: [
-            Container(
-              color: const Color(0xFF050933),
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const CircleAvatar(
-                    backgroundImage:
-                        NetworkImage('https://i.ibb.co/stQv06t/unnamed.jpg'),
-                    backgroundColor: Color(0xFF181D5A),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    color: const Color(0xFF050933),
-                    child: const Text(
-                      'Dashboard',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontFamily: 'Roboto Condensed'),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.notifications_outlined),
-                    color: Colors.white,
-                  )
-                ],
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(10),
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 28),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: const Color(0xFF181D5A),
-              ),
-              child: Row(
+        body: LiquidPullToRefresh(
+          onRefresh: _handleRefresh,
+          child: Column(
+            children: [
+              Container(
+                color: const Color(0xFF050933),
+                padding: const EdgeInsets.all(10),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(' '),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Icon(
-                          MdiIcons.currencyBdt,
-                          color: Colors.white,
-                          size: 16,
-                        ),
-                        Text('5672.25',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 36,
-                                fontFamily: 'Roboto Condensed'))
-                      ],
-                    ),
-                    Column(
-                      children: const [
-                        Icon(
-                          Icons.trending_up_rounded,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                        Text(
-                          '10%',
-                          style: TextStyle(
-                              fontFamily: 'Roboto Condensed',
-                              fontSize: 14,
-                              color: Colors.white),
-                        )
-                      ],
-                    )
-                  ]),
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: const Color(0xFF181D5A),
-              ),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: const [
-                          Text(
-                            'Pending',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Roboto Condensed',
-                                fontSize: 14),
-                          ),
-                          Text(
-                            '4',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Roboto Condensed',
-                                fontSize: 28),
-                          ),
-                        ],
-                      ),
+                    const CircleAvatar(
+                      backgroundImage:
+                          NetworkImage('https://i.ibb.co/stQv06t/unnamed.jpg'),
+                      backgroundColor: Color(0xFF181D5A),
                     ),
                     Container(
-                        child: Stack(
-                      children: [
-                        Container(
-                          color: const Color(0xFF050933),
-                          width: 10,
-                          height: 76,
-                        ),
-                        Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: const Color(0xFF050933),
-                          ),
-                        )
-                      ],
-                    )),
-                    Expanded(
-                      child: Column(
+                      alignment: Alignment.center,
+                      color: const Color(0xFF050933),
+                      child: const Text(
+                        'Dashboard',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontFamily: 'Roboto Condensed'),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.notifications_outlined),
+                      color: Colors.white,
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.all(10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 28),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: const Color(0xFF181D5A),
+                ),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(' '),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
-                          Text(
-                            'Paid',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Roboto Condensed',
-                                fontSize: 14),
+                          Icon(
+                            MdiIcons.currencyBdt,
+                            color: Colors.white,
+                            size: 16,
                           ),
-                          Text(
-                            '41',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Roboto Condensed',
-                                fontSize: 28),
-                          ),
+                          Text('5672.25',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 36,
+                                  fontFamily: 'Roboto Condensed'))
                         ],
                       ),
-                    )
-                  ]),
-            )
-          ],
+                      Column(
+                        children: const [
+                          Icon(
+                            Icons.trending_up_rounded,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                          Text(
+                            '10%',
+                            style: TextStyle(
+                                fontFamily: 'Roboto Condensed',
+                                fontSize: 14,
+                                color: Colors.white),
+                          )
+                        ],
+                      )
+                    ]),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: const Color(0xFF181D5A),
+                ),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: const [
+                            Text(
+                              'Pending',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Roboto Condensed',
+                                  fontSize: 14),
+                            ),
+                            Text(
+                              '4',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Roboto Condensed',
+                                  fontSize: 28),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                          child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            color: const Color(0xFF050933),
+                            width: 10,
+                            height: 76,
+                          ),
+                          Container(
+                            height: 56,
+                            width: 56,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(28),
+                              color: const Color(0xFF050933),
+                            ),
+                            child: Container(
+                              height: 36,
+                              width: 36,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(23),
+                                color: const Color(0xFF181D5A),
+                              ),
+                              child: const Icon(
+                                Icons.add_rounded,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        ],
+                      )),
+                      Expanded(
+                        child: Column(
+                          children: const [
+                            Text(
+                              'Paid',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Roboto Condensed',
+                                  fontSize: 14),
+                            ),
+                            Text(
+                              '41',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Roboto Condensed',
+                                  fontSize: 28),
+                            ),
+                          ],
+                        ),
+                      )
+                    ]),
+              ),
+              Container(
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: const Color(0xFF181D5A),
+                    borderRadius: BorderRadius.circular(15)),
+                child: Text('fo'),
+              )
+            ],
+          ),
         ));
+  }
+
+  Future<void> _handleRefresh() async {
+    return await Future.delayed(const Duration(seconds: 2));
   }
 }
