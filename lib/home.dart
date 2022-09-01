@@ -21,8 +21,8 @@ class _HomeState extends State<Home> {
   );
 
   final List transactionList = [];
-  int pageIndex = 1;
-  PageController _pageController = PageController(initialPage: 1);
+  int pageIndex = 2;
+  PageController _pageController = PageController(initialPage: 2);
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +54,9 @@ class _HomeState extends State<Home> {
                 onTabChange: (index) {
                   setState(() {
                     pageIndex = index;
+                    _pageController.animateToPage(index,
+                        duration: const Duration(microseconds: 1000),
+                        curve: Curves.easeIn);
                   });
                 },
                 textStyle: const TextStyle(
