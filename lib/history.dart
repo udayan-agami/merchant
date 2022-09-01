@@ -1,4 +1,4 @@
-import 'dart:html';
+//import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -225,22 +225,20 @@ class _HistoryState extends State<History> {
                       color: const Color(0xFF181D5A),
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
                       children: [
                         // paid pending postponed
-                        Column(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: const SizedBox(
-                                  width: 70,
-                                  child: Text(
-                                    'Paid',
-                                    textAlign: TextAlign.center,
-                                  ),
+                                label: Text(
+                                  'Paid',
+                                  textAlign: TextAlign.center,
                                 ),
+                                showCheckmark: false,
                                 backgroundColor: const Color(0xFF0A1042),
                                 selected: chips['paid'],
                                 selectedColor: const Color(0xFF0A1042),
@@ -269,13 +267,11 @@ class _HistoryState extends State<History> {
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: const SizedBox(
-                                  width: 70,
-                                  child: Text(
-                                    'Pending',
-                                    textAlign: TextAlign.center,
-                                  ),
+                                label: Text(
+                                  'Pending',
+                                  textAlign: TextAlign.center,
                                 ),
+                                showCheckmark: false,
                                 backgroundColor: const Color(0xFF0A1042),
                                 selected: chips['pending'],
                                 selectedColor: const Color(0xFF0A1042),
@@ -304,12 +300,11 @@ class _HistoryState extends State<History> {
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: const SizedBox(
-                                    width: 70,
-                                    child: Text(
-                                      'Postponed',
-                                      textAlign: TextAlign.center,
-                                    )),
+                                label: Text(
+                                  'Postponed',
+                                  textAlign: TextAlign.center,
+                                ),
+                                showCheckmark: false,
                                 backgroundColor: const Color(0xFF0A1042),
                                 selected: chips['postponed'],
                                 selectedColor: const Color(0xFF0A1042),
@@ -338,25 +333,22 @@ class _HistoryState extends State<History> {
                           ],
                         ),
                         //divider
-                        const SizedBox(
-                          height: 114,
-                          child: VerticalDivider(
-                            color: Colors.white,
-                            thickness: 0.2,
-                          ),
+                        Divider(
+                          color: Colors.white,
+                          thickness: 0.1,
                         ),
                         //today tomorrow
-                        Column(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: const SizedBox(
-                                    width: 70,
-                                    child: Text(
-                                      'July',
-                                      textAlign: TextAlign.center,
-                                    )),
+                                label: Text(
+                                  'July',
+                                  textAlign: TextAlign.center,
+                                ),
+                                showCheckmark: false,
                                 backgroundColor: const Color(0xFF0A1042),
                                 selected: chips['month'],
                                 selectedColor: const Color(0xFF0A1042),
@@ -387,12 +379,11 @@ class _HistoryState extends State<History> {
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: const SizedBox(
-                                    width: 70,
-                                    child: Text(
-                                      'Last week',
-                                      textAlign: TextAlign.center,
-                                    )),
+                                label: Text(
+                                  'Last week',
+                                  textAlign: TextAlign.center,
+                                ),
+                                showCheckmark: false,
                                 backgroundColor: const Color(0xFF0A1042),
                                 selected: chips['week'],
                                 selectedColor: const Color(0xFF0A1042),
@@ -423,12 +414,11 @@ class _HistoryState extends State<History> {
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: const SizedBox(
-                                    width: 70,
-                                    child: Text(
-                                      'Today',
-                                      textAlign: TextAlign.center,
-                                    )),
+                                label: Text(
+                                  'Today',
+                                  textAlign: TextAlign.center,
+                                ),
+                                showCheckmark: false,
                                 backgroundColor: const Color(0xFF0A1042),
                                 selected: chips['today'],
                                 selectedColor: const Color(0xFF0A1042),
@@ -459,25 +449,22 @@ class _HistoryState extends State<History> {
                           ],
                         ),
                         //divider
-                        const SizedBox(
-                          height: 114,
-                          child: VerticalDivider(
-                            color: Colors.white,
-                            thickness: 0.2,
-                          ),
+                        Divider(
+                          color: Colors.white,
+                          thickness: 0.1,
                         ),
                         //asc apply
-                        Column(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: const SizedBox(
-                                    width: 70,
-                                    child: Text(
-                                      'Asc',
-                                      textAlign: TextAlign.center,
-                                    )),
+                                label: Text(
+                                  'Ascending',
+                                  textAlign: TextAlign.center,
+                                ),
+                                showCheckmark: false,
                                 backgroundColor: const Color(0xFF0A1042),
                                 selected: chips['asc'],
                                 selectedColor: const Color(0xFF0A1042),
