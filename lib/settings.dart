@@ -1,4 +1,12 @@
+//import 'dart:html';
+//import 'dart:js';
+
 import 'package:flutter/material.dart';
+import './language.dart';
+import './devices.dart';
+import './business.dart';
+import './displayTheme.dart';
+import './withdraw.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -13,49 +21,49 @@ class _SettingsState extends State<Settings> {
       "title": "Business Details",
       "subtitle": "Shop name and location",
       "icon": 0xf3ef,
-      "key": 0
+      "page": 1
     },
     {
       "title": "Language",
       "subtitle": "Change language",
       "icon": 0xf45e,
-      "key": 1
+      "page": 2
     },
     {
-      "title": "Notifications",
-      "subtitle": "Get updates at a glance",
-      "icon": 0xf0027,
-      "key": 2
+      "title": "Theme",
+      "subtitle": "Dark and light theme",
+      "icon": 0xef9f,
+      "page": 3
     },
     {
       "title": "Withdraw",
       "subtitle": "Select withdrawal method",
       "icon": 0xee33,
-      "key": 3
+      "page": 4
     },
     {
       "title": "Devices",
       "subtitle": "Connect web devices",
       "icon": 0xf6a8,
-      "key": 4
+      "page": 5
     },
     {
       "title": "Help and Support",
       "subtitle": "Discuss about problems and bugs",
       "icon": 0xf01f5,
-      "key": 5
+      "page": 6
     },
     {
       "title": "About Agami Merchant",
       "subtitle": "Terms and conditions",
       "icon": 0xf0376,
-      "key": 6
+      "page": 7
     },
     {
       "title": "Logout",
       "subtitle": "Keep account secure",
       "icon": 0xf88b,
-      "key": 7
+      "page": 8
     },
   ];
 
@@ -110,7 +118,8 @@ class _SettingsState extends State<Settings> {
               ],
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
                 color: const Color(0xFF181D5A),
@@ -118,56 +127,63 @@ class _SettingsState extends State<Settings> {
               child: Column(
                 children: [
                   for (var options in settingsList)
-                    Wrap(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 20),
-                          child: Row(
-                            children: [
-                              Icon(
-                                IconData(options['icon'],
-                                    fontFamily: 'MaterialIcons'),
-                                color: Colors.white,
-                                size: 22,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        options['title'],
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Roboto Condensed',
-                                          fontSize: 18,
+                    InkWell(
+                      onTap: () => _handleNavigation(options['page']),
+                      child: Wrap(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 20,
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  IconData(options['icon'],
+                                      fontFamily: 'MaterialIcons'),
+                                  color: Colors.white,
+                                  size: 22,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          options['title'],
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: 'Roboto Condensed',
+                                            fontSize: 18,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        options['subtitle'],
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontFamily: 'Roboto Condensed',
-                                          fontSize: 14,
+                                        Text(
+                                          options['subtitle'],
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontFamily: 'Roboto Condensed',
+                                            fontSize: 14,
+                                          ),
                                         ),
-                                      ),
-                                    ]),
-                              ),
-                            ],
+                                      ]),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Visibility(
-                          visible: options['key'] == settingsList.length - 1
-                              ? false
-                              : true,
-                          child: Divider(
-                            color: const Color(0xFF050933),
-                            thickness: 1,
+                          Visibility(
+                            visible:
+                                options == settingsList[settingsList.length - 1]
+                                    ? false
+                                    : true,
+                            child: const Divider(
+                              color: Color(0xFF050933),
+                              thickness: 1,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                 ],
               ),
@@ -176,5 +192,64 @@ class _SettingsState extends State<Settings> {
         ),
       ),
     );
+  }
+
+  _handleNavigation(key) {
+    switch (key) {
+      case 1:
+        {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const Business(),
+            ),
+          );
+        }
+        break;
+      case 2:
+        {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const Language(),
+            ),
+          );
+        }
+        break;
+      case 3:
+        {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const DisplayTheme(),
+            ),
+          );
+        }
+        break;
+      case 4:
+        {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const Withdraw(),
+            ),
+          );
+        }
+        break;
+      case 5:
+        {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const Devices(),
+            ),
+          );
+        }
+        break;
+      case 6:
+        {}
+        break;
+      case 7:
+        {}
+        break;
+      case 8:
+        {}
+        break;
+    }
   }
 }

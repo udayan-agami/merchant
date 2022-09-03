@@ -229,12 +229,12 @@ class _HistoryState extends State<History> {
                       children: [
                         // paid pending postponed
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: Text(
+                                label: const Text(
                                   'Paid',
                                   textAlign: TextAlign.center,
                                 ),
@@ -244,13 +244,12 @@ class _HistoryState extends State<History> {
                                 selectedColor: const Color(0xFF0A1042),
                                 elevation: 0,
                                 pressElevation: 0,
-                                shape: StadiumBorder(
-                                    side: BorderSide(
-                                        color: chips['paid']
-                                            ? Colors.white
-                                            : Colors.transparent,
-                                        width: 2,
-                                        style: BorderStyle.solid)),
+                                side: BorderSide(
+                                  color: chips['paid']
+                                      ? Colors.white
+                                      : const Color(0xFF0A1042),
+                                  width: 2,
+                                ),
                                 labelStyle: const TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
@@ -267,7 +266,7 @@ class _HistoryState extends State<History> {
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: Text(
+                                label: const Text(
                                   'Pending',
                                   textAlign: TextAlign.center,
                                 ),
@@ -277,13 +276,12 @@ class _HistoryState extends State<History> {
                                 selectedColor: const Color(0xFF0A1042),
                                 elevation: 0,
                                 pressElevation: 0,
-                                shape: StadiumBorder(
-                                    side: BorderSide(
-                                        color: chips['pending']
-                                            ? Colors.white
-                                            : Colors.transparent,
-                                        width: 2,
-                                        style: BorderStyle.solid)),
+                                side: BorderSide(
+                                  color: chips['pending']
+                                      ? Colors.white
+                                      : const Color(0xFF0A1042),
+                                  width: 2,
+                                ),
                                 labelStyle: const TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
@@ -300,7 +298,7 @@ class _HistoryState extends State<History> {
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: Text(
+                                label: const Text(
                                   'Postponed',
                                   textAlign: TextAlign.center,
                                 ),
@@ -310,13 +308,12 @@ class _HistoryState extends State<History> {
                                 selectedColor: const Color(0xFF0A1042),
                                 elevation: 0,
                                 pressElevation: 0,
-                                shape: StadiumBorder(
-                                    side: BorderSide(
-                                        color: chips['postponed']
-                                            ? Colors.white
-                                            : Colors.transparent,
-                                        width: 2,
-                                        style: BorderStyle.solid)),
+                                side: BorderSide(
+                                    color: chips['postponed']
+                                        ? Colors.white
+                                        : const Color(0xFF0A1042),
+                                    width: 2,
+                                    style: BorderStyle.solid),
                                 labelStyle: const TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
@@ -333,18 +330,18 @@ class _HistoryState extends State<History> {
                           ],
                         ),
                         //divider
-                        Divider(
+                        const Divider(
                           color: Colors.white,
                           thickness: 0.1,
                         ),
                         //today tomorrow
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: Text(
+                                label: const Text(
                                   'July',
                                   textAlign: TextAlign.center,
                                 ),
@@ -354,13 +351,12 @@ class _HistoryState extends State<History> {
                                 selectedColor: const Color(0xFF0A1042),
                                 elevation: 0,
                                 pressElevation: 0,
-                                shape: StadiumBorder(
-                                    side: BorderSide(
-                                        color: chips['month']
-                                            ? Colors.white
-                                            : Colors.transparent,
-                                        width: 2,
-                                        style: BorderStyle.solid)),
+                                side: BorderSide(
+                                    color: chips['month']
+                                        ? Colors.white
+                                        : const Color(0xFF0A1042),
+                                    width: 2,
+                                    style: BorderStyle.solid),
                                 labelStyle: const TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
@@ -379,7 +375,7 @@ class _HistoryState extends State<History> {
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: Text(
+                                label: const Text(
                                   'Last week',
                                   textAlign: TextAlign.center,
                                 ),
@@ -389,13 +385,12 @@ class _HistoryState extends State<History> {
                                 selectedColor: const Color(0xFF0A1042),
                                 elevation: 0,
                                 pressElevation: 0,
-                                shape: StadiumBorder(
-                                    side: BorderSide(
-                                        color: chips['week']
-                                            ? Colors.white
-                                            : Colors.transparent,
-                                        width: 2,
-                                        style: BorderStyle.solid)),
+                                side: BorderSide(
+                                    color: chips['week']
+                                        ? Colors.white
+                                        : const Color(0xFF0A1042),
+                                    width: 2,
+                                    style: BorderStyle.solid),
                                 labelStyle: const TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
@@ -414,7 +409,7 @@ class _HistoryState extends State<History> {
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: Text(
+                                label: const Text(
                                   'Today',
                                   textAlign: TextAlign.center,
                                 ),
@@ -424,13 +419,12 @@ class _HistoryState extends State<History> {
                                 selectedColor: const Color(0xFF0A1042),
                                 elevation: 0,
                                 pressElevation: 0,
-                                shape: StadiumBorder(
-                                    side: BorderSide(
-                                        color: chips['today']
-                                            ? Colors.white
-                                            : Colors.transparent,
-                                        width: 2,
-                                        style: BorderStyle.solid)),
+                                side: BorderSide(
+                                    color: chips['today']
+                                        ? Colors.white
+                                        : const Color(0xFF0A1042),
+                                    width: 2,
+                                    style: BorderStyle.solid),
                                 labelStyle: const TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
@@ -449,18 +443,18 @@ class _HistoryState extends State<History> {
                           ],
                         ),
                         //divider
-                        Divider(
+                        const Divider(
                           color: Colors.white,
                           thickness: 0.1,
                         ),
                         //asc apply
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(5),
                               child: FilterChip(
-                                label: Text(
+                                label: const Text(
                                   'Ascending',
                                   textAlign: TextAlign.center,
                                 ),
@@ -470,13 +464,12 @@ class _HistoryState extends State<History> {
                                 selectedColor: const Color(0xFF0A1042),
                                 elevation: 0,
                                 pressElevation: 0,
-                                shape: StadiumBorder(
-                                    side: BorderSide(
-                                        color: chips['asc']
-                                            ? Colors.white
-                                            : Colors.transparent,
-                                        width: 2,
-                                        style: BorderStyle.solid)),
+                                side: BorderSide(
+                                    color: chips['asc']
+                                        ? Colors.white
+                                        : const Color(0xFF0A1042),
+                                    width: 2,
+                                    style: BorderStyle.solid),
                                 labelStyle: const TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
