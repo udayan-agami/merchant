@@ -64,109 +64,116 @@ class _DisplayThemeState extends State<DisplayTheme> {
               ),
               Padding(
                 padding: EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    for (var theme in themeList)
-                      GestureDetector(
-                        onTap: () => setState(() {
-                          selectedTheme = theme['id'];
-                        }),
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.all(8),
-                              width: 100,
-                              height: 126,
-                              decoration: BoxDecoration(
-                                color: Color(theme['color']),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          alignment: Alignment.topLeft,
-                                          width: 60,
-                                          height: 16,
-                                          decoration: BoxDecoration(
-                                            color: Color(theme['object']),
-                                            borderRadius:
-                                                BorderRadius.circular(4),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      for (var theme in themeList)
+                        GestureDetector(
+                          onTap: () => setState(() {
+                            selectedTheme = theme['id'];
+                          }),
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.all(8),
+                                width: 100,
+                                height: 126,
+                                decoration: BoxDecoration(
+                                  color: Color(theme['color']),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            alignment: Alignment.topLeft,
+                                            width: 60,
+                                            height: 16,
+                                            decoration: BoxDecoration(
+                                              color: Color(theme['object']),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          alignment: Alignment.topLeft,
-                                          width: 60,
-                                          height: 16,
-                                          decoration: BoxDecoration(
-                                            color: Color(theme['object']),
-                                            borderRadius:
-                                                BorderRadius.circular(4),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            alignment: Alignment.topLeft,
+                                            width: 60,
+                                            height: 16,
+                                            decoration: BoxDecoration(
+                                              color: Color(theme['object']),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          alignment: Alignment.topLeft,
-                                          width: 60,
-                                          height: 16,
-                                          decoration: BoxDecoration(
-                                            color: Color(theme['object']),
-                                            borderRadius:
-                                                BorderRadius.circular(4),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            alignment: Alignment.topLeft,
+                                            width: 60,
+                                            height: 16,
+                                            decoration: BoxDecoration(
+                                              color: Color(theme['object']),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        theme['id'] == selectedTheme
-                                            ? Icons.radio_button_checked_rounded
-                                            : Icons
-                                                .radio_button_unchecked_outlined,
-                                        color: Colors.white,
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Text(
-                                theme['title'],
-                                style: TextStyle(
-                                  color: Colors.amber,
-                                  fontFamily: 'Roboto Condensed',
-                                  fontSize: 16,
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          theme['id'] == selectedTheme
+                                              ? Icons
+                                                  .radio_button_checked_rounded
+                                              : Icons
+                                                  .radio_button_unchecked_outlined,
+                                          color: Colors.white,
+                                        )
+                                      ],
+                                    )
+                                  ],
                                 ),
                               ),
-                            )
-                          ],
-                        ),
-                      )
-                  ],
+                              Padding(
+                                padding: EdgeInsets.all(4),
+                                child: Text(
+                                  theme['title'],
+                                  style: TextStyle(
+                                    color: Colors.amber,
+                                    fontFamily: 'Roboto Condensed',
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                    ],
+                  ),
                 ),
               )
             ],

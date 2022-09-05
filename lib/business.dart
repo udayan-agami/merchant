@@ -64,6 +64,128 @@ class _BusinessState extends State<Business> {
                   color: Color(0xFF181D5A),
                   borderRadius: BorderRadius.circular(15),
                 ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircleAvatar(
+                              radius: 25,
+                              backgroundImage: NetworkImage(
+                                  'https://i.ibb.co/stQv06t/unnamed.jpg'),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Ma enterprize and co.',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Roboto Condensed',
+                                      fontSize: 18),
+                                ),
+                                Text(
+                                  'Anam Sarkar',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Roboto Condensed',
+                                      fontSize: 14),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Divider(
+                        thickness: 0.1,
+                        color: Colors.white,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: const Color(0xFF050933),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Phone number',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Roboto Condensed',
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      '01725-523652',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Roboto Condensed',
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: const Color(0xFF050933),
+                        ),
+                        margin: EdgeInsets.only(top: 10),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Address',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Roboto Condensed',
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      'AKS tower, Lalmonir hat, Beside choto bridege, Gazipur AKS tower, Lalmonir hat, Beside choto bridege, Gazipur',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'Roboto Condensed',
+                                        fontSize: 18,
+                                      ),
+                                      overflow: TextOverflow.fade,
+                                      softWrap: false,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               )
             ],
           ),
