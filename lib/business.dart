@@ -50,7 +50,7 @@ class _BusinessState extends State<Business> {
                     IconButton(
                       onPressed: () {},
                       icon: Icon(
-                        Icons.share,
+                        Icons.qr_code_outlined,
                         color: Colors.white,
                         size: 22,
                       ),
@@ -78,26 +78,32 @@ class _BusinessState extends State<Business> {
                                   'https://i.ibb.co/stQv06t/unnamed.jpg'),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Ma enterprize and co.',
-                                  style: TextStyle(
+                          Flexible(
+                            child: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Ma enterprize and co. Ma enterprize and co. Ma enterprize and co.',
+                                    style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'Roboto Condensed',
-                                      fontSize: 18),
-                                ),
-                                Text(
-                                  'Anam Sarkar',
-                                  style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    'Anam Sarkar',
+                                    style: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'Roboto Condensed',
-                                      fontSize: 14),
-                                ),
-                              ],
+                                      fontSize: 14,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -114,6 +120,7 @@ class _BusinessState extends State<Business> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -139,6 +146,13 @@ class _BusinessState extends State<Business> {
                                   ],
                                 ),
                               ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.done_rounded,
+                                  color: Colors.lightGreenAccent,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -148,35 +162,86 @@ class _BusinessState extends State<Business> {
                           borderRadius: BorderRadius.circular(12),
                           color: const Color(0xFF050933),
                         ),
-                        margin: EdgeInsets.only(top: 10),
+                        margin:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 0),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
+                              Flexible(
+                                child: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Address',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Roboto Condensed',
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        'AKS tower, Lalmonir hat, Beside choto bridege, Gazipur AKS tower, Lalmonir hat, Beside choto bridege, Gazipur',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Roboto Condensed',
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      //NID
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: const Color(0xFF050933),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Legal documents',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Roboto Condensed',
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        'NID card not verified',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'Roboto Condensed',
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Address',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Roboto Condensed',
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    Text(
-                                      'AKS tower, Lalmonir hat, Beside choto bridege, Gazipur AKS tower, Lalmonir hat, Beside choto bridege, Gazipur',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Roboto Condensed',
-                                        fontSize: 18,
-                                      ),
-                                      overflow: TextOverflow.fade,
-                                      softWrap: false,
-                                    ),
-                                  ],
+                                child: Icon(
+                                  Icons.done_rounded,
+                                  color: Colors.lightGreenAccent,
                                 ),
                               ),
                             ],
