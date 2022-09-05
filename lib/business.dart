@@ -58,6 +58,13 @@ class _BusinessState extends State<Business> {
                   ],
                 ),
               ),
+              Container(
+                margin: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Color(0xFF181D5A),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              )
             ],
           ),
         ),

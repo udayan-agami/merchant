@@ -8,6 +8,13 @@ class DisplayTheme extends StatefulWidget {
 }
 
 class _DisplayThemeState extends State<DisplayTheme> {
+  List themeList = [
+    {"title": "Classic", "color": 0xFFFFC100, "object": 0xFFF44336, "id": 1},
+    {"title": "Day", "color": 0xFFFFC100, "object": 0xFFF44336, "id": 2},
+    {"title": "Tinted", "color": 0xFFFFC100, "object": 0xFFF44336, "id": 3},
+    {"title": "Night", "color": 0xFFFFC100, "object": 0xFFF44336, "id": 4},
+  ];
+  var selectedTheme = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,54 +51,124 @@ class _DisplayThemeState extends State<DisplayTheme> {
                         fontSize: 22,
                       ),
                     ),
-                    PopupMenuButton(
-                      color: const Color(0xFF434B96),
-                      padding: EdgeInsets.all(0),
+                    IconButton(
+                      onPressed: () {},
                       icon: Icon(
-                        Icons.more_vert,
+                        Icons.done,
                         color: Colors.white,
                         size: 22,
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      tooltip: 'Theme',
-                      itemBuilder: (context) => [
-                        PopupMenuItem(
-                          child: ListTile(
-                            leading: Icon(
-                              Icons.notifications_active_outlined,
-                              color: Colors.white,
-                            ),
-                            title: Text(
-                              'Active notification',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Roboto Condensed',
-                              ),
-                            ),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          child: ListTile(
-                            leading: Icon(
-                              Icons.check_circle_outline,
-                              color: Colors.white,
-                            ),
-                            title: Text(
-                              'Mark all as read',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Roboto Condensed',
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
                   ],
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    for (var theme in themeList)
+                      GestureDetector(
+                        onTap: () => setState(() {
+                          selectedTheme = theme['id'];
+                        }),
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(8),
+                              width: 100,
+                              height: 126,
+                              decoration: BoxDecoration(
+                                color: Color(theme['color']),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          alignment: Alignment.topLeft,
+                                          width: 60,
+                                          height: 16,
+                                          decoration: BoxDecoration(
+                                            color: Color(theme['object']),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          alignment: Alignment.topLeft,
+                                          width: 60,
+                                          height: 16,
+                                          decoration: BoxDecoration(
+                                            color: Color(theme['object']),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          alignment: Alignment.topLeft,
+                                          width: 60,
+                                          height: 16,
+                                          decoration: BoxDecoration(
+                                            color: Color(theme['object']),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        theme['id'] == selectedTheme
+                                            ? Icons.radio_button_checked_rounded
+                                            : Icons
+                                                .radio_button_unchecked_outlined,
+                                        color: Colors.white,
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(4),
+                              child: Text(
+                                theme['title'],
+                                style: TextStyle(
+                                  color: Colors.amber,
+                                  fontFamily: 'Roboto Condensed',
+                                  fontSize: 16,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                  ],
+                ),
+              )
             ],
           ),
         ),
