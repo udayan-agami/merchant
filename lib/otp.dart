@@ -1,22 +1,20 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class Sign extends StatefulWidget {
-  const Sign({Key? key}) : super(key: key);
+class Otp extends StatefulWidget {
+  const Otp({Key? key}) : super(key: key);
 
   @override
-  State<Sign> createState() => _SignState();
+  State<Otp> createState() => _OtpState();
 }
 
-class _SignState extends State<Sign> {
+class _OtpState extends State<Otp> {
   var maskFormatter = new MaskTextInputFormatter(
-    mask: '##%##-######',
-    filter: {"#": RegExp(r'[0-9]'), "%": RegExp(r'[3-9]')},
+    mask: '###-###',
+    filter: {"#": RegExp(r'[0-9]')},
     type: MaskAutoCompletionType.lazy,
   );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,35 +53,14 @@ class _SignState extends State<Sign> {
                                 fontFamily: 'Roboto Condensed',
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Sign in',
-                                  style: TextStyle(
-                                    color: Color(0xFF004FC9),
-                                    fontSize: 24,
-                                    fontFamily: 'Roboto Condensed',
-                                  ),
-                                ),
-                                Text(
-                                  ' or ',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 24,
-                                    fontFamily: 'Roboto Condensed',
-                                  ),
-                                ),
-                                Text(
-                                  'Sign up',
-                                  style: TextStyle(
-                                    color: Color(0xFF004FC9),
-                                    fontSize: 24,
-                                    fontFamily: 'Roboto Condensed',
-                                  ),
-                                ),
-                              ],
-                            )
+                            Text(
+                              'Phone verification',
+                              style: TextStyle(
+                                color: Color(0xFF004FC9),
+                                fontSize: 24,
+                                fontFamily: 'Roboto Condensed',
+                              ),
+                            ),
                           ],
                         ),
                       )
@@ -98,16 +75,22 @@ class _SignState extends State<Sign> {
                   ),
                   TextField(
                     decoration: InputDecoration(
+                      suffixText: 'Resend',
+                      suffixStyle: TextStyle(
+                        color: Color(0xFF004FC9),
+                        fontFamily: 'Roboto Condensed',
+                        fontSize: 12,
+                      ),
                       helperStyle: TextStyle(
                         color: Colors.grey,
                       ),
-                      hintText: '01XXX-XXXXXX',
+                      hintText: 'XXX-XXX',
                       hintStyle: TextStyle(
                         color: Colors.blueGrey,
                         fontFamily: 'Roboto Condensed',
                         fontSize: 18,
                       ),
-                      labelText: 'Phone number',
+                      labelText: 'Code',
                       labelStyle: TextStyle(
                         fontFamily: 'Roboto Condensed',
                         //fontSize: 16,
@@ -145,24 +128,25 @@ class _SignState extends State<Sign> {
                       vertical: 10,
                     ),
                     child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFF004FC9),
-                          elevation: 0,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 50,
-                            vertical: 20,
-                          ),
-                          minimumSize: const Size.fromHeight(50), // NEW
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF004FC9),
+                        elevation: 0,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 50,
+                          vertical: 20,
                         ),
-                        child: Text(
-                          'NEXT',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Roboto Condensed',
-                            fontSize: 16,
-                          ),
-                        )),
+                        minimumSize: const Size.fromHeight(50), // NEW
+                      ),
+                      child: Text(
+                        'NEXT',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Roboto Condensed',
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
                   )
                 ],
               ),

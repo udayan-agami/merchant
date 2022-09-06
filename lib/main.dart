@@ -1,5 +1,8 @@
+import 'package:agami/sign.dart';
 import 'package:flutter/material.dart';
 import './home.dart';
+import './sign.dart';
+import './otp.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Agami Merchant',
       debugShowCheckedModeBanner: false,
       theme: _themeOne,
-      home: const Home(),
+      home: const Otp(),
     );
   }
 }
