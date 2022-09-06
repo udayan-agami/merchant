@@ -76,7 +76,7 @@ class _DisplayThemeState extends State<DisplayTheme> {
                           child: Column(
                             children: [
                               Container(
-                                margin: EdgeInsets.all(8),
+                                margin: const EdgeInsets.all(8),
                                 width: 100,
                                 height: 126,
                                 decoration: BoxDecoration(
