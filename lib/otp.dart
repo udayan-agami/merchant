@@ -1,15 +1,16 @@
+import 'package:agami/sign.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Otp extends StatefulWidget {
-  const Otp({Key? key}) : super(key: key);
+  const Otp({Key? key, phone}) : super(key: key);
 
   @override
   State<Otp> createState() => _OtpState();
 }
 
 class _OtpState extends State<Otp> {
-  var maskFormatter = new MaskTextInputFormatter(
+  var maskFormatter = MaskTextInputFormatter(
     mask: '###-###',
     filter: {"#": RegExp(r'[0-9]')},
     type: MaskAutoCompletionType.lazy,
@@ -25,8 +26,8 @@ class _OtpState extends State<Otp> {
           children: [
             Text('ga'),
             Container(
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
@@ -45,7 +46,7 @@ class _OtpState extends State<Otp> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          children: const [
                             Text(
                               'Agami Merchant',
                               style: TextStyle(
@@ -67,15 +68,15 @@ class _OtpState extends State<Otp> {
                       )
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
                     child: Divider(
                       thickness: 3,
                       color: Color(0xFF004FC9),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
+                  const Padding(
+                    padding: EdgeInsets.only(
                       bottom: 15,
                     ),
                     child: Text(
@@ -95,7 +96,7 @@ class _OtpState extends State<Otp> {
                           print('pressd');
                         },
                         style: TextButton.styleFrom(
-                          backgroundColor: Color(0xFF004FC9),
+                          backgroundColor: const Color(0xFF004FC9),
                         ),
                         child: const Text(
                           'Resend',
@@ -106,24 +107,24 @@ class _OtpState extends State<Otp> {
                           ),
                         ),
                       ),
-                      helperStyle: TextStyle(
+                      helperStyle: const TextStyle(
                         color: Colors.grey,
                       ),
                       hintText: 'XXX-XXX',
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         color: Colors.blueGrey,
                         fontFamily: 'Roboto Condensed',
                         fontSize: 18,
                       ),
                       labelText: 'Code',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         fontFamily: 'Roboto Condensed',
                         //fontSize: 16,
                         color: Color(0xFF004FC9),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(6),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0xFF004FC9),
                           width: 1,
                           style: BorderStyle.solid,
@@ -131,44 +132,51 @@ class _OtpState extends State<Otp> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(6),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0xFF004FC9),
                           width: 2,
                           style: BorderStyle.solid,
                         ),
                       ),
                     ),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF004FC9),
                       fontSize: 18,
                       fontFamily: 'Roboto Condensed',
                     ),
                     keyboardType: TextInputType.number,
                     autocorrect: false,
-                    cursorColor: Color(0xFF004FC9),
+                    cursorColor: const Color(0xFF004FC9),
                     inputFormatters: [maskFormatter],
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       vertical: 10,
                     ),
                     child: Row(
                       children: [
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Sign(),
+                                ),
+                              );
+                            },
                             style: OutlinedButton.styleFrom(
-                              side: BorderSide(
+                              side: const BorderSide(
                                 width: 1,
                                 color: Color(0xFF004FC9),
                               ),
                               elevation: 0,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 horizontal: 50,
                                 vertical: 20,
                               ),
                             ),
-                            child: Text(
+                            child: const Text(
                               'EDIT',
                               style: TextStyle(
                                 color: Color(0xFF004FC9),
@@ -178,7 +186,7 @@ class _OtpState extends State<Otp> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                           height: 10,
                         ),
@@ -186,14 +194,14 @@ class _OtpState extends State<Otp> {
                           child: ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
-                              primary: Color(0xFF004FC9),
+                              backgroundColor: const Color(0xFF004FC9),
                               elevation: 0,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 horizontal: 50,
                                 vertical: 20,
                               ),
                             ),
-                            child: Text(
+                            child: const Text(
                               'NEXT',
                               style: TextStyle(
                                 color: Colors.white,

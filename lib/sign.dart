@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:http/http.dart' as http;
+import './otp.dart';
 
 class Sign extends StatefulWidget {
   const Sign({Key? key}) : super(key: key);
@@ -12,9 +15,15 @@ class Sign extends StatefulWidget {
 }
 
 class _SignState extends State<Sign> {
-  var maskFormatter = new MaskTextInputFormatter(
-    mask: '##%##-######',
-    filter: {"#": RegExp(r'[0-9]'), "%": RegExp(r'[3-9]')},
+  var phone = '';
+  var maskFormatter = MaskTextInputFormatter(
+    mask: '&*%##-######',
+    filter: {
+      "#": RegExp(r'[0-9]'),
+      "%": RegExp(r'[3-9]'),
+      "&": RegExp(r'[0]'),
+      "*": RegExp(r'[1]'),
+    },
     type: MaskAutoCompletionType.lazy,
   );
   @override
@@ -27,8 +36,8 @@ class _SignState extends State<Sign> {
           children: [
             Text('ga'),
             Container(
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
@@ -47,7 +56,7 @@ class _SignState extends State<Sign> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'Agami Merchant',
                               style: TextStyle(
                                 color: Color(0xFF004FC9),
@@ -57,7 +66,7 @@ class _SignState extends State<Sign> {
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text(
                                   'Sign in',
                                   style: TextStyle(
@@ -89,8 +98,8 @@ class _SignState extends State<Sign> {
                       )
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
                     child: Divider(
                       thickness: 3,
                       color: Color(0xFF004FC9),
@@ -98,24 +107,24 @@ class _SignState extends State<Sign> {
                   ),
                   TextField(
                     decoration: InputDecoration(
-                      helperStyle: TextStyle(
+                      helperStyle: const TextStyle(
                         color: Colors.grey,
                       ),
                       hintText: '01XXX-XXXXXX',
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         color: Colors.blueGrey,
                         fontFamily: 'Roboto Condensed',
                         fontSize: 18,
                       ),
                       labelText: 'Phone number',
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         fontFamily: 'Roboto Condensed',
                         //fontSize: 16,
                         color: Color(0xFF004FC9),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(6),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0xFF004FC9),
                           width: 1,
                           style: BorderStyle.solid,
@@ -123,14 +132,14 @@ class _SignState extends State<Sign> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(6),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Color(0xFF004FC9),
                           width: 2,
                           style: BorderStyle.solid,
                         ),
                       ),
                     ),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF004FC9),
                       fontSize: 18,
                       fontFamily: 'Roboto Condensed',
@@ -139,30 +148,40 @@ class _SignState extends State<Sign> {
                     autocorrect: false,
                     cursorColor: Color(0xFF004FC9),
                     inputFormatters: [maskFormatter],
+                    onChanged: (value) => setState(() {
+                      phone = value;
+                    }),
+                    autofocus: true,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       vertical: 10,
                     ),
                     child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFF004FC9),
-                          elevation: 0,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 50,
-                            vertical: 20,
-                          ),
-                          minimumSize: const Size.fromHeight(50), // NEW
+                      onPressed: _fetchPhone,
+                      style: ElevatedButton.styleFrom(
+                        splashFactory: NoSplash.splashFactory,
+
+                        backgroundColor:
+                            maskFormatter.getUnmaskedText().length == 11
+                                ? const Color(0xFF004FC9)
+                                : const Color.fromARGB(255, 145, 161, 184),
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 50,
+                          vertical: 20,
                         ),
-                        child: Text(
-                          'NEXT',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Roboto Condensed',
-                            fontSize: 16,
-                          ),
-                        )),
+                        minimumSize: const Size.fromHeight(50), // NEW
+                      ),
+                      child: const Text(
+                        'NEXT',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Roboto Condensed',
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -171,5 +190,23 @@ class _SignState extends State<Sign> {
         ),
       ),
     );
+  }
+
+  void _fetchPhone() async {
+    var url = 'http://localhost:3000/phone?phone=$phone';
+    final uri = Uri.parse(url);
+    if (maskFormatter.getUnmaskedText().length == 11) {
+      final response = await http.get(uri);
+      final body = response.body;
+      final json = jsonDecode(body);
+      if (json['error'] == false) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Otp(phone: phone),
+          ),
+        );
+      }
+    }
   }
 }
