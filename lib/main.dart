@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import './home.dart';
 import './sign.dart';
 import './otp.dart';
+import './pin.dart';
+import './Splashscreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Agami Merchant',
       debugShowCheckedModeBanner: false,
       theme: _themeOne,
-      home: const Otp(),
+      home: const SplashScreen(),
     );
   }
 }

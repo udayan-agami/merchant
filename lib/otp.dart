@@ -32,6 +32,7 @@ class _OtpState extends State<Otp> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -73,13 +74,37 @@ class _OtpState extends State<Otp> {
                       color: Color(0xFF004FC9),
                     ),
                   ),
-                  TextField(
-                    decoration: InputDecoration(
-                      suffixText: 'Resend',
-                      suffixStyle: TextStyle(
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 15,
+                    ),
+                    child: Text(
+                      'Check your phone. We send you a six digit verification code. Enter the code here.',
+                      style: TextStyle(
                         color: Color(0xFF004FC9),
                         fontFamily: 'Roboto Condensed',
-                        fontSize: 12,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ),
+                  TextField(
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      suffix: TextButton(
+                        onPressed: () {
+                          print('pressd');
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color(0xFF004FC9),
+                        ),
+                        child: const Text(
+                          'Resend',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Roboto Condensed',
+                            fontSize: 12,
+                          ),
+                        ),
                       ),
                       helperStyle: TextStyle(
                         color: Colors.grey,
@@ -127,25 +152,58 @@ class _OtpState extends State<Otp> {
                     padding: EdgeInsets.symmetric(
                       vertical: 10,
                     ),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF004FC9),
-                        elevation: 0,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 50,
-                          vertical: 20,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () {},
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                width: 1,
+                                color: Color(0xFF004FC9),
+                              ),
+                              elevation: 0,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 50,
+                                vertical: 20,
+                              ),
+                            ),
+                            child: Text(
+                              'EDIT',
+                              style: TextStyle(
+                                color: Color(0xFF004FC9),
+                                fontFamily: 'Roboto Condensed',
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
                         ),
-                        minimumSize: const Size.fromHeight(50), // NEW
-                      ),
-                      child: Text(
-                        'NEXT',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Roboto Condensed',
-                          fontSize: 16,
+                        SizedBox(
+                          width: 10,
+                          height: 10,
                         ),
-                      ),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFF004FC9),
+                              elevation: 0,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 50,
+                                vertical: 20,
+                              ),
+                            ),
+                            child: Text(
+                              'NEXT',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Roboto Condensed',
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 ],
