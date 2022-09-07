@@ -29,12 +29,23 @@ class _SignState extends State<Sign> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF050933),
+      backgroundColor: const Color(0xFF2277c7),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('ga'),
+            Flexible(
+              flex: 1,
+              fit: FlexFit.loose,
+              child: Container(
+                width: 280,
+                height: 500,
+                child: Image.asset(
+                  './assets/1.jpg',
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
             Container(
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
@@ -162,10 +173,9 @@ class _SignState extends State<Sign> {
                       style: ElevatedButton.styleFrom(
                         splashFactory: NoSplash.splashFactory,
 
-                        backgroundColor:
-                            maskFormatter.getUnmaskedText().length == 11
-                                ? const Color(0xFF004FC9)
-                                : const Color.fromARGB(255, 145, 161, 184),
+                        primary: maskFormatter.getUnmaskedText().length == 11
+                            ? const Color(0xFF004FC9)
+                            : const Color.fromARGB(255, 145, 161, 184),
                         elevation: 0,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 50,

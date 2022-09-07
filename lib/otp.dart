@@ -194,7 +194,7 @@ class _OtpState extends State<Otp> {
                           child: ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF004FC9),
+                              primary: const Color(0xFF004FC9),
                               elevation: 0,
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 50,
