@@ -1,12 +1,10 @@
-import 'package:agami/sign.dart';
 import 'package:flutter/material.dart';
-import './home.dart';
-import './sign.dart';
-import './otp.dart';
-import './pin.dart';
+import 'package:hive/hive.dart';
 import './Splashscreen.dart';
 
-void main() {
+void main() async {
+  await Hive.openBox('agamiMerchant');
+
   runApp(const MyApp());
 }
 

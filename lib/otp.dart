@@ -1,30 +1,50 @@
+import 'dart:convert';
+
 import 'package:agami/sign.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:http/http.dart' as http;
+import 'package:hive/hive.dart';
+import './pin.dart';
 
 class Otp extends StatefulWidget {
-  const Otp({Key? key, phone}) : super(key: key);
+  final String phone;
+
+  const Otp({Key? key, required this.phone}) : super(key: key);
 
   @override
   State<Otp> createState() => _OtpState();
 }
 
 class _OtpState extends State<Otp> {
+  var box = Hive.box('agamiMerchant');
+  var code = '';
   var maskFormatter = MaskTextInputFormatter(
     mask: '###-###',
     filter: {"#": RegExp(r'[0-9]')},
     type: MaskAutoCompletionType.lazy,
   );
-
+  var helper = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF050933),
+      backgroundColor: const Color(0xFFc89154),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('ga'),
+            Flexible(
+              flex: 1,
+              fit: FlexFit.loose,
+              child: Container(
+                width: 280,
+                height: 500,
+                child: Image.asset(
+                  './assets/illustration-2.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
             Container(
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
@@ -75,21 +95,15 @@ class _OtpState extends State<Otp> {
                       color: Color(0xFF004FC9),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(
-                      bottom: 15,
-                    ),
-                    child: Text(
-                      'Check your phone. We send you a six digit verification code. Enter the code here.',
-                      style: TextStyle(
-                        color: Color(0xFF004FC9),
-                        fontFamily: 'Roboto Condensed',
-                        fontSize: 10,
-                      ),
-                    ),
-                  ),
                   TextField(
                     autofocus: true,
+                    onChanged: (value) => setState(() {
+                      helper = true;
+                      code = value;
+                    }),
+                    onTap: () => setState(() {
+                      helper = true;
+                    }),
                     decoration: InputDecoration(
                       suffix: TextButton(
                         onPressed: () {
@@ -107,9 +121,12 @@ class _OtpState extends State<Otp> {
                           ),
                         ),
                       ),
-                      helperStyle: const TextStyle(
-                        color: Colors.grey,
+                      helperStyle: TextStyle(
+                        color: helper == true ? Colors.grey : Colors.redAccent,
                       ),
+                      helperText: helper == true
+                          ? 'Check your phone. We send you a six digit verification code. Enter the code here.'
+                          : 'Wrong code',
                       hintText: 'XXX-XXX',
                       hintStyle: const TextStyle(
                         color: Colors.blueGrey,
@@ -192,9 +209,12 @@ class _OtpState extends State<Otp> {
                         ),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: _verifyOtp,
                             style: ElevatedButton.styleFrom(
-                              primary: const Color(0xFF004FC9),
+                              primary: maskFormatter.getUnmaskedText().length ==
+                                      6
+                                  ? const Color(0xFF004FC9)
+                                  : const Color.fromARGB(255, 145, 161, 184),
                               elevation: 0,
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 50,
@@ -221,5 +241,30 @@ class _OtpState extends State<Otp> {
         ),
       ),
     );
+  }
+
+  void _verifyOtp() async {
+    var url =
+        'http://localhost:3000/verifyotp?phone=${widget.phone}&code=$code';
+
+    final uri = Uri.parse(url);
+    if (maskFormatter.getUnmaskedText().length == 6) {
+      final response = await http.get(uri);
+      final body = response.body;
+      final json = jsonDecode(body);
+      if (json['error'] == false) {
+        box.put('token', json['token']);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Pin(),
+          ),
+        );
+      } else {
+        setState(() {
+          helper = false;
+        });
+      }
+    }
   }
 }

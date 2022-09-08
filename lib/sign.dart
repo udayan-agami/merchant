@@ -29,7 +29,7 @@ class _SignState extends State<Sign> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2277c7),
+      backgroundColor: const Color(0xFFc89154),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,7 +41,7 @@ class _SignState extends State<Sign> {
                 width: 280,
                 height: 500,
                 child: Image.asset(
-                  './assets/1.jpg',
+                  './assets/illustration-1.png',
                   fit: BoxFit.contain,
                 ),
               ),
@@ -118,9 +118,6 @@ class _SignState extends State<Sign> {
                   ),
                   TextField(
                     decoration: InputDecoration(
-                      helperStyle: const TextStyle(
-                        color: Colors.grey,
-                      ),
                       hintText: '01XXX-XXXXXX',
                       hintStyle: const TextStyle(
                         color: Colors.blueGrey,
