@@ -18,143 +18,146 @@ class Pin extends StatefulWidget {
 
 class _PinState extends State<Pin> {
   var enteredPin = '';
-
+  var pinLabel = 'Enter PIN';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFBC100),
+      backgroundColor: Color.fromARGB(255, 1, 19, 59),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.lock_reset_outlined,
-                    color: Colors.white,
+            Flexible(
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('./assets/pin-back.jpg'),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.logout_outlined,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    'Secret PIN',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Roboto Condensed',
-                      fontSize: 18,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(143, 12, 43, 109),
+                        Color.fromARGB(255, 1, 19, 59),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 200,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(20, 0, 0, 0),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 10,
-                          ),
-                          child: Icon(
-                            Icons.circle,
-                            color: enteredPin.length >= 1
-                                ? Color.fromARGB(110, 0, 0, 0)
-                                : Colors.transparent,
-                          ),
+                      SizedBox(
+                        width: 200,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(78, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 10,
+                                ),
+                                child: Icon(
+                                  Icons.circle,
+                                  color: enteredPin.length >= 1
+                                      ? Color.fromARGB(110, 0, 0, 0)
+                                      : Colors.transparent,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(78, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 10,
+                                ),
+                                child: Icon(
+                                  Icons.circle,
+                                  color: enteredPin.length >= 2
+                                      ? Color.fromARGB(110, 0, 0, 0)
+                                      : Colors.transparent,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(78, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 10,
+                                ),
+                                child: Icon(
+                                  Icons.circle,
+                                  color: enteredPin.length >= 3
+                                      ? Color.fromARGB(110, 0, 0, 0)
+                                      : Colors.transparent,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(78, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 10,
+                                ),
+                                child: Icon(
+                                  Icons.circle,
+                                  color: enteredPin.length >= 4
+                                      ? Color.fromARGB(110, 0, 0, 0)
+                                      : Colors.transparent,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(20, 0, 0, 0),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 10,
-                          ),
-                          child: Icon(
-                            Icons.circle,
-                            color: enteredPin.length >= 2
-                                ? Color.fromARGB(110, 0, 0, 0)
-                                : Colors.transparent,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(20, 0, 0, 0),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 10,
-                          ),
-                          child: Icon(
-                            Icons.circle,
-                            color: enteredPin.length >= 3
-                                ? Color.fromARGB(110, 0, 0, 0)
-                                : Colors.transparent,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(20, 0, 0, 0),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 10,
-                          ),
-                          child: Icon(
-                            Icons.circle,
-                            color: enteredPin.length >= 4
-                                ? Color.fromARGB(110, 0, 0, 0)
-                                : Colors.transparent,
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Chip(
+                          label: Text(
+                            pinLabel,
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 12, 42, 109),
+                              fontFamily: 'Roboto Condensed',
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Text(
-                    'Secret PIN',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Roboto Condensed',
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
             Container(
               padding: EdgeInsets.all(10),
-              margin: EdgeInsets.all(10),
+              margin: EdgeInsets.only(left: 10, right: 10, top: 10),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 12, 42, 109),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+              ),
               child: Column(
                 children: [
                   Padding(
@@ -462,7 +465,10 @@ class _PinState extends State<Pin> {
           ),
         );
       } else {
-        setState(() {});
+        setState(() {
+          enteredPin = '';
+          pinLabel = json['message'];
+        });
       }
     }
   }

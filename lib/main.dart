@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Agami Merchant',
       debugShowCheckedModeBanner: false,
       theme: _themeOne,
-      home: const SplashScreen(),
+      home: const Pin(),
     );
   }
 }
