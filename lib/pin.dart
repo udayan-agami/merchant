@@ -1,5 +1,13 @@
+import 'dart:convert';
+
+import 'package:agami/home.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:hive/hive.dart';
+import 'package:http/http.dart' as http;
+
+var box = Hive.box('agamiMerchant');
+var token1 = box.get('token1');
 
 class Pin extends StatefulWidget {
   const Pin({Key? key}) : super(key: key);
@@ -10,6 +18,7 @@ class Pin extends StatefulWidget {
 
 class _PinState extends State<Pin> {
   var enteredPin = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -399,7 +408,7 @@ class _PinState extends State<Pin> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: _verifyPin,
                           child: Container(
                             height: 70,
                             width: 70,
@@ -432,6 +441,29 @@ class _PinState extends State<Pin> {
       setState(() {
         enteredPin = enteredPin + dig;
       });
+    }
+  }
+
+  void _verifyPin() async {
+    var url =
+        'https://agami-merchant.udayanbasak1.repl.co/verifypin?pin=$enteredPin&token1=$token1';
+
+    final uri = Uri.parse(url);
+    if (enteredPin.length == 4) {
+      final response = await http.get(uri);
+      final body = response.body;
+      final json = jsonDecode(body);
+      if (json['error'] == false) {
+        box.put('token2', json['token2']);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Home(),
+          ),
+        );
+      } else {
+        setState(() {});
+      }
     }
   }
 }

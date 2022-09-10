@@ -28,7 +28,7 @@ class _OtpState extends State<Otp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFc89154),
+      backgroundColor: const Color(0xFF24bd95),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,7 +37,6 @@ class _OtpState extends State<Otp> {
               flex: 1,
               fit: FlexFit.loose,
               child: Container(
-                width: 280,
                 height: 500,
                 child: Image.asset(
                   './assets/illustration-2.png',
@@ -253,7 +252,7 @@ class _OtpState extends State<Otp> {
       final body = response.body;
       final json = jsonDecode(body);
       if (json['error'] == false) {
-        box.put('token', json['token']);
+        box.put('token1', json['token1']);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
