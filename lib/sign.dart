@@ -29,7 +29,7 @@ class _SignState extends State<Sign> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFc89154),
+      backgroundColor: const Color(0xFF403255),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -38,7 +38,7 @@ class _SignState extends State<Sign> {
               flex: 1,
               fit: FlexFit.loose,
               child: Container(
-                width: 280,
+                width: double.infinity,
                 height: 500,
                 child: Image.asset(
                   './assets/illustration-1.png',
@@ -200,7 +200,7 @@ class _SignState extends State<Sign> {
   }
 
   void _fetchPhone() async {
-    var url = 'http://localhost:3000/phone?phone=$phone';
+    var url = 'https://agami-merchant.udayanbasak1.repl.co/phone?phone=$phone';
     final uri = Uri.parse(url);
     if (maskFormatter.getUnmaskedText().length == 11) {
       final response = await http.get(uri);

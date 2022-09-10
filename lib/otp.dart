@@ -245,7 +245,7 @@ class _OtpState extends State<Otp> {
 
   void _verifyOtp() async {
     var url =
-        'http://localhost:3000/verifyotp?phone=${widget.phone}&code=$code';
+        'https://agami-merchant.udayanbasak1.repl.co/verifyotp?phone=${widget.phone}&code=$code';
 
     final uri = Uri.parse(url);
     if (maskFormatter.getUnmaskedText().length == 6) {
