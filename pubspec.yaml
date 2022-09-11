@@ -45,6 +45,9 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   mask_text_input_formatter: ^2.4.0
+  firebase_core: ^1.22.0
+  firebase_auth: ^3.8.0
+  cloud_firestore: ^3.4.7
   
 dev_dependencies:
   flutter_test:

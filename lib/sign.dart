@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:http/http.dart' as http;
 import './otp.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Sign extends StatefulWidget {
   const Sign({Key? key}) : super(key: key);
@@ -200,20 +202,43 @@ class _SignState extends State<Sign> {
   }
 
   void _fetchPhone() async {
-    var url = 'https://agami-merchant.udayanbasak1.repl.co/phone?phone=$phone';
-    final uri = Uri.parse(url);
-    if (maskFormatter.getUnmaskedText().length == 11) {
-      final response = await http.get(uri);
-      final body = response.body;
-      final json = jsonDecode(body);
-      if (json['error'] == false) {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+
+    await _auth.verifyPhoneNumber(
+      phoneNumber: '+88' + maskFormatter.getUnmaskedText(),
+      timeout: Duration(seconds: 60),
+      verificationCompleted: (AuthCredential authCredential) {
+        print(authCredential);
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        print(e);
+      },
+      codeSent: (String verificationId, int? resendToken) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Otp(phone: phone),
+            builder: (context) =>
+                Otp(phone: phone, verificationId: verificationId),
           ),
         );
-      }
-    }
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+
+    // var url = 'https://agami-merchant.udayanbasak1.repl.co/phone?phone=$phone';
+    // final uri = Uri.parse(url);
+    // if (maskFormatter.getUnmaskedText().length == 11) {
+    //   final response = await http.get(uri);
+    //   final body = response.body;
+    //   final json = jsonDecode(body);
+    //   if (json['error'] == false) {
+    //     Navigator.pushReplacement(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => Otp(phone: phone),
+    //       ),
+    //     );
+    //   }
+    // }
   }
 }

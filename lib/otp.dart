@@ -6,11 +6,14 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
 import './pin.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Otp extends StatefulWidget {
   final String phone;
-
-  const Otp({Key? key, required this.phone}) : super(key: key);
+  final String verificationId;
+  const Otp({Key? key, required this.phone, required this.verificationId})
+      : super(key: key);
 
   @override
   State<Otp> createState() => _OtpState();
@@ -243,27 +246,37 @@ class _OtpState extends State<Otp> {
   }
 
   void _verifyOtp() async {
-    var url =
-        'https://agami-merchant.udayanbasak1.repl.co/verifyotp?phone=${widget.phone}&code=$code';
+    FirebaseAuth auth = FirebaseAuth.instance;
+    // Create a PhoneAuthCredential with the code
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: widget.verificationId,
+        smsCode: maskFormatter.getUnmaskedText());
 
-    final uri = Uri.parse(url);
-    if (maskFormatter.getUnmaskedText().length == 6) {
-      final response = await http.get(uri);
-      final body = response.body;
-      final json = jsonDecode(body);
-      if (json['error'] == false) {
-        box.put('token1', json['token1']);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Pin(),
-          ),
-        );
-      } else {
-        setState(() {
-          helper = false;
-        });
-      }
-    }
+    // Sign the user in (or link) with the credential
+    var res = await auth.signInWithCredential(credential);
+    print(jsonEncode(res));
+
+    // var url =
+    //     'https://agami-merchant.udayanbasak1.repl.co/verifyotp?phone=${widget.phone}&code=$code';
+
+    // final uri = Uri.parse(url);
+    // if (maskFormatter.getUnmaskedText().length == 6) {
+    //   final response = await http.get(uri);
+    //   final body = response.body;
+    //   final json = jsonDecode(body);
+    //   if (json['error'] == false) {
+    //     box.put('token1', json['token1']);
+    //     Navigator.pushReplacement(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => Pin(),
+    //       ),
+    //     );
+    //   } else {
+    //     setState(() {
+    //       helper = false;
+    //     });
+    //   }
+    // }
   }
 }
