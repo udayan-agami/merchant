@@ -1,7 +1,9 @@
+import 'package:agami/home.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import './Splashscreen.dart';
 import './pin.dart';
+import './home.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
       title: 'Agami Merchant',
       debugShowCheckedModeBanner: false,
       theme: _themeOne,
-      home: const Pin(),
+      home: const Home(),
     );
   }
 }
