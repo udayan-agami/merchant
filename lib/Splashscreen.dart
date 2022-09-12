@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'package:agami/pin.dart';
 import 'package:flutter/material.dart';
 import './sign.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -17,12 +20,22 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _navigateToSign() async {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const Sign(),
-      ),
-    );
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Pin(),
+        ),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Sign(),
+        ),
+      );
+    }
   }
 
   @override

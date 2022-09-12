@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 var box = Hive.box('agamiMerchant');
 var token1 = box.get('token1');
@@ -22,21 +24,21 @@ class _PinState extends State<Pin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 1, 19, 59),
+      backgroundColor: const Color.fromARGB(255, 1, 19, 59),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('./assets/pin-back.jpg'),
                     fit: BoxFit.cover,
                   ),
                 ),
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
                         Color.fromARGB(143, 12, 43, 109),
@@ -57,72 +59,72 @@ class _PinState extends State<Pin> {
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(78, 255, 255, 255),
+                                color: const Color.fromARGB(78, 255, 255, 255),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 10,
                                   vertical: 10,
                                 ),
                                 child: Icon(
                                   Icons.circle,
                                   color: enteredPin.length >= 1
-                                      ? Color.fromARGB(110, 0, 0, 0)
+                                      ? const Color.fromARGB(110, 0, 0, 0)
                                       : Colors.transparent,
                                 ),
                               ),
                             ),
                             Container(
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(78, 255, 255, 255),
+                                color: const Color.fromARGB(78, 255, 255, 255),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 10,
                                   vertical: 10,
                                 ),
                                 child: Icon(
                                   Icons.circle,
                                   color: enteredPin.length >= 2
-                                      ? Color.fromARGB(110, 0, 0, 0)
+                                      ? const Color.fromARGB(110, 0, 0, 0)
                                       : Colors.transparent,
                                 ),
                               ),
                             ),
                             Container(
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(78, 255, 255, 255),
+                                color: const Color.fromARGB(78, 255, 255, 255),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 10,
                                   vertical: 10,
                                 ),
                                 child: Icon(
                                   Icons.circle,
                                   color: enteredPin.length >= 3
-                                      ? Color.fromARGB(110, 0, 0, 0)
+                                      ? const Color.fromARGB(110, 0, 0, 0)
                                       : Colors.transparent,
                                 ),
                               ),
                             ),
                             Container(
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(78, 255, 255, 255),
+                                color: const Color.fromARGB(78, 255, 255, 255),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                   horizontal: 10,
                                   vertical: 10,
                                 ),
                                 child: Icon(
                                   Icons.circle,
                                   color: enteredPin.length >= 4
-                                      ? Color.fromARGB(110, 0, 0, 0)
+                                      ? const Color.fromARGB(110, 0, 0, 0)
                                       : Colors.transparent,
                                 ),
                               ),
@@ -135,7 +137,7 @@ class _PinState extends State<Pin> {
                         child: Chip(
                           label: Text(
                             pinLabel,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Color.fromARGB(255, 12, 42, 109),
                               fontFamily: 'Roboto Condensed',
                               fontSize: 14,
@@ -149,9 +151,9 @@ class _PinState extends State<Pin> {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.only(left: 10, right: 10, top: 10),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+              decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 12, 42, 109),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
@@ -172,10 +174,10 @@ class _PinState extends State<Pin> {
                             width: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(20, 0, 0, 0),
+                              color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: Text(
+                            child: const Text(
                               '1',
                               style: TextStyle(
                                 color: Colors.white,
@@ -192,10 +194,10 @@ class _PinState extends State<Pin> {
                             width: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(20, 0, 0, 0),
+                              color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: Text(
+                            child: const Text(
                               '2',
                               style: TextStyle(
                                 color: Colors.white,
@@ -212,10 +214,10 @@ class _PinState extends State<Pin> {
                             width: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(20, 0, 0, 0),
+                              color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: Text(
+                            child: const Text(
                               '3',
                               style: TextStyle(
                                 color: Colors.white,
@@ -240,10 +242,10 @@ class _PinState extends State<Pin> {
                             width: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(20, 0, 0, 0),
+                              color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: Text(
+                            child: const Text(
                               '4',
                               style: TextStyle(
                                 color: Colors.white,
@@ -260,10 +262,10 @@ class _PinState extends State<Pin> {
                             width: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(20, 0, 0, 0),
+                              color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: Text(
+                            child: const Text(
                               '5',
                               style: TextStyle(
                                 color: Colors.white,
@@ -280,10 +282,10 @@ class _PinState extends State<Pin> {
                             width: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(20, 0, 0, 0),
+                              color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: Text(
+                            child: const Text(
                               '6',
                               style: TextStyle(
                                 color: Colors.white,
@@ -308,10 +310,10 @@ class _PinState extends State<Pin> {
                             width: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(20, 0, 0, 0),
+                              color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: Text(
+                            child: const Text(
                               '7',
                               style: TextStyle(
                                 color: Colors.white,
@@ -328,10 +330,10 @@ class _PinState extends State<Pin> {
                             width: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(20, 0, 0, 0),
+                              color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: Text(
+                            child: const Text(
                               '8',
                               style: TextStyle(
                                 color: Colors.white,
@@ -348,10 +350,10 @@ class _PinState extends State<Pin> {
                             width: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(20, 0, 0, 0),
+                              color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: Text(
+                            child: const Text(
                               '9',
                               style: TextStyle(
                                 color: Colors.white,
@@ -380,10 +382,10 @@ class _PinState extends State<Pin> {
                             width: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(20, 0, 0, 0),
+                              color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: Icon(
+                            child: const Icon(
                               Icons.backspace_outlined,
                               color: Colors.white,
                               size: 18,
@@ -397,10 +399,10 @@ class _PinState extends State<Pin> {
                             width: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(20, 0, 0, 0),
+                              color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: Text(
+                            child: const Text(
                               '0',
                               style: TextStyle(
                                 color: Colors.white,
@@ -411,16 +413,18 @@ class _PinState extends State<Pin> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: _verifyPin,
+                          onTap: () async {
+                            _verifyPin(context);
+                          },
                           child: Container(
                             height: 70,
                             width: 70,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(20, 0, 0, 0),
+                              color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: Icon(
+                            child: const Icon(
                               Icons.done_outlined,
                               color: Colors.white,
                               size: 18,
@@ -447,28 +451,32 @@ class _PinState extends State<Pin> {
     }
   }
 
-  void _verifyPin() async {
-    var url =
-        'https://agami-merchant.udayanbasak1.repl.co/verifypin?pin=$enteredPin&token1=$token1';
-
-    final uri = Uri.parse(url);
-    if (enteredPin.length == 4) {
-      final response = await http.get(uri);
-      final body = response.body;
-      final json = jsonDecode(body);
-      if (json['error'] == false) {
-        box.put('token2', json['token2']);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Home(),
-          ),
-        );
-      } else {
-        setState(() {
-          enteredPin = '';
-          pinLabel = json['message'];
-        });
+  void _verifyPin(context) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Name, email address, and profile photo URL
+      final phoneNumber = user.phoneNumber;
+      var url =
+          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/pin?pin=$enteredPin&phone=$phoneNumber';
+      final uri = Uri.parse(url);
+      if (enteredPin.length == 4) {
+        final response = await http.get(uri);
+        final body = response.body;
+        final json = jsonDecode(body);
+        if (json['error'] == 0) {
+          box.put('token', json['token']);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (ctx) => const Home(),
+            ),
+          );
+        } else {
+          setState(() {
+            enteredPin = '';
+            pinLabel = json['message'];
+          });
+        }
       }
     }
   }

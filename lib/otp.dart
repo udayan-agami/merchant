@@ -20,6 +20,7 @@ class Otp extends StatefulWidget {
 }
 
 class _OtpState extends State<Otp> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   var box = Hive.box('agamiMerchant');
   var code = '';
   var maskFormatter = MaskTextInputFormatter(
@@ -246,37 +247,46 @@ class _OtpState extends State<Otp> {
   }
 
   void _verifyOtp() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
     // Create a PhoneAuthCredential with the code
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: widget.verificationId,
-        smsCode: maskFormatter.getUnmaskedText());
+        smsCode: maskFormatter.getUnmaskedText(),
+      );
 
-    // Sign the user in (or link) with the credential
-    var res = await auth.signInWithCredential(credential);
-    print(jsonEncode(res));
+      await auth.signInWithCredential(credential);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Pin(),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-verification-code') {
+        setState(() {
+          helper = false;
+        });
+      }
+    }
+  }
 
-    // var url =
-    //     'https://agami-merchant.udayanbasak1.repl.co/verifyotp?phone=${widget.phone}&code=$code';
-
-    // final uri = Uri.parse(url);
-    // if (maskFormatter.getUnmaskedText().length == 6) {
-    //   final response = await http.get(uri);
-    //   final body = response.body;
-    //   final json = jsonDecode(body);
-    //   if (json['error'] == false) {
-    //     box.put('token1', json['token1']);
-    //     Navigator.pushReplacement(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) => Pin(),
-    //       ),
-    //     );
-    //   } else {
-    //     setState(() {
-    //       helper = false;
-    //     });
-    //   }
-    // }
+  void _resendCode() async {
+    await auth.verifyPhoneNumber(
+      phoneNumber: widget.phone,
+      timeout: const Duration(seconds: 60),
+      codeAutoRetrievalTimeout: (String verificationId) {
+        // Auto-resolution timed out...
+      },
+      codeSent: (String verificationId, int? forceResendingToken) {},
+      verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Pin(),
+          ),
+        );
+      },
+      verificationFailed: (FirebaseAuthException error) {},
+    );
   }
 }

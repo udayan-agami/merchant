@@ -9,6 +9,8 @@ import './otp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'pin.dart';
+
 class Sign extends StatefulWidget {
   const Sign({Key? key}) : super(key: key);
 
@@ -156,7 +158,7 @@ class _SignState extends State<Sign> {
                     ),
                     keyboardType: TextInputType.number,
                     autocorrect: false,
-                    cursorColor: Color(0xFF004FC9),
+                    cursorColor: const Color(0xFF004FC9),
                     inputFormatters: [maskFormatter],
                     onChanged: (value) => setState(() {
                       phone = value;
@@ -205,10 +207,15 @@ class _SignState extends State<Sign> {
     FirebaseAuth _auth = FirebaseAuth.instance;
 
     await _auth.verifyPhoneNumber(
-      phoneNumber: '+88' + maskFormatter.getUnmaskedText(),
-      timeout: Duration(seconds: 60),
+      phoneNumber: '+88${maskFormatter.getUnmaskedText()}',
+      timeout: const Duration(seconds: 60),
       verificationCompleted: (AuthCredential authCredential) {
-        print(authCredential);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Pin(),
+          ),
+        );
       },
       verificationFailed: (FirebaseAuthException e) {
         print(e);
@@ -224,21 +231,5 @@ class _SignState extends State<Sign> {
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
-
-    // var url = 'https://agami-merchant.udayanbasak1.repl.co/phone?phone=$phone';
-    // final uri = Uri.parse(url);
-    // if (maskFormatter.getUnmaskedText().length == 11) {
-    //   final response = await http.get(uri);
-    //   final body = response.body;
-    //   final json = jsonDecode(body);
-    //   if (json['error'] == false) {
-    //     Navigator.pushReplacement(
-    //       context,
-    //       MaterialPageRoute(
-    //         builder: (context) => Otp(phone: phone),
-    //       ),
-    //     );
-    //   }
-    // }
   }
 }
