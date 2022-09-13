@@ -7,6 +7,8 @@ import './devices.dart';
 import './business.dart';
 import './displayTheme.dart';
 import './withdraw.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -16,6 +18,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   List settingsList = [
     {
       "title": "Business Details",
@@ -79,10 +82,10 @@ class _SettingsState extends State<Settings> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Settings',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).highlightColor,
                       fontFamily: 'Roboto Condensed',
                       fontSize: 22,
                     ),
@@ -90,7 +93,7 @@ class _SettingsState extends State<Settings> {
                   IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.notifications_outlined),
-                    color: Colors.white,
+                    color: Theme.of(context).highlightColor,
                   )
                 ],
               ),
@@ -98,20 +101,20 @@ class _SettingsState extends State<Settings> {
             Stack(
               alignment: AlignmentDirectional.bottomEnd,
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 80,
                   backgroundImage:
                       NetworkImage('https://i.ibb.co/stQv06t/unnamed.jpg'),
-                  backgroundColor: Color(0xFF181D5A),
+                  backgroundColor: Theme.of(context).primaryColor,
                 ),
                 CircleAvatar(
-                  backgroundColor: const Color(0xFF434B96),
+                  backgroundColor: Theme.of(context).primaryColor,
                   child: IconButton(
                     onPressed: () {},
                     splashRadius: 20,
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.edit,
-                      color: Colors.white,
+                      color: Theme.of(context).highlightColor,
                     ),
                   ),
                 ),
@@ -122,7 +125,7 @@ class _SettingsState extends State<Settings> {
               padding: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: const Color(0xFF181D5A),
+                color: Theme.of(context).primaryColor,
               ),
               child: Column(
                 children: [
@@ -141,7 +144,7 @@ class _SettingsState extends State<Settings> {
                                 Icon(
                                   IconData(options['icon'],
                                       fontFamily: 'MaterialIcons'),
-                                  color: Colors.white,
+                                  color: Theme.of(context).highlightColor,
                                   size: 22,
                                 ),
                                 Padding(
@@ -153,16 +156,17 @@ class _SettingsState extends State<Settings> {
                                       children: [
                                         Text(
                                           options['title'],
-                                          style: const TextStyle(
-                                            color: Colors.white,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .highlightColor,
                                             fontFamily: 'Roboto Condensed',
                                             fontSize: 18,
                                           ),
                                         ),
                                         Text(
                                           options['subtitle'],
-                                          style: const TextStyle(
-                                            color: Colors.grey,
+                                          style: TextStyle(
+                                            color: Theme.of(context).hintColor,
                                             fontFamily: 'Roboto Condensed',
                                             fontSize: 14,
                                           ),
@@ -177,8 +181,8 @@ class _SettingsState extends State<Settings> {
                                 options == settingsList[settingsList.length - 1]
                                     ? false
                                     : true,
-                            child: const Divider(
-                              color: Color(0xFF050933),
+                            child: Divider(
+                              color: Theme.of(context).primaryColorDark,
                               thickness: 1,
                             ),
                           ),
@@ -248,8 +252,14 @@ class _SettingsState extends State<Settings> {
         {}
         break;
       case 8:
-        {}
+        {
+          _signOut;
+        }
         break;
     }
+  }
+
+  Future<void> _signOut() async {
+    await _auth.signOut();
   }
 }

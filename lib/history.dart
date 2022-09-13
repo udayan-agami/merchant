@@ -77,7 +77,7 @@ class _HistoryState extends State<History> {
       child: LiquidPullToRefresh(
           color: const Color(0xFF434B96),
           height: 200,
-          backgroundColor: const Color(0xFF050933),
+          backgroundColor: Theme.of(context).primaryColorDark,
           animSpeedFactor: 2,
           showChildOpacityTransition: false,
           onRefresh: _handleRefresh,
@@ -88,7 +88,7 @@ class _HistoryState extends State<History> {
                   margin: const EdgeInsets.all(10),
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF181D5A),
+                    color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Column(
@@ -99,22 +99,21 @@ class _HistoryState extends State<History> {
                         padding: const EdgeInsets.all(10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
                               'Bill Basket',
                               style: TextStyle(
                                 fontFamily: 'Roboto Condensed',
                                 fontSize: 22,
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                               ),
                             ),
                             Text(
                               'View all bills at a glance',
                               style: TextStyle(
-                                fontFamily: 'Roboto Condensed',
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
+                                  fontFamily: 'Roboto Condensed',
+                                  fontSize: 14,
+                                  color: Theme.of(context).hintColor),
                             ),
                           ],
                         ),
@@ -125,7 +124,7 @@ class _HistoryState extends State<History> {
                         padding: const EdgeInsets.all(10),
                         margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF0A1042),
+                          color: Theme.of(context).primaryColorDark,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
@@ -133,11 +132,11 @@ class _HistoryState extends State<History> {
                             children: [
                               //qty of paid bill
                               Column(
-                                children: const [
+                                children: [
                                   Text(
                                     'Paid',
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: Theme.of(context).highlightColor,
                                       fontFamily: 'Roboto Condensed',
                                       fontSize: 15,
                                     ),
@@ -145,7 +144,7 @@ class _HistoryState extends State<History> {
                                   Text(
                                     '526',
                                     style: TextStyle(
-                                      color: Colors.grey,
+                                      color: Theme.of(context).hintColor,
                                       fontFamily: 'Roboto Condensed',
                                       fontSize: 12,
                                     ),
@@ -154,20 +153,20 @@ class _HistoryState extends State<History> {
                               ),
 
                               //divider
-                              const SizedBox(
+                              SizedBox(
                                 height: 30,
                                 child: VerticalDivider(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                   thickness: 0.2,
                                 ),
                               ),
                               //qty of unpaid bill
                               Column(
-                                children: const [
+                                children: [
                                   Text(
                                     'Pending',
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: Theme.of(context).highlightColor,
                                       fontFamily: 'Roboto Condensed',
                                       fontSize: 15,
                                     ),
@@ -175,7 +174,7 @@ class _HistoryState extends State<History> {
                                   Text(
                                     '4',
                                     style: TextStyle(
-                                      color: Colors.grey,
+                                      color: Theme.of(context).hintColor,
                                       fontFamily: 'Roboto Condensed',
                                       fontSize: 12,
                                     ),
@@ -184,20 +183,20 @@ class _HistoryState extends State<History> {
                               ),
 
                               //divider
-                              const SizedBox(
+                              SizedBox(
                                 height: 30,
                                 child: VerticalDivider(
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColorLight,
                                   thickness: 0.2,
                                 ),
                               ),
                               //qty of cenceled bill
                               Column(
-                                children: const [
+                                children: [
                                   Text(
                                     'Postponed',
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: Theme.of(context).highlightColor,
                                       fontFamily: 'Roboto Condensed',
                                       fontSize: 15,
                                     ),
@@ -205,7 +204,7 @@ class _HistoryState extends State<History> {
                                   Text(
                                     '25',
                                     style: TextStyle(
-                                      color: Colors.grey,
+                                      color: Theme.of(context).hintColor,
                                       fontFamily: 'Roboto Condensed',
                                       fontSize: 12,
                                     ),
@@ -222,7 +221,7 @@ class _HistoryState extends State<History> {
                         const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF181D5A),
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Column(
@@ -239,23 +238,26 @@ class _HistoryState extends State<History> {
                                   textAlign: TextAlign.center,
                                 ),
                                 showCheckmark: false,
-                                backgroundColor: const Color(0xFF0A1042),
+                                backgroundColor:
+                                    Theme.of(context).primaryColorDark,
                                 selected: chips['paid'],
-                                selectedColor: const Color(0xFF0A1042),
+                                selectedColor:
+                                    Theme.of(context).primaryColorDark,
                                 elevation: 0,
                                 pressElevation: 0,
                                 side: BorderSide(
                                   color: chips['paid']
-                                      ? Colors.white
-                                      : const Color(0xFF0A1042),
+                                      ? Theme.of(context).highlightColor
+                                      : Theme.of(context).primaryColorDark,
                                   width: 2,
                                 ),
-                                labelStyle: const TextStyle(
+                                labelStyle: TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
-                                  color: Colors.white,
+                                  color: Theme.of(context).highlightColor,
                                 ),
-                                checkmarkColor: Colors.white,
+                                checkmarkColor:
+                                    Theme.of(context).highlightColor,
                                 onSelected: (isSelected) {
                                   setState(() {
                                     chips['paid'] = !chips['paid'];
@@ -271,23 +273,26 @@ class _HistoryState extends State<History> {
                                   textAlign: TextAlign.center,
                                 ),
                                 showCheckmark: false,
-                                backgroundColor: const Color(0xFF0A1042),
+                                backgroundColor:
+                                    Theme.of(context).primaryColorDark,
                                 selected: chips['pending'],
-                                selectedColor: const Color(0xFF0A1042),
+                                selectedColor:
+                                    Theme.of(context).primaryColorDark,
                                 elevation: 0,
                                 pressElevation: 0,
                                 side: BorderSide(
                                   color: chips['pending']
-                                      ? Colors.white
-                                      : const Color(0xFF0A1042),
+                                      ? Theme.of(context).highlightColor
+                                      : Theme.of(context).primaryColor,
                                   width: 2,
                                 ),
-                                labelStyle: const TextStyle(
+                                labelStyle: TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
-                                  color: Colors.white,
+                                  color: Theme.of(context).highlightColor,
                                 ),
-                                checkmarkColor: Colors.white,
+                                checkmarkColor:
+                                    Theme.of(context).highlightColor,
                                 onSelected: (isSelected) {
                                   setState(() {
                                     chips['pending'] = !chips['pending'];
@@ -303,23 +308,26 @@ class _HistoryState extends State<History> {
                                   textAlign: TextAlign.center,
                                 ),
                                 showCheckmark: false,
-                                backgroundColor: const Color(0xFF0A1042),
+                                backgroundColor:
+                                    Theme.of(context).primaryColorDark,
                                 selected: chips['postponed'],
-                                selectedColor: const Color(0xFF0A1042),
+                                selectedColor:
+                                    Theme.of(context).primaryColorDark,
                                 elevation: 0,
                                 pressElevation: 0,
                                 side: BorderSide(
                                     color: chips['postponed']
-                                        ? Colors.white
-                                        : const Color(0xFF0A1042),
+                                        ? Theme.of(context).highlightColor
+                                        : Theme.of(context).primaryColorDark,
                                     width: 2,
                                     style: BorderStyle.solid),
-                                labelStyle: const TextStyle(
+                                labelStyle: TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
-                                  color: Colors.white,
+                                  color: Theme.of(context).highlightColor,
                                 ),
-                                checkmarkColor: Colors.white,
+                                checkmarkColor:
+                                    Theme.of(context).highlightColor,
                                 onSelected: (isSelected) {
                                   setState(() {
                                     chips['postponed'] = !chips['postponed'];
@@ -330,8 +338,8 @@ class _HistoryState extends State<History> {
                           ],
                         ),
                         //divider
-                        const Divider(
-                          color: Colors.white,
+                        Divider(
+                          color: Theme.of(context).highlightColor,
                           thickness: 0.1,
                         ),
                         //today tomorrow
@@ -346,23 +354,26 @@ class _HistoryState extends State<History> {
                                   textAlign: TextAlign.center,
                                 ),
                                 showCheckmark: false,
-                                backgroundColor: const Color(0xFF0A1042),
+                                backgroundColor:
+                                    Theme.of(context).primaryColorDark,
                                 selected: chips['month'],
-                                selectedColor: const Color(0xFF0A1042),
+                                selectedColor:
+                                    Theme.of(context).primaryColorDark,
                                 elevation: 0,
                                 pressElevation: 0,
                                 side: BorderSide(
                                     color: chips['month']
-                                        ? Colors.white
-                                        : const Color(0xFF0A1042),
+                                        ? Theme.of(context).highlightColor
+                                        : Theme.of(context).primaryColorDark,
                                     width: 2,
                                     style: BorderStyle.solid),
-                                labelStyle: const TextStyle(
+                                labelStyle: TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
-                                  color: Colors.white,
+                                  color: Theme.of(context).highlightColor,
                                 ),
-                                checkmarkColor: Colors.white,
+                                checkmarkColor:
+                                    Theme.of(context).highlightColor,
                                 onSelected: (isSelected) {
                                   setState(() {
                                     chips['today'] = false;
@@ -380,23 +391,26 @@ class _HistoryState extends State<History> {
                                   textAlign: TextAlign.center,
                                 ),
                                 showCheckmark: false,
-                                backgroundColor: const Color(0xFF0A1042),
+                                backgroundColor:
+                                    Theme.of(context).primaryColorDark,
                                 selected: chips['week'],
-                                selectedColor: const Color(0xFF0A1042),
+                                selectedColor:
+                                    Theme.of(context).primaryColorDark,
                                 elevation: 0,
                                 pressElevation: 0,
                                 side: BorderSide(
                                     color: chips['week']
-                                        ? Colors.white
-                                        : const Color(0xFF0A1042),
+                                        ? Theme.of(context).highlightColor
+                                        : Theme.of(context).primaryColorDark,
                                     width: 2,
                                     style: BorderStyle.solid),
-                                labelStyle: const TextStyle(
+                                labelStyle: TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
-                                  color: Colors.white,
+                                  color: Theme.of(context).highlightColor,
                                 ),
-                                checkmarkColor: Colors.white,
+                                checkmarkColor:
+                                    Theme.of(context).highlightColor,
                                 onSelected: (isSelected) {
                                   setState(() {
                                     chips['today'] = false;
@@ -414,23 +428,26 @@ class _HistoryState extends State<History> {
                                   textAlign: TextAlign.center,
                                 ),
                                 showCheckmark: false,
-                                backgroundColor: const Color(0xFF0A1042),
+                                backgroundColor:
+                                    Theme.of(context).primaryColorDark,
                                 selected: chips['today'],
-                                selectedColor: const Color(0xFF0A1042),
+                                selectedColor:
+                                    Theme.of(context).primaryColorDark,
                                 elevation: 0,
                                 pressElevation: 0,
                                 side: BorderSide(
                                     color: chips['today']
-                                        ? Colors.white
-                                        : const Color(0xFF0A1042),
+                                        ? Theme.of(context).highlightColor
+                                        : Theme.of(context).primaryColorDark,
                                     width: 2,
                                     style: BorderStyle.solid),
-                                labelStyle: const TextStyle(
+                                labelStyle: TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
-                                  color: Colors.white,
+                                  color: Theme.of(context).highlightColor,
                                 ),
-                                checkmarkColor: Colors.white,
+                                checkmarkColor:
+                                    Theme.of(context).highlightColor,
                                 onSelected: (isSelected) {
                                   setState(() {
                                     chips['today'] = true;
@@ -443,8 +460,8 @@ class _HistoryState extends State<History> {
                           ],
                         ),
                         //divider
-                        const Divider(
-                          color: Colors.white,
+                        Divider(
+                          color: Theme.of(context).highlightColor,
                           thickness: 0.1,
                         ),
                         //asc apply
@@ -459,23 +476,26 @@ class _HistoryState extends State<History> {
                                   textAlign: TextAlign.center,
                                 ),
                                 showCheckmark: false,
-                                backgroundColor: const Color(0xFF0A1042),
+                                backgroundColor:
+                                    Theme.of(context).primaryColorDark,
                                 selected: chips['asc'],
-                                selectedColor: const Color(0xFF0A1042),
+                                selectedColor:
+                                    Theme.of(context).primaryColorDark,
                                 elevation: 0,
                                 pressElevation: 0,
                                 side: BorderSide(
                                     color: chips['asc']
-                                        ? Colors.white
-                                        : const Color(0xFF0A1042),
+                                        ? Theme.of(context).highlightColor
+                                        : Theme.of(context).primaryColorDark,
                                     width: 2,
                                     style: BorderStyle.solid),
-                                labelStyle: const TextStyle(
+                                labelStyle: TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
-                                  color: Colors.white,
+                                  color: Theme.of(context).highlightColor,
                                 ),
-                                checkmarkColor: Colors.white,
+                                checkmarkColor:
+                                    Theme.of(context).highlightColor,
                                 onSelected: (isSelected) {
                                   setState(() {
                                     chips['asc'] = !chips['asc'];
@@ -489,21 +509,20 @@ class _HistoryState extends State<History> {
                                 onPressed: () {},
                                 style: ElevatedButton.styleFrom(
                                   elevation: 0,
-                                  primary:
-                                      const Color.fromARGB(255, 60, 68, 136),
-                                  textStyle: const TextStyle(
-                                    fontFamily: 'Roboto Condensed',
-                                    color: Colors.white,
-                                  ),
+                                  primary: Theme.of(context).primaryColorDark,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(100),
                                   ),
                                 ),
-                                child: const SizedBox(
+                                child: SizedBox(
                                     width: 70,
                                     child: Text(
                                       'Apply',
                                       textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto Condensed',
+                                        color: Theme.of(context).highlightColor,
+                                      ),
                                     )),
                               ),
                             ),
@@ -520,10 +539,10 @@ class _HistoryState extends State<History> {
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
-                        color: const Color(0xFF181D5A),
+                        color: Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.circular(15)),
                     child: Container(
-                      padding: const EdgeInsets.all(10),
+                      //padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                           color: const Color.fromARGB(136, 5, 9, 51),
                           borderRadius: BorderRadius.circular(12)),
@@ -531,66 +550,57 @@ class _HistoryState extends State<History> {
                         children: [
                           for (var transaction in transactionList)
                             Wrap(
-                              //padding: EdgeInsets.all(8),
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Icon(
-                                      Icons.call_received_rounded,
-                                      color: Colors.lightGreenAccent,
-                                      size: 20,
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          transaction['name'],
-                                          style: const TextStyle(
-                                              fontFamily: 'Roboto Condensed',
-                                              fontSize: 18,
-                                              color: Colors.grey),
-                                        ),
-                                        Text(
-                                          transaction['trx'],
-                                          style: const TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 12,
-                                              fontFamily: 'Roboto Condensed'),
-                                        )
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          transaction['amount'],
-                                          style: const TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 16,
-                                              fontFamily: 'Roboto Condensed'),
-                                        ),
-                                        Text(
-                                          transaction['status'],
-                                          style: const TextStyle(
-                                              color: Colors.lightGreenAccent,
-                                              fontSize: 12,
-                                              fontFamily: 'Roboto Condensed'),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Visibility(
-                                  visible: transaction ==
-                                          transactionList[
-                                              transactionList.length - 1]
-                                      ? false
-                                      : true,
-                                  child: const Divider(
-                                    color: Colors.white,
-                                    thickness: 0.1,
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Icon(
+                                        Icons.call_received_rounded,
+                                        color: Colors.lightGreenAccent,
+                                        size: 20,
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            transaction['name'],
+                                            style: const TextStyle(
+                                                fontFamily: 'Roboto Condensed',
+                                                fontSize: 18,
+                                                color: Colors.grey),
+                                          ),
+                                          Text(
+                                            transaction['trx'],
+                                            style: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 12,
+                                                fontFamily: 'Roboto Condensed'),
+                                          )
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            transaction['amount'],
+                                            style: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 16,
+                                                fontFamily: 'Roboto Condensed'),
+                                          ),
+                                          Text(
+                                            transaction['status'],
+                                            style: const TextStyle(
+                                                color: Colors.lightGreenAccent,
+                                                fontSize: 12,
+                                                fontFamily: 'Roboto Condensed'),
+                                          )
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                )
+                                ),
                               ],
                             ),
                         ],

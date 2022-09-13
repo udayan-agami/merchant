@@ -28,11 +28,11 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return Scaffold(
-        backgroundColor: const Color(0xFF050933),
+        backgroundColor: Theme.of(context).primaryColorDark,
         bottomNavigationBar: Container(
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: const Color(0xFF434B96),
+            color: Theme.of(context).primaryColorLight,
             borderRadius: BorderRadius.circular(100),
             boxShadow: [
               BoxShadow(

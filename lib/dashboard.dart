@@ -26,23 +26,23 @@ class _DashboardState extends State<Dashboard> {
           child: Column(
             children: [
               Container(
-                color: const Color(0xFF050933),
+                color: Theme.of(context).primaryColorDark,
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       backgroundImage:
                           NetworkImage('https://i.ibb.co/stQv06t/unnamed.jpg'),
-                      backgroundColor: Color(0xFF181D5A),
+                      backgroundColor: Theme.of(context).primaryColor,
                     ),
                     Container(
                       alignment: Alignment.center,
-                      color: const Color(0xFF050933),
-                      child: const Text(
+                      color: Theme.of(context).primaryColorDark,
+                      child: Text(
                         'Dashboard',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).highlightColor,
                             fontSize: 22,
                             fontFamily: 'Roboto Condensed'),
                       ),
@@ -51,7 +51,7 @@ class _DashboardState extends State<Dashboard> {
                       splashRadius: 10,
                       onPressed: () {},
                       icon: const Icon(Icons.notifications_outlined),
-                      color: Colors.white,
+                      color: Theme.of(context).highlightColor,
                     )
                   ],
                 ),
@@ -62,7 +62,7 @@ class _DashboardState extends State<Dashboard> {
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 28),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: const Color(0xFF181D5A),
+                  color: Theme.of(context).primaryColor,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,26 +70,26 @@ class _DashboardState extends State<Dashboard> {
                     const Text(' '),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Icon(
                           MdiIcons.currencyBdt,
-                          color: Colors.white,
+                          color: Theme.of(context).highlightColor,
                           size: 16,
                         ),
                         Text(
                           '5672.25',
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).highlightColor,
                               fontSize: 36,
                               fontFamily: 'Roboto Condensed'),
                         ),
                       ],
                     ),
                     Column(
-                      children: const [
+                      children: [
                         Icon(
                           Icons.trending_up_rounded,
-                          color: Colors.white,
+                          color: Theme.of(context).highlightColor,
                           size: 20,
                         ),
                         Text(
@@ -97,7 +97,7 @@ class _DashboardState extends State<Dashboard> {
                           style: TextStyle(
                               fontFamily: 'Roboto Condensed',
                               fontSize: 14,
-                              color: Colors.white),
+                              color: Theme.of(context).highlightColor),
                         )
                       ],
                     )
@@ -108,25 +108,25 @@ class _DashboardState extends State<Dashboard> {
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: const Color(0xFF181D5A),
+                  color: Theme.of(context).primaryColor,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: Column(
-                        children: const [
+                        children: [
                           Text(
                             'Pending',
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontFamily: 'Roboto Condensed',
                                 fontSize: 14),
                           ),
                           Text(
                             '4',
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontFamily: 'Roboto Condensed',
                                 fontSize: 28),
                           ),
@@ -138,7 +138,7 @@ class _DashboardState extends State<Dashboard> {
                         alignment: Alignment.center,
                         children: [
                           Container(
-                            color: const Color(0xFF050933),
+                            color: Theme.of(context).primaryColorDark,
                             width: 10,
                             height: 76,
                           ),
@@ -148,18 +148,18 @@ class _DashboardState extends State<Dashboard> {
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(28),
-                              color: const Color(0xFF050933),
+                              color: Theme.of(context).primaryColorDark,
                             ),
                             child: Container(
                               height: 36,
                               width: 36,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(23),
-                                color: const Color(0xFF181D5A),
+                                color: Theme.of(context).primaryColor,
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.add_rounded,
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                               ),
                             ),
                           )
@@ -168,18 +168,18 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     Expanded(
                       child: Column(
-                        children: const [
+                        children: [
                           Text(
                             'Paid',
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontFamily: 'Roboto Condensed',
                                 fontSize: 14),
                           ),
                           Text(
                             '41',
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontFamily: 'Roboto Condensed',
                                 fontSize: 28),
                           ),
@@ -193,7 +193,7 @@ class _DashboardState extends State<Dashboard> {
                 margin: const EdgeInsets.all(10),
                 padding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
                 decoration: BoxDecoration(
-                    color: const Color(0xFF181D5A),
+                    color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.circular(15)),
                 child: const graphData(),
               ),
@@ -212,7 +212,7 @@ class _DashboardState extends State<Dashboard> {
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
-                      color: const Color(0xFF181D5A),
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(15)),
                   child: Container(
                     padding: const EdgeInsets.all(10),

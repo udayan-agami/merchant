@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
@@ -65,14 +67,30 @@ class _BusinessState extends State<Business> {
                                     maxHeight:
                                         MediaQuery.of(context).size.height,
                                   ),
-                                  child: Column(
+                                  child: Wrap(
+                                    direction: Axis.vertical,
                                     children: [
-                                      Image.network(
-                                        'https://i.ibb.co/Hnjc3bJ/image.png',
+                                      Container(
+                                        constraints: BoxConstraints(
+                                            maxHeight: 300, maxWidth: 300),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Image.network(
+                                            'https://i.ibb.co/Hnjc3bJ/image.png',
+                                          ),
+                                        ),
                                       ),
-                                      SizedBox(
-                                        child: Icon(Icons.download),
-                                      )
+                                      TextButton(
+                                          onPressed: () {},
+                                          child: Text(
+                                            'Save image',
+                                            style: TextStyle(
+                                              fontFamily: 'Roboto Condensed',
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                            ),
+                                          ))
                                     ],
                                   ),
                                 ),
