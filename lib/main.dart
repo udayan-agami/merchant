@@ -1,3 +1,4 @@
+import 'package:agami/business.dart';
 import 'package:agami/home.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
       title: 'Agami Merchant',
       debugShowCheckedModeBanner: false,
       theme: _themeOne,
-      home: const SplashScreen(),
+      home: const Business(),
     );
   }
 }

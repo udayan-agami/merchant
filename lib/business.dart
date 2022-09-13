@@ -20,7 +20,7 @@ class _BusinessState extends State<Business> {
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 margin: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: const Color(0xFF181D5A),
@@ -48,7 +48,37 @@ class _BusinessState extends State<Business> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Center(
+                                child: Container(
+                                  margin: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    maxWidth: MediaQuery.of(context).size.width,
+                                    maxHeight:
+                                        MediaQuery.of(context).size.height,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Image.network(
+                                        'https://i.ibb.co/Hnjc3bJ/image.png',
+                                      ),
+                                      SizedBox(
+                                        child: Icon(Icons.download),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      },
                       icon: Icon(
                         Icons.qr_code_outlined,
                         color: Colors.white,
