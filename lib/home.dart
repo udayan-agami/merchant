@@ -5,6 +5,9 @@ import './history.dart';
 import './settings.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+
+var box = Hive.box('agamiMerchant');
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -21,9 +24,9 @@ class _HomeState extends State<Home> {
   );
 
   final List transactionList = [];
-  int pageIndex = 2;
-  PageController _pageController = PageController(initialPage: 2);
-
+  int pageIndex = 1;
+  PageController _pageController = PageController(initialPage: 1);
+  var selectedLanguage = box.get('language', defaultValue: 1);
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
@@ -60,28 +63,32 @@ class _HomeState extends State<Home> {
                   });
                 },
                 textStyle: const TextStyle(
-                    fontFamily: 'Roboto Condensed', color: Colors.white),
-                tabs: const [
+                    fontFamily: 'Roboto Condensed, Ador Noirrit',
+                    color: Colors.white),
+                tabs: [
                   GButton(
                     icon: Icons.featured_play_list_outlined,
-                    text: 'History',
-                    iconColor: Colors.blueGrey,
+                    text: selectedLanguage == 1 ? 'History' : 'ইতিবৃত্ত',
+                    iconColor: Theme.of(context).hintColor,
                     iconActiveColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
                   ),
                   GButton(
                     icon: Icons.space_dashboard_outlined,
-                    text: 'Dashboard',
-                    iconColor: Colors.blueGrey,
+                    text: selectedLanguage == 1 ? 'Dashboard' : 'ড্যাশবোর্ড',
+                    iconColor: Theme.of(context).hintColor,
                     iconActiveColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
                   ),
                   GButton(
                     icon: Icons.admin_panel_settings_outlined,
-                    text: 'Settings',
-                    iconColor: Colors.blueGrey,
+                    text: selectedLanguage == 1 ? 'Settings' : 'বিন্যাস',
+                    iconColor: Theme.of(context).hintColor,
                     iconActiveColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
                   ),
                 ],
               ),
@@ -95,7 +102,7 @@ class _HomeState extends State<Home> {
               pageIndex = index;
             });
           },
-          children: [History(), Dashboard(), Settings()],
+          children: const [History(), Dashboard(), Settings()],
         ));
   }
 }

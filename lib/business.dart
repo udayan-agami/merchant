@@ -2,8 +2,10 @@ import 'dart:html';
 
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+
+var box = Hive.box('agamiMerchant');
 
 class Business extends StatefulWidget {
   const Business({Key? key}) : super(key: key);
@@ -13,19 +15,20 @@ class Business extends StatefulWidget {
 }
 
 class _BusinessState extends State<Business> {
+  var selectedLanguage = box.get('language', defaultValue: 1);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF050933),
+      backgroundColor: Theme.of(context).primaryColorDark,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
                 padding: const EdgeInsets.all(20),
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF181D5A),
+                  color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Row(
@@ -37,15 +40,17 @@ class _BusinessState extends State<Business> {
                       },
                       icon: Icon(
                         Icons.undo,
-                        color: Colors.white,
+                        color: Theme.of(context).highlightColor,
                         size: 22,
                       ),
                     ),
-                    const Text(
-                      'Business Details',
+                    Text(
+                      selectedLanguage == 1
+                          ? 'Business Details'
+                          : 'ব্যবসা পরিচিতি',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Roboto Condensed',
+                        color: Theme.of(context).highlightColor,
+                        fontFamily: 'Roboto Condensed, Ador Noirrit',
                         fontSize: 22,
                       ),
                     ),
@@ -56,10 +61,10 @@ class _BusinessState extends State<Business> {
                             builder: (context) {
                               return Center(
                                 child: Container(
-                                  margin: EdgeInsets.all(10),
-                                  padding: EdgeInsets.all(10),
+                                  margin: const EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: Theme.of(context).highlightColor,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   constraints: BoxConstraints(
@@ -71,7 +76,7 @@ class _BusinessState extends State<Business> {
                                     direction: Axis.vertical,
                                     children: [
                                       Container(
-                                        constraints: BoxConstraints(
+                                        constraints: const BoxConstraints(
                                             maxHeight: 300, maxWidth: 300),
                                         child: ClipRRect(
                                           borderRadius:
@@ -84,11 +89,14 @@ class _BusinessState extends State<Business> {
                                       TextButton(
                                           onPressed: () {},
                                           child: Text(
-                                            'Save image',
+                                            selectedLanguage == 1
+                                                ? 'Save image'
+                                                : 'সংরক্ষণ',
                                             style: TextStyle(
                                               fontFamily: 'Roboto Condensed',
                                               fontSize: 15,
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .highlightColor,
                                             ),
                                           ))
                                     ],
@@ -99,7 +107,7 @@ class _BusinessState extends State<Business> {
                       },
                       icon: Icon(
                         Icons.qr_code_outlined,
-                        color: Colors.white,
+                        color: Theme.of(context).highlightColor,
                         size: 22,
                       ),
                     ),
@@ -107,9 +115,9 @@ class _BusinessState extends State<Business> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Color(0xFF181D5A),
+                  color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Padding(
@@ -118,8 +126,8 @@ class _BusinessState extends State<Business> {
                     children: [
                       Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: CircleAvatar(
                               radius: 25,
                               backgroundImage: NetworkImage(
@@ -135,8 +143,9 @@ class _BusinessState extends State<Business> {
                                   Text(
                                     'Ma enterprize and co. Ma enterprize and co. Ma enterprize and co.',
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Roboto Condensed',
+                                      color: Theme.of(context).highlightColor,
+                                      fontFamily:
+                                          'Roboto Condensed, Ador Noirrit',
                                       fontSize: 18,
                                     ),
                                     overflow: TextOverflow.ellipsis,
@@ -144,8 +153,9 @@ class _BusinessState extends State<Business> {
                                   Text(
                                     'Anam Sarkar',
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Roboto Condensed',
+                                      color: Theme.of(context).highlightColor,
+                                      fontFamily:
+                                          'Roboto Condensed, Ador Noirrit',
                                       fontSize: 14,
                                     ),
                                     overflow: TextOverflow.ellipsis,
@@ -158,12 +168,12 @@ class _BusinessState extends State<Business> {
                       ),
                       Divider(
                         thickness: 0.1,
-                        color: Colors.white,
+                        color: Theme.of(context).highlightColor,
                       ),
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: const Color(0xFF050933),
+                          color: Theme.of(context).primaryColorDark,
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -176,17 +186,20 @@ class _BusinessState extends State<Business> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Phone number',
+                                      selectedLanguage == 1
+                                          ? 'Phone number'
+                                          : 'মোবাইল নম্বর',
                                       style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: 'Roboto Condensed',
+                                        color: Theme.of(context).highlightColor,
+                                        fontFamily:
+                                            'Roboto Condensed, Ador Noirrit',
                                         fontSize: 14,
                                       ),
                                     ),
                                     Text(
                                       '01725-523652',
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: Theme.of(context).highlightColor,
                                         fontFamily: 'Roboto Condensed',
                                         fontSize: 18,
                                       ),
@@ -198,7 +211,7 @@ class _BusinessState extends State<Business> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Icon(
                                   Icons.done_rounded,
-                                  color: Colors.lightGreenAccent,
+                                  color: Theme.of(context).indicatorColor,
                                 ),
                               ),
                             ],
@@ -208,7 +221,7 @@ class _BusinessState extends State<Business> {
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: const Color(0xFF050933),
+                          color: Theme.of(context).primaryColorDark,
                         ),
                         margin:
                             EdgeInsets.symmetric(vertical: 8, horizontal: 0),
@@ -224,17 +237,22 @@ class _BusinessState extends State<Business> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Address',
+                                        selectedLanguage == 1
+                                            ? 'Address'
+                                            : 'ঠিকানা',
                                         style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Roboto Condensed',
+                                          color:
+                                              Theme.of(context).highlightColor,
+                                          fontFamily:
+                                              'Roboto Condensed, Ador Noirrit',
                                           fontSize: 14,
                                         ),
                                       ),
                                       Text(
                                         'AKS tower, Lalmonir hat, Beside choto bridege, Gazipur AKS tower, Lalmonir hat, Beside choto bridege, Gazipur',
                                         style: TextStyle(
-                                          color: Colors.white,
+                                          color:
+                                              Theme.of(context).highlightColor,
                                           fontFamily: 'Roboto Condensed',
                                           fontSize: 18,
                                         ),
@@ -251,7 +269,7 @@ class _BusinessState extends State<Business> {
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: const Color(0xFF050933),
+                          color: Theme.of(context).primaryColorDark,
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -266,17 +284,22 @@ class _BusinessState extends State<Business> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Legal documents',
+                                        selectedLanguage == 1
+                                            ? 'Legal documents'
+                                            : 'এতদ সম্পর্কীয় দলিলাদি',
                                         style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Roboto Condensed',
+                                          color:
+                                              Theme.of(context).highlightColor,
+                                          fontFamily:
+                                              'Roboto Condensed, Ador Noirrit',
                                           fontSize: 14,
                                         ),
                                       ),
                                       Text(
                                         'NID card not verified',
                                         style: TextStyle(
-                                          color: Colors.white,
+                                          color:
+                                              Theme.of(context).highlightColor,
                                           fontFamily: 'Roboto Condensed',
                                           fontSize: 18,
                                         ),
@@ -289,7 +312,7 @@ class _BusinessState extends State<Business> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Icon(
                                   Icons.done_rounded,
-                                  color: Colors.lightGreenAccent,
+                                  color: Theme.of(context).indicatorColor,
                                 ),
                               ),
                             ],

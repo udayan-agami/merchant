@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+
+var box = Hive.box('agamiMerchant');
 
 class DisplayTheme extends StatefulWidget {
   const DisplayTheme({Key? key}) : super(key: key);
@@ -9,25 +12,45 @@ class DisplayTheme extends StatefulWidget {
 
 class _DisplayThemeState extends State<DisplayTheme> {
   List themeList = [
-    {"title": "Classic", "color": 0xFFFFC100, "object": 0xFFF44336, "id": 1},
-    {"title": "Day", "color": 0xFFFFC100, "object": 0xFFF44336, "id": 2},
-    {"title": "Tinted", "color": 0xFFFFC100, "object": 0xFFF44336, "id": 3},
-    {"title": "Night", "color": 0xFFFFC100, "object": 0xFFF44336, "id": 4},
+    [
+      {"title": "Classic", "color": 0xFFFFFFFF, "object": 0xFFE6E6E6, "id": 1},
+      {"title": "Day", "color": 0xFFFFD600, "object": 0xFFCCAb00, "id": 2},
+      {"title": "Tinted", "color": 0xFF181D5A, "object": 0xFF050933, "id": 3},
+      {"title": "Night", "color": 0xFF2C3E50, "object": 0xFF233240, "id": 4},
+    ],
+    [
+      {"title": "অভিজাত", "color": 0xFFFFFFFF, "object": 0xFFE6E6E6, "id": 1},
+      {
+        "title": "রৌদ্রোজ্জ্বল",
+        "color": 0xFFFFD600,
+        "object": 0xFFCCAb00,
+        "id": 2
+      },
+      {"title": "নীলাভ", "color": 0xFF181D5A, "object": 0xFF050933, "id": 3},
+      {
+        "title": "অন্ধকারাচ্ছন্ন",
+        "color": 0xFF2C3E50,
+        "object": 0xFF233240,
+        "id": 4
+      },
+    ],
   ];
-  var selectedTheme = 1;
+
+  var selectedTheme = box.get('theme', defaultValue: 3);
+  var selectedLanguage = box.get('language', defaultValue: 1);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF050933),
+      backgroundColor: Theme.of(context).primaryColorDark,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(20),
+                margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF181D5A),
+                  color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Row(
@@ -39,23 +62,25 @@ class _DisplayThemeState extends State<DisplayTheme> {
                       },
                       icon: Icon(
                         Icons.undo,
-                        color: Colors.white,
+                        color: Theme.of(context).highlightColor,
                         size: 22,
                       ),
                     ),
-                    const Text(
-                      'Theme',
+                    Text(
+                      selectedLanguage == 1 ? 'Theme' : 'দৃশ্য',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Roboto Condensed',
+                        color: Theme.of(context).highlightColor,
+                        fontFamily: 'Roboto Condensed, Ador Noirrit',
                         fontSize: 22,
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                       icon: Icon(
                         Icons.done,
-                        color: Colors.white,
+                        color: Theme.of(context).highlightColor,
                         size: 22,
                       ),
                     ),
@@ -63,16 +88,19 @@ class _DisplayThemeState extends State<DisplayTheme> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      for (var theme in themeList)
+                      for (var theme in themeList[selectedLanguage - 1])
                         GestureDetector(
-                          onTap: () => setState(() {
-                            selectedTheme = theme['id'];
-                          }),
+                          onTap: () {
+                            setState(() {
+                              selectedTheme = theme['id'];
+                            });
+                            box.put('theme', theme['id']);
+                          },
                           child: Column(
                             children: [
                               Container(
@@ -151,7 +179,8 @@ class _DisplayThemeState extends State<DisplayTheme> {
                                                   .radio_button_checked_rounded
                                               : Icons
                                                   .radio_button_unchecked_outlined,
-                                          color: Colors.white,
+                                          color:
+                                              Theme.of(context).highlightColor,
                                         )
                                       ],
                                     )
@@ -163,8 +192,9 @@ class _DisplayThemeState extends State<DisplayTheme> {
                                 child: Text(
                                   theme['title'],
                                   style: TextStyle(
-                                    color: Colors.amber,
-                                    fontFamily: 'Roboto Condensed',
+                                    color: Theme.of(context).highlightColor,
+                                    fontFamily:
+                                        'Roboto Condensed, Ador Noirrit',
                                     fontSize: 16,
                                   ),
                                 ),

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:chart_sparkline/chart_sparkline.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:hive/hive.dart';
+
+var box = Hive.box('agamiMerchant');
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -11,14 +14,15 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  var selectedLanguage = box.get('language', defaultValue: 1);
   final List transactionList = [];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: LiquidPullToRefresh(
-        color: const Color(0xFF434B96),
+        color: Theme.of(context).splashColor,
         height: 200,
-        backgroundColor: const Color(0xFF050933),
+        backgroundColor: Theme.of(context).primaryColorDark,
         animSpeedFactor: 2,
         showChildOpacityTransition: false,
         onRefresh: _handleRefresh,
@@ -40,11 +44,11 @@ class _DashboardState extends State<Dashboard> {
                       alignment: Alignment.center,
                       color: Theme.of(context).primaryColorDark,
                       child: Text(
-                        'Dashboard',
+                        selectedLanguage == 1 ? 'Dashboard' : 'ড্যাশবোর্ড',
                         style: TextStyle(
                             color: Theme.of(context).highlightColor,
                             fontSize: 22,
-                            fontFamily: 'Roboto Condensed'),
+                            fontFamily: 'Roboto Condensed, Ador Noirrit'),
                       ),
                     ),
                     IconButton(
@@ -117,10 +121,10 @@ class _DashboardState extends State<Dashboard> {
                       child: Column(
                         children: [
                           Text(
-                            'Pending',
+                            selectedLanguage == 1 ? 'Pending' : 'প্রক্রিয়াধীন',
                             style: TextStyle(
                                 color: Theme.of(context).highlightColor,
-                                fontFamily: 'Roboto Condensed',
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
                                 fontSize: 14),
                           ),
                           Text(
@@ -170,7 +174,7 @@ class _DashboardState extends State<Dashboard> {
                       child: Column(
                         children: [
                           Text(
-                            'Paid',
+                            selectedLanguage == 1 ? 'Paid' : 'পরিশোধিত',
                             style: TextStyle(
                                 color: Theme.of(context).highlightColor,
                                 fontFamily: 'Roboto Condensed',
@@ -198,6 +202,7 @@ class _DashboardState extends State<Dashboard> {
                 child: const graphData(),
               ),
               Visibility(
+                visible: transactionList.isEmpty ? true : false,
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: SizedBox(
@@ -210,79 +215,86 @@ class _DashboardState extends State<Dashboard> {
                 visible: transactionList.isEmpty ? false : true,
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(15)),
                   child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: const Color.fromARGB(136, 5, 9, 51),
-                        borderRadius: BorderRadius.circular(12)),
+                    //padding: const EdgeInsets.all(10),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(12)),
                     child: Column(
                       children: [
                         for (var transaction in transactionList)
                           Wrap(
-                            //padding: EdgeInsets.all(8),
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Icon(
-                                    Icons.call_received_rounded,
-                                    color: Colors.lightGreenAccent,
-                                    size: 20,
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        transaction['name'],
-                                        style: const TextStyle(
-                                            fontFamily: 'Roboto Condensed',
-                                            fontSize: 18,
-                                            color: Colors.grey),
-                                      ),
-                                      Text(
-                                        transaction['trx'],
-                                        style: const TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 12,
-                                            fontFamily: 'Roboto Condensed'),
-                                      )
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        transaction['amount'],
-                                        style: const TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 16,
-                                            fontFamily: 'Roboto Condensed'),
-                                      ),
-                                      Text(
-                                        transaction['status'],
-                                        style: const TextStyle(
-                                            color: Colors.lightGreenAccent,
-                                            fontSize: 12,
-                                            fontFamily: 'Roboto Condensed'),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                              Visibility(
-                                visible: transaction ==
-                                        transactionList[
-                                            transactionList.length - 1]
-                                    ? false
-                                    : true,
-                                child: const Divider(
-                                  color: Colors.white,
-                                  thickness: 0.1,
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColorDark,
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                              )
+                                margin: EdgeInsets.only(
+                                    bottom: transaction ==
+                                            transactionList[
+                                                transactionList.length - 1]
+                                        ? 0
+                                        : 2),
+                                padding: const EdgeInsets.all(10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Icon(
+                                      Icons.call_received_rounded,
+                                      color: Theme.of(context).indicatorColor,
+                                      size: 20,
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          transaction['name'],
+                                          style: TextStyle(
+                                              fontFamily: 'Roboto Condensed',
+                                              fontSize: 18,
+                                              color:
+                                                  Theme.of(context).hintColor),
+                                        ),
+                                        Text(
+                                          transaction['trx'],
+                                          style: TextStyle(
+                                              color:
+                                                  Theme.of(context).hintColor,
+                                              fontSize: 12,
+                                              fontFamily: 'Roboto Condensed'),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          transaction['amount'],
+                                          style: TextStyle(
+                                              color:
+                                                  Theme.of(context).hintColor,
+                                              fontSize: 16,
+                                              fontFamily: 'Roboto Condensed'),
+                                        ),
+                                        Text(
+                                          transaction['status'],
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .indicatorColor,
+                                              fontSize: 12,
+                                              fontFamily: 'Roboto Condensed'),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                       ],

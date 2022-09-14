@@ -9,6 +9,9 @@ import './displayTheme.dart';
 import './withdraw.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hive/hive.dart';
+
+var box = Hive.box('agamiMerchant');
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -19,55 +22,103 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  var selectedLanguage = box.get('language', defaultValue: 1);
   List settingsList = [
-    {
-      "title": "Business Details",
-      "subtitle": "Shop name and location",
-      "icon": 0xf3ef,
-      "page": 1
-    },
-    {
-      "title": "Language",
-      "subtitle": "Change language",
-      "icon": 0xf45e,
-      "page": 2
-    },
-    {
-      "title": "Theme",
-      "subtitle": "Dark and light theme",
-      "icon": 0xef9f,
-      "page": 3
-    },
-    {
-      "title": "Withdraw",
-      "subtitle": "Select withdrawal method",
-      "icon": 0xee33,
-      "page": 4
-    },
-    {
-      "title": "Devices",
-      "subtitle": "Connect web devices",
-      "icon": 0xf6a8,
-      "page": 5
-    },
-    {
-      "title": "Help and Support",
-      "subtitle": "Discuss about problems and bugs",
-      "icon": 0xf01f5,
-      "page": 6
-    },
-    {
-      "title": "About Agami Merchant",
-      "subtitle": "Terms and conditions",
-      "icon": 0xf0376,
-      "page": 7
-    },
-    {
-      "title": "Logout",
-      "subtitle": "Keep account secure",
-      "icon": 0xf88b,
-      "page": 8
-    },
+    [
+      {
+        "title": "Business Details",
+        "subtitle": "Shop name and location",
+        "icon": 0xf3ef,
+        "page": 1
+      },
+      {
+        "title": "Language",
+        "subtitle": "Change language",
+        "icon": 0xf45e,
+        "page": 2
+      },
+      {
+        "title": "Theme",
+        "subtitle": "Dark and light theme",
+        "icon": 0xef9f,
+        "page": 3
+      },
+      {
+        "title": "Withdraw",
+        "subtitle": "Select withdrawal method",
+        "icon": 0xee33,
+        "page": 4
+      },
+      {
+        "title": "Devices",
+        "subtitle": "Connect web devices",
+        "icon": 0xf6a8,
+        "page": 5
+      },
+      {
+        "title": "Help and Support",
+        "subtitle": "Discuss about problems and bugs",
+        "icon": 0xf01f5,
+        "page": 6
+      },
+      {
+        "title": "About Agami Merchant",
+        "subtitle": "Terms and conditions",
+        "icon": 0xf0376,
+        "page": 7
+      },
+      {
+        "title": "Logout",
+        "subtitle": "Keep account secure",
+        "icon": 0xf88b,
+        "page": 8
+      }
+    ],
+    [
+      {
+        "title": "ব্যবসা পরিচিতি",
+        "subtitle": "বিপণী বিতানের নাম ও ঠিকানা",
+        "icon": 0xf3ef,
+        "page": 1
+      },
+      {"title": "ভাষা", "subtitle": "ভাষা পরিবর্তন", "icon": 0xf45e, "page": 2},
+      {
+        "title": "দৃশ্য",
+        "subtitle": "দৃশ্যমান রঙ পরিবর্তন",
+        "icon": 0xef9f,
+        "page": 3
+      },
+      {
+        "title": "উত্তোলন",
+        "subtitle": "উত্তোলন এর মাধ্যম নির্ধারণ",
+        "icon": 0xee33,
+        "page": 4
+      },
+      {
+        "title": "ডিভাইস",
+        "subtitle": "অন্যান্য ডিভাইস সংযোগ",
+        "icon": 0xf6a8,
+        "page": 5
+      },
+      {
+        "title": "সাহায্য সহযোগিতা",
+        "subtitle": "সমস্যা ও ত্রুটি নিয়ে আলোচনা",
+        "icon": 0xf01f5,
+        "page": 6
+      },
+      {
+        "title": "আগামি মার্চেন্ট সমন্ধীয়",
+        "subtitle": "নিয়ম ও শর্তসমূহ",
+        "icon": 0xf0376,
+        "page": 7
+      },
+      {
+        "title": "লগ-আউট",
+        "subtitle": "একাউন্ট সুরক্ষিত রাখুন",
+        "icon": 0xf88b,
+        "page": 8
+      }
+    ],
   ];
 
   @override
@@ -83,10 +134,10 @@ class _SettingsState extends State<Settings> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Settings',
+                    selectedLanguage == 1 ? 'Settings' : 'বিন্যাস',
                     style: TextStyle(
                       color: Theme.of(context).highlightColor,
-                      fontFamily: 'Roboto Condensed',
+                      fontFamily: 'Roboto Condensed, Ador Noirrit',
                       fontSize: 22,
                     ),
                   ),
@@ -129,7 +180,7 @@ class _SettingsState extends State<Settings> {
               ),
               child: Column(
                 children: [
-                  for (var options in settingsList)
+                  for (var options in settingsList[selectedLanguage - 1])
                     InkWell(
                       onTap: () => _handleNavigation(options['page']),
                       child: Wrap(
@@ -159,7 +210,8 @@ class _SettingsState extends State<Settings> {
                                           style: TextStyle(
                                             color: Theme.of(context)
                                                 .highlightColor,
-                                            fontFamily: 'Roboto Condensed',
+                                            fontFamily:
+                                                'Roboto Condensed, Ador Noirrit',
                                             fontSize: 18,
                                           ),
                                         ),
@@ -167,7 +219,8 @@ class _SettingsState extends State<Settings> {
                                           options['subtitle'],
                                           style: TextStyle(
                                             color: Theme.of(context).hintColor,
-                                            fontFamily: 'Roboto Condensed',
+                                            fontFamily:
+                                                'Roboto Condensed , Ador Noirrit',
                                             fontSize: 14,
                                           ),
                                         ),
@@ -177,10 +230,13 @@ class _SettingsState extends State<Settings> {
                             ),
                           ),
                           Visibility(
-                            visible:
-                                options == settingsList[settingsList.length - 1]
-                                    ? false
-                                    : true,
+                            visible: options ==
+                                    settingsList[selectedLanguage - 1][
+                                        settingsList[selectedLanguage - 1]
+                                                .length -
+                                            1]
+                                ? false
+                                : true,
                             child: Divider(
                               color: Theme.of(context).primaryColorDark,
                               thickness: 1,

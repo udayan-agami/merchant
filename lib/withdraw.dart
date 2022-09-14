@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:hive/hive.dart';
+
+var box = Hive.box('agamiMerchant');
 
 class Withdraw extends StatefulWidget {
   const Withdraw({Key? key}) : super(key: key);
@@ -9,10 +12,11 @@ class Withdraw extends StatefulWidget {
 }
 
 class _WithdrawState extends State<Withdraw> {
+  var selectedLanguage = box.get('language', defaultValue: 1);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF050933),
+      backgroundColor: Theme.of(context).primaryColorDark,
       body: SafeArea(
         child: Column(
           children: [
@@ -20,7 +24,7 @@ class _WithdrawState extends State<Withdraw> {
               padding: EdgeInsets.all(20),
               margin: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: const Color(0xFF181D5A),
+                color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Row(
@@ -32,15 +36,15 @@ class _WithdrawState extends State<Withdraw> {
                     },
                     icon: Icon(
                       Icons.undo,
-                      color: Colors.white,
+                      color: Theme.of(context).highlightColor,
                       size: 22,
                     ),
                   ),
-                  const Text(
-                    'Withdraw',
+                  Text(
+                    selectedLanguage == 1 ? 'Withdraw' : 'উত্তোলন',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Roboto Condensed',
+                      color: Theme.of(context).highlightColor,
+                      fontFamily: 'Roboto Condensed, Ador Noirrit',
                       fontSize: 22,
                     ),
                   ),
@@ -48,7 +52,7 @@ class _WithdrawState extends State<Withdraw> {
                     onPressed: () {},
                     icon: Icon(
                       Icons.done,
-                      color: Colors.white,
+                      color: Theme.of(context).highlightColor,
                       size: 22,
                     ),
                   ),
@@ -60,10 +64,12 @@ class _WithdrawState extends State<Withdraw> {
               child: Column(
                 children: [
                   Text(
-                    'Avaible withdrawal',
+                    selectedLanguage == 1
+                        ? 'Avaible withdrawal'
+                        : 'উত্তোলনযোগ্য',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Roboto Condensed',
+                      color: Theme.of(context).highlightColor,
+                      fontFamily: 'Roboto Condensed, Ador Noirrit',
                       fontSize: 14,
                     ),
                   ),
@@ -73,13 +79,13 @@ class _WithdrawState extends State<Withdraw> {
                     children: [
                       Icon(
                         MdiIcons.currencyBdt,
-                        color: Colors.white,
+                        color: Theme.of(context).highlightColor,
                         size: 33,
                       ),
                       Text(
                         '652196',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Theme.of(context).highlightColor,
                           fontFamily: 'Roboto Condensed',
                           fontSize: 32,
                         ),
@@ -91,32 +97,34 @@ class _WithdrawState extends State<Withdraw> {
             ),
             Container(
               decoration: BoxDecoration(
-                color: const Color(0xFF181D5A),
+                color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.circular(10),
               ),
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: TextField(
                 decoration: InputDecoration(
                   helperStyle: TextStyle(
-                    color: const Color(0xFF434B96),
+                    color: Theme.of(context).primaryColorLight,
                   ),
-                  hintText: 'Amount',
+                  hintText: selectedLanguage == 1 ? 'Amount' : 'পরিমাণ',
                   hintStyle: TextStyle(
-                    color: Colors.blueGrey,
+                    color: Theme.of(context).hintColor,
                     fontFamily: 'Roboto Condensed',
                     fontSize: 32,
                   ),
-                  labelText: 'Withdraw amount',
+                  labelText: selectedLanguage == 1
+                      ? 'Withdraw amount'
+                      : 'উত্তোলনের পরিমাণ',
                   labelStyle: TextStyle(
                     fontFamily: 'Roboto Condensed',
                     fontSize: 16,
-                    color: Colors.white,
+                    color: Theme.of(context).highlightColor,
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
-                      color: const Color(0xFF434B96),
+                      color: Theme.of(context).primaryColorDark,
                       width: 3,
                       style: BorderStyle.solid,
                     ),
@@ -124,27 +132,28 @@ class _WithdrawState extends State<Withdraw> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(
-                      color: Colors.white,
+                      color: Theme.of(context).highlightColor,
                       width: 3,
                       style: BorderStyle.solid,
                     ),
                   ),
                   prefixIcon: Icon(
                     MdiIcons.currencyBdt,
-                    color: Colors.white,
+                    color: Theme.of(context).highlightColor,
                   ),
                   suffixIcon: IconButton(
-                    color: Colors.white,
+                    color: Theme.of(context).highlightColor,
                     onPressed: () {},
                     icon: Icon(
                       Icons.next_plan_outlined,
-                      color: Colors.white,
+                      color: Theme.of(context).highlightColor,
                     ),
                     iconSize: 30,
                   ),
                 ),
+                cursorColor: Theme.of(context).highlightColor,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).highlightColor,
                   fontSize: 32,
                   fontFamily: 'Roboto Condensed',
                 ),

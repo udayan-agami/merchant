@@ -9,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 var box = Hive.box('agamiMerchant');
-var token1 = box.get('token1');
 
 class Pin extends StatefulWidget {
   const Pin({Key? key}) : super(key: key);

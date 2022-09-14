@@ -1,6 +1,11 @@
 import 'dart:ui';
 
+import 'package:agami/home.dart';
+import 'package:agami/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+
+var box = Hive.box('agamiMerchant');
 
 class Language extends StatefulWidget {
   const Language({Key? key}) : super(key: key);
@@ -10,11 +15,11 @@ class Language extends StatefulWidget {
 }
 
 class _LanguageState extends State<Language> {
-  int language = 1;
+  var language = box.get('language', defaultValue: 1);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF050933),
+      backgroundColor: Theme.of(context).primaryColorDark,
       body: SafeArea(
         child: Column(
           children: [
@@ -22,7 +27,7 @@ class _LanguageState extends State<Language> {
               padding: EdgeInsets.all(20),
               margin: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: const Color(0xFF181D5A),
+                color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Row(
@@ -30,27 +35,39 @@ class _LanguageState extends State<Language> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Home(),
+                        ),
+                      );
                     },
                     icon: Icon(
                       Icons.undo,
-                      color: Colors.white,
+                      color: Theme.of(context).highlightColor,
                       size: 22,
                     ),
                   ),
-                  const Text(
-                    'Language Settings',
+                  Text(
+                    language == 1 ? 'Language Settings' : 'ভাষা সম্পাদনা',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Roboto Condensed',
+                      color: Theme.of(context).highlightColor,
+                      fontFamily: 'Roboto Condensed, Ador Noirrit',
                       fontSize: 22,
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Home(),
+                        ),
+                      );
+                    },
                     icon: Icon(
                       Icons.done,
-                      color: Colors.white,
+                      color: Theme.of(context).highlightColor,
                       size: 22,
                     ),
                   ),
@@ -59,6 +76,7 @@ class _LanguageState extends State<Language> {
             ),
             GestureDetector(
               onTap: () {
+                box.put('language', 2);
                 setState(() {
                   language = 2;
                 });
@@ -66,8 +84,8 @@ class _LanguageState extends State<Language> {
               child: Container(
                 decoration: BoxDecoration(
                   color: language == 2
-                      ? const Color(0xFF434B96)
-                      : const Color(0xFF181D5A),
+                      ? Theme.of(context).primaryColorLight
+                      : Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
                 ),
                 padding: EdgeInsets.all(10),
@@ -80,7 +98,7 @@ class _LanguageState extends State<Language> {
                         language == 2
                             ? Icons.task_alt_rounded
                             : Icons.radio_button_unchecked_outlined,
-                        color: Colors.white,
+                        color: Theme.of(context).highlightColor,
                         size: 24,
                       ),
                     ),
@@ -89,7 +107,7 @@ class _LanguageState extends State<Language> {
                       child: Text(
                         'বাংলা',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).highlightColor,
                             fontSize: 18,
                             fontFamily: 'Roboto Condensed, Ador Noirrit'),
                       ),
@@ -100,6 +118,7 @@ class _LanguageState extends State<Language> {
             ),
             GestureDetector(
               onTap: () {
+                box.put('language', 1);
                 setState(() {
                   language = 1;
                 });
@@ -107,8 +126,8 @@ class _LanguageState extends State<Language> {
               child: Container(
                 decoration: BoxDecoration(
                   color: language == 1
-                      ? const Color(0xFF434B96)
-                      : const Color(0xFF181D5A),
+                      ? Theme.of(context).primaryColorLight
+                      : Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.vertical(
                     bottom: Radius.circular(15),
                   ),
@@ -123,7 +142,7 @@ class _LanguageState extends State<Language> {
                         language == 1
                             ? Icons.task_alt_rounded
                             : Icons.radio_button_unchecked_outlined,
-                        color: Colors.white,
+                        color: Theme.of(context).highlightColor,
                         size: 24,
                       ),
                     ),
@@ -132,7 +151,7 @@ class _LanguageState extends State<Language> {
                       child: Text(
                         'English',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).highlightColor,
                             fontSize: 18,
                             fontFamily: 'Roboto Condensed'),
                       ),
