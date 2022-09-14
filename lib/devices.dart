@@ -163,18 +163,15 @@ class _DevicesState extends State<Devices> {
                         Wrap(
                           children: [
                             GestureDetector(
-                              onTap: (() => showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Center(
-                                      child: Container(
-                                        padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Wrap(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        backgroundColor:
+                                            Theme.of(context).primaryColor,
+                                        content: Wrap(
                                           direction: Axis.vertical,
                                           children: [
                                             Text(
@@ -186,20 +183,62 @@ class _DevicesState extends State<Devices> {
                                                     .highlightColor,
                                               ),
                                             ),
-                                            Text(
-                                              device['time'],
-                                              style: TextStyle(
-                                                fontFamily: 'Roboto Condensed',
-                                                fontSize: 12,
-                                                color:
-                                                    Theme.of(context).hintColor,
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                vertical: 5,
                                               ),
+                                              child: Text(
+                                                device['time'],
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      'Roboto Condensed',
+                                                  fontSize: 12,
+                                                  color: Theme.of(context)
+                                                      .hintColor,
+                                                ),
+                                              ),
+                                            ),
+                                            Divider(
+                                              thickness: 1,
+                                              color: Colors.transparent,
+                                            ),
+                                            Wrap(
+                                              direction: Axis.horizontal,
+                                              alignment: WrapAlignment.end,
+                                              children: [
+                                                OutlinedButton(
+                                                  onPressed: () {
+                                                    _handleRefresh(
+                                                        'logout', device['id']);
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  style:
+                                                      OutlinedButton.styleFrom(
+                                                    side: BorderSide(
+                                                      width: 1,
+                                                      color: Theme.of(context)
+                                                          .hintColor,
+                                                    ),
+                                                  ),
+                                                  child: Text(
+                                                    'Logout',
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          'Roboto Condensed, Ador Noirrit',
+                                                      fontSize: 14,
+                                                      color: Theme.of(context)
+                                                          .highlightColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    );
-                                  })),
+                                      );
+                                    });
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.all(10),
                                 child: Row(
