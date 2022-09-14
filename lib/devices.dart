@@ -163,8 +163,43 @@ class _DevicesState extends State<Devices> {
                         Wrap(
                           children: [
                             GestureDetector(
-                              onTap: (() =>
-                                  _handleRefresh('deviceId', device['id'])),
+                              onTap: (() => showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Center(
+                                      child: Container(
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Wrap(
+                                          direction: Axis.vertical,
+                                          children: [
+                                            Text(
+                                              device['device'],
+                                              style: TextStyle(
+                                                fontFamily: 'Roboto Condensed',
+                                                fontSize: 16,
+                                                color: Theme.of(context)
+                                                    .highlightColor,
+                                              ),
+                                            ),
+                                            Text(
+                                              device['time'],
+                                              style: TextStyle(
+                                                fontFamily: 'Roboto Condensed',
+                                                fontSize: 12,
+                                                color:
+                                                    Theme.of(context).hintColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  })),
                               child: Padding(
                                 padding: const EdgeInsets.all(10),
                                 child: Row(
