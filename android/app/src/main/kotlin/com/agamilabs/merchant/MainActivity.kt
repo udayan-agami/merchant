@@ -1,4 +1,4 @@
-package com.example.agami
+package com.agamilabs.amardokan
 
 import io.flutter.embedding.android.FlutterActivity
 

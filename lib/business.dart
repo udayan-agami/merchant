@@ -1,9 +1,8 @@
-import 'dart:html';
-
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:file_picker/file_picker.dart';
 
 var box = Hive.box('agamiMerchant');
 
@@ -16,6 +15,9 @@ class Business extends StatefulWidget {
 
 class _BusinessState extends State<Business> {
   var selectedLanguage = box.get('language', defaultValue: 1);
+  List businessDetails = [
+    {"address": "", "document": "pending"}
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,50 +220,52 @@ class _BusinessState extends State<Business> {
                           ),
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Theme.of(context).primaryColorDark,
-                        ),
-                        margin:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Flexible(
-                                child: Container(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        selectedLanguage == 1
-                                            ? 'Address'
-                                            : 'ঠিকানা',
-                                        style: TextStyle(
-                                          color:
-                                              Theme.of(context).highlightColor,
-                                          fontFamily:
-                                              'Roboto Condensed, Ador Noirrit',
-                                          fontSize: 14,
+                      Visibility(
+                        visible: businessDetails[0]['address'].length > 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                          margin: const EdgeInsets.only(top: 8),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          selectedLanguage == 1
+                                              ? 'Address'
+                                              : 'ঠিকানা',
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .highlightColor,
+                                            fontFamily:
+                                                'Roboto Condensed, Ador Noirrit',
+                                            fontSize: 14,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        'AKS tower, Lalmonir hat, Beside choto bridege, Gazipur AKS tower, Lalmonir hat, Beside choto bridege, Gazipur',
-                                        style: TextStyle(
-                                          color:
-                                              Theme.of(context).highlightColor,
-                                          fontFamily: 'Roboto Condensed',
-                                          fontSize: 18,
+                                        Text(
+                                          'AKS tower, Lalmonir hat, Beside choto bridege, Gazipur AKS tower, Lalmonir hat, Beside choto bridege, Gazipur',
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .highlightColor,
+                                            fontFamily: 'Roboto Condensed',
+                                            fontSize: 18,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -271,6 +275,7 @@ class _BusinessState extends State<Business> {
                           borderRadius: BorderRadius.circular(12),
                           color: Theme.of(context).primaryColorDark,
                         ),
+                        margin: const EdgeInsets.only(top: 8),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
@@ -296,7 +301,22 @@ class _BusinessState extends State<Business> {
                                         ),
                                       ),
                                       Text(
-                                        'NID card not verified',
+                                        selectedLanguage == 1 &&
+                                                businessDetails[0]
+                                                        ['document'] ==
+                                                    'verified'
+                                            ? 'Trade license verified'
+                                            : selectedLanguage == 1 &&
+                                                    businessDetails[0]
+                                                            ['document'] !=
+                                                        'verified'
+                                                ? 'Trade license not verified'
+                                                : selectedLanguage == 2 &&
+                                                        businessDetails[0]
+                                                                ['document'] ==
+                                                            'verified'
+                                                    ? 'ট্রেড লাইসেন্স প্রতিপাদিত'
+                                                    : 'ট্রেড লাইসেন্স প্রতিপাদিত হয়নি',
                                         style: TextStyle(
                                           color:
                                               Theme.of(context).highlightColor,
@@ -308,12 +328,31 @@ class _BusinessState extends State<Business> {
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.done_rounded,
-                                  color: Theme.of(context).indicatorColor,
-                                ),
+                              Row(
+                                children: [
+                                  Visibility(
+                                    visible: businessDetails[0]['document'] !=
+                                        'verified',
+                                    child: IconButton(
+                                      onPressed: _pickFile,
+                                      icon: Icon(
+                                        Icons.cloud_upload_outlined,
+                                        color: Theme.of(context).highlightColor,
+                                      ),
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: businessDetails[0]["document"] ==
+                                        'verified',
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Icon(
+                                        Icons.done_rounded,
+                                        color: Theme.of(context).indicatorColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -328,5 +367,15 @@ class _BusinessState extends State<Business> {
         ),
       ),
     );
+  }
+
+  void _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      print(result);
+    } else {
+      // User canceled the picker
+    }
   }
 }

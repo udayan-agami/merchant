@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "75571691617",
+    "firebase_url": "https://amardokan-5e0da.firebaseio.com",
+    "project_id": "amardokan-5e0da",
+    "storage_bucket": "amardokan-5e0da.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75571691617:android:a7c4d65bef67420bb02a20",
+        "android_client_info": {
+          "package_name": "com.agamilabs.amardokan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "75571691617-1659rvtcnqu599hnbod1dbhkg1b9i68m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.agamilabs.amardokan",
+            "certificate_hash": "125e804c3c3b2f375488fafeba59d3daaf91fdb8"
+          }
+        },
+        {
+          "client_id": "75571691617-ga84anrfqie1hr6annq1t52ra7onqtbk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATdUyPRJ8z5r1Lcvy2rn2l6S3XqLZ2rbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "75571691617-ga84anrfqie1hr6annq1t52ra7onqtbk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
