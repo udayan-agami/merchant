@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:agami/Splashscreen.dart';
 import 'package:agami/pin.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -311,15 +312,14 @@ class _DevicesState extends State<Devices> {
 
   Future<void> _handleRefresh(String action, String? deviceId) async {
     final user = FirebaseAuth.instance.currentUser;
-    //also add user != null && token != null
-    if (1 == 1) {
+
+    if (user != null && token != null) {
       var url =
           'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/devices?token=$token';
       final uri = Uri.parse(url);
       final response = await http.get(uri);
       final body = response.body;
       final json = jsonDecode(body);
-      print(json);
       if (json['token'] != null) {
         box.put('token', json['token']);
         setState(() {
@@ -333,6 +333,13 @@ class _DevicesState extends State<Devices> {
           ),
         );
       }
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (ctx) => const SplashScreen(),
+        ),
+      );
     }
   }
 }

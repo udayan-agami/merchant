@@ -1,6 +1,8 @@
 //import 'dart:html';
 //import 'dart:js';
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import './language.dart';
 import './devices.dart';
@@ -10,6 +12,8 @@ import './withdraw.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive/hive.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 var box = Hive.box('agamiMerchant');
 
@@ -21,6 +25,7 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  File? imageFile;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   var selectedLanguage = box.get('language', defaultValue: 1);
   List settingsList = [
@@ -161,7 +166,7 @@ class _SettingsState extends State<Settings> {
                 CircleAvatar(
                   backgroundColor: Theme.of(context).primaryColor,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: _attachImage,
                     splashRadius: 20,
                     icon: Icon(
                       Icons.edit,
@@ -317,5 +322,38 @@ class _SettingsState extends State<Settings> {
 
   Future<void> _signOut() async {
     await _auth.signOut();
+  }
+
+  void _attachImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? pickedImage =
+        await _picker.pickImage(source: ImageSource.gallery);
+    imageFile = pickedImage != null ? File(pickedImage.path) : null;
+    if (imageFile != null) {
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: imageFile!.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Cropper',
+              toolbarColor: Colors.deepOrange,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: 'Cropper',
+          ),
+          WebUiSettings(
+            context: context,
+          ),
+        ],
+      );
+    }
   }
 }

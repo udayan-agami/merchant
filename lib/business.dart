@@ -1,10 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 var box = Hive.box('agamiMerchant');
+var storage = FirebaseStorage.instance;
+FirebaseAuth auth = FirebaseAuth.instance;
 
 class Business extends StatefulWidget {
   const Business({Key? key}) : super(key: key);
@@ -57,55 +64,23 @@ class _BusinessState extends State<Business> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        var storageRef = storage.ref();
+                        final uid = FirebaseAuth.instance.currentUser!.uid;
+                        final imageUrl = await storageRef
+                            .child("banner")
+                            .child("banner-$uid.jpg")
+                            .getDownloadURL();
+                        print(imageUrl);
                         showDialog(
-                            context: context,
-                            builder: (context) {
-                              return Center(
-                                child: Container(
-                                  margin: const EdgeInsets.all(10),
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).highlightColor,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  constraints: BoxConstraints(
-                                    maxWidth: MediaQuery.of(context).size.width,
-                                    maxHeight:
-                                        MediaQuery.of(context).size.height,
-                                  ),
-                                  child: Wrap(
-                                    direction: Axis.vertical,
-                                    children: [
-                                      Container(
-                                        constraints: const BoxConstraints(
-                                            maxHeight: 300, maxWidth: 300),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.network(
-                                            'https://i.ibb.co/Hnjc3bJ/image.png',
-                                          ),
-                                        ),
-                                      ),
-                                      TextButton(
-                                          onPressed: () {},
-                                          child: Text(
-                                            selectedLanguage == 1
-                                                ? 'Save image'
-                                                : 'সংরক্ষণ',
-                                            style: TextStyle(
-                                              fontFamily: 'Roboto Condensed',
-                                              fontSize: 15,
-                                              color: Theme.of(context)
-                                                  .highlightColor,
-                                            ),
-                                          ))
-                                    ],
-                                  ),
-                                ),
-                              );
-                            });
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              content: Image.network(imageUrl),
+                            );
+                          },
+                        );
                       },
                       icon: Icon(
                         Icons.qr_code_outlined,
@@ -370,12 +345,23 @@ class _BusinessState extends State<Business> {
   }
 
   void _pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'pdf', 'doc', 'png'],
+        allowMultiple: false);
 
-    if (result != null) {
-      print(result);
-    } else {
-      // User canceled the picker
+    if (result != null && result.files.isNotEmpty) {
+      List single = result.files;
+      final fileBytes = single[0].bytes;
+      final fileExt = single[0].extension;
+      final phone = FirebaseAuth.instance.currentUser!.phoneNumber;
+      final parsedPhone = phone!.split('+')[1];
+      final fileName = 'doc-$parsedPhone.$fileExt';
+
+      // upload file
+      await FirebaseStorage.instance
+          .ref('documents/$fileName')
+          .putData(fileBytes);
     }
   }
 }
