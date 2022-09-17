@@ -3,6 +3,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:chart_sparkline/chart_sparkline.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:hive/hive.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 var box = Hive.box('agamiMerchant');
 
@@ -16,6 +18,8 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   var selectedLanguage = box.get('language', defaultValue: 1);
   final List transactionList = [];
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String? avatar = FirebaseAuth.instance.currentUser!.photoURL;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -37,7 +41,8 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                     CircleAvatar(
                       backgroundImage:
-                          NetworkImage('https://i.ibb.co/stQv06t/unnamed.jpg'),
+                          const AssetImage('assets/default-photo.png'),
+                      foregroundImage: NetworkImage('$avatar'),
                       backgroundColor: Theme.of(context).primaryColor,
                     ),
                     Container(
@@ -53,8 +58,14 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     IconButton(
                       splashRadius: 10,
-                      onPressed: () {},
-                      icon: const Icon(Icons.notifications_outlined),
+                      onPressed: () {
+                        if (box.get('theme') == 1 || box.get('theme') == 2) {
+                          box.put('theme', 3);
+                        } else {
+                          box.put('theme', 1);
+                        }
+                      },
+                      icon: const Icon(Icons.lightbulb_outline_rounded),
                       color: Theme.of(context).highlightColor,
                     )
                   ],
@@ -374,9 +385,10 @@ class _graphDataState extends State<graphData> {
               Text(
                 '24',
                 style: TextStyle(
-                    color: Colors.grey,
-                    fontFamily: 'Roboto Condensed',
-                    fontSize: 12,),
+                  color: Colors.grey,
+                  fontFamily: 'Roboto Condensed',
+                  fontSize: 12,
+                ),
               ),
               Text(
                 '25',

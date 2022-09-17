@@ -19,6 +19,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 var box = Hive.box('agamiMerchant');
+
 var storage = FirebaseStorage.instance;
 
 class Settings extends StatefulWidget {
@@ -30,8 +31,8 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   XFile? _pickedFile;
-  File? _croppedFile;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  String? avatar = FirebaseAuth.instance.currentUser!.photoURL;
   var selectedLanguage = box.get('language', defaultValue: 1);
   List settingsList = [
     [
@@ -152,8 +153,14 @@ class _SettingsState extends State<Settings> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.notifications_outlined),
+                    onPressed: () {
+                      if (box.get('theme') == 1 || box.get('theme') == 2) {
+                        box.put('theme', 3);
+                      } else {
+                        box.put('theme', 1);
+                      }
+                    },
+                    icon: const Icon(Icons.lightbulb_outline_rounded),
                     color: Theme.of(context).highlightColor,
                   )
                 ],
@@ -164,8 +171,8 @@ class _SettingsState extends State<Settings> {
               children: [
                 CircleAvatar(
                   radius: 80,
-                  backgroundImage:
-                      NetworkImage('https://i.ibb.co/stQv06t/unnamed.jpg'),
+                  backgroundImage: const AssetImage('assets/default-photo.png'),
+                  foregroundImage: NetworkImage('$avatar'),
                   backgroundColor: Theme.of(context).primaryColor,
                 ),
                 CircleAvatar(
@@ -351,7 +358,7 @@ class _SettingsState extends State<Settings> {
           toolbarColor: Theme.of(context).primaryColor,
           toolbarWidgetColor: Theme.of(context).highlightColor,
           initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false,
+          lockAspectRatio: true,
         ),
         IOSUiSettings(
           title: 'Resize image',
@@ -363,17 +370,21 @@ class _SettingsState extends State<Settings> {
     );
     if (croppedFile != null) {
       final File imageFile = File(croppedFile.path);
-      setState(() {
-        _croppedFile = imageFile;
-      });
+      setState(() {});
       // upload file
       final phone = FirebaseAuth.instance.currentUser!.phoneNumber;
       final parsedPhone = phone!.split('+')[1];
       final fileName = 'avatar-$parsedPhone.jpg';
-      print(_croppedFile?.path);
       await FirebaseStorage.instance
           .ref('avatar/$fileName')
-          .putFile(File(imageFile.path));
+          .putFile(File(imageFile.path))
+          .then((snapshot) async {
+        var photoUrl = await snapshot.ref.getDownloadURL();
+        await _auth.currentUser!.updatePhotoURL(photoUrl);
+        setState(() {
+          avatar = _auth.currentUser!.photoURL;
+        });
+      });
     }
   }
 }

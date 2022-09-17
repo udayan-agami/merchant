@@ -13,10 +13,9 @@ import 'package:hive_listener/hive_listener.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (TargetPlatform.android == defaultTargetPlatform ||
-      TargetPlatform.iOS == defaultTargetPlatform) {
+  if (!kIsWeb) {
     await Firebase.initializeApp();
-  } else if (kIsWeb) {
+  } else {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
           apiKey: "AIzaSyATdUyPRJ8z5r1Lcvy2rn2l6S3XqLZ2rbo",
@@ -28,8 +27,6 @@ void main() async {
           appId: "1:75571691617:web:5306f011659d7d4ab02a20",
           measurementId: "G-G1Y3RD49YF"),
     );
-  } else {
-    print('e');
   }
 
   await Hive.initFlutter();

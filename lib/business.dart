@@ -22,6 +22,7 @@ class Business extends StatefulWidget {
 
 class _BusinessState extends State<Business> {
   var selectedLanguage = box.get('language', defaultValue: 1);
+  String? avatar = FirebaseAuth.instance.currentUser!.photoURL;
   List businessDetails = [
     {"address": "", "document": "pending"}
   ];
@@ -105,12 +106,14 @@ class _BusinessState extends State<Business> {
                     children: [
                       Row(
                         children: [
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.all(8.0),
                             child: CircleAvatar(
                               radius: 25,
-                              backgroundImage: NetworkImage(
-                                  'https://i.ibb.co/stQv06t/unnamed.jpg'),
+                              backgroundImage:
+                                  const AssetImage('assets/default-photo.png'),
+                              backgroundColor: Theme.of(context).primaryColor,
+                              foregroundImage: NetworkImage('$avatar'),
                             ),
                           ),
                           Flexible(

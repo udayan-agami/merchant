@@ -188,7 +188,7 @@ class _DisplayThemeState extends State<DisplayTheme> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.all(4),
+                                padding: const EdgeInsets.all(4),
                                 child: Text(
                                   theme['title'],
                                   style: TextStyle(

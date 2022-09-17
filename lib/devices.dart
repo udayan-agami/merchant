@@ -8,6 +8,7 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 var box = Hive.box('agamiMerchant');
 
@@ -22,6 +23,7 @@ class _DevicesState extends State<Devices> {
   var selectedLanguage = box.get('language', defaultValue: 1);
   var token = box.get('token', defaultValue: null);
   List deviceList = [];
+  String _scanCodeResult = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,7 +114,7 @@ class _DevicesState extends State<Devices> {
                         color: const Color.fromARGB(255, 34, 34, 34),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: _scanForDevice,
                         color: Colors.white,
                         iconSize: 32,
                         icon: const Icon(
@@ -341,5 +343,11 @@ class _DevicesState extends State<Devices> {
         ),
       );
     }
+  }
+
+  void _scanForDevice() async {
+    var barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+        '#000000', 'Cancel', false, ScanMode.QR);
+    print(barcodeScanRes);
   }
 }
