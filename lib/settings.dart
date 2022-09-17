@@ -1,6 +1,7 @@
 //import 'dart:html';
 //import 'dart:js';
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -15,8 +16,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:hive/hive.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 var box = Hive.box('agamiMerchant');
+var storage = FirebaseStorage.instance;
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -27,7 +30,7 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   XFile? _pickedFile;
-  CroppedFile? _croppedFile;
+  File? _croppedFile;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   var selectedLanguage = box.get('language', defaultValue: 1);
   List settingsList = [
@@ -327,8 +330,8 @@ class _SettingsState extends State<Settings> {
   }
 
   void _attachImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final pickedImage = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
       _pickedFile = pickedImage;
     });
@@ -338,22 +341,20 @@ class _SettingsState extends State<Settings> {
   _cropImage() async {
     final croppedFile = await ImageCropper().cropImage(
       sourcePath: _pickedFile!.path,
+      compressFormat: ImageCompressFormat.jpg,
       aspectRatioPresets: [
         CropAspectRatioPreset.square,
-        CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
       ],
       uiSettings: [
         AndroidUiSettings(
-            toolbarTitle: 'Cropper',
-            toolbarColor: Colors.deepOrange,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
+          toolbarTitle: 'Resize image',
+          toolbarColor: Theme.of(context).primaryColor,
+          toolbarWidgetColor: Theme.of(context).highlightColor,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
+        ),
         IOSUiSettings(
-          title: 'Cropper',
+          title: 'Resize image',
         ),
         WebUiSettings(
           context: context,
@@ -361,9 +362,18 @@ class _SettingsState extends State<Settings> {
       ],
     );
     if (croppedFile != null) {
+      final File imageFile = File(croppedFile.path);
       setState(() {
-        _croppedFile = croppedFile;
+        _croppedFile = imageFile;
       });
+      // upload file
+      final phone = FirebaseAuth.instance.currentUser!.phoneNumber;
+      final parsedPhone = phone!.split('+')[1];
+      final fileName = 'avatar-$parsedPhone.jpg';
+      print(_croppedFile?.path);
+      await FirebaseStorage.instance
+          .ref('avatar/$fileName')
+          .putFile(File(imageFile.path));
     }
   }
 }

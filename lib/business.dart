@@ -356,7 +356,6 @@ class _BusinessState extends State<Business> {
       List single = result.files;
       final fileBytes = single[0].bytes;
       final fileExt = single[0].extension;
-      print(Uri.parse(single[0].path));
       final phone = FirebaseAuth.instance.currentUser!.phoneNumber;
       final parsedPhone = phone!.split('+')[1];
       final fileName = 'doc-$parsedPhone.$fileExt';
@@ -365,6 +364,12 @@ class _BusinessState extends State<Business> {
       await FirebaseStorage.instance
           .ref('documents/$fileName')
           .putData(fileBytes);
+
+      //         await ref.putFile(_image).onComplete.then((value) async{
+      //   print("Inside then");
+      //   url = await ref.getDownloadURL();
+      //   print(url);
+      // });
     }
   }
 }
