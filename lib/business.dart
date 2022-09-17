@@ -71,13 +71,15 @@ class _BusinessState extends State<Business> {
                             .child("banner")
                             .child("banner-$uid.jpg")
                             .getDownloadURL();
-                        print(imageUrl);
                         showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
                               backgroundColor: Theme.of(context).primaryColor,
-                              content: Image.network(imageUrl),
+                              content: Image.network(
+                                imageUrl,
+                                scale: 1,
+                              ),
                             );
                           },
                         );
@@ -354,6 +356,7 @@ class _BusinessState extends State<Business> {
       List single = result.files;
       final fileBytes = single[0].bytes;
       final fileExt = single[0].extension;
+      print(Uri.parse(single[0].path));
       final phone = FirebaseAuth.instance.currentUser!.phoneNumber;
       final parsedPhone = phone!.split('+')[1];
       final fileName = 'doc-$parsedPhone.$fileExt';

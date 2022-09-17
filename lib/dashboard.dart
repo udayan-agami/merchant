@@ -376,7 +376,7 @@ class _graphDataState extends State<graphData> {
                 style: TextStyle(
                     color: Colors.grey,
                     fontFamily: 'Roboto Condensed',
-                    fontSize: 12),
+                    fontSize: 12,),
               ),
               Text(
                 '25',
