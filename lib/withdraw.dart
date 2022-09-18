@@ -14,14 +14,19 @@ class Withdraw extends StatefulWidget {
 class _WithdrawState extends State<Withdraw> {
   var selectedLanguage = box.get('language', defaultValue: 1);
   List withdrawMethos = [
-    {"name": "bKash", "id": 1},
+    {
+      "name": "bKash",
+      "required": [
+        {"field": "Personal account number"}
+      ]
+    },
     {"name": "Rocket"},
     {"name": "Nagad"},
     {"name": "Upday"},
     {"name": "Bank transfer"},
     {"name": "Merchant Transfer"}
   ];
-  Map selectedMethod = {};
+  var _selectedMethod;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,14 +128,14 @@ class _WithdrawState extends State<Withdraw> {
                       hintStyle: TextStyle(
                         color: Theme.of(context).hintColor,
                         fontFamily: 'Roboto Condensed',
-                        fontSize: 22,
+                        fontSize: 14,
                       ),
                       labelText: selectedLanguage == 1
                           ? 'Withdraw amount'
                           : 'উত্তোলনের পরিমাণ',
                       labelStyle: TextStyle(
                         fontFamily: 'Roboto Condensed',
-                        fontSize: 16,
+                        fontSize: 14,
                         color: Theme.of(context).highlightColor,
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -175,7 +180,7 @@ class _WithdrawState extends State<Withdraw> {
                         style: BorderStyle.solid,
                       ),
                     ),
-                    child: DropdownButton(
+                    child: DropdownButtonFormField(
                       items: withdrawMethos.map((e) {
                         return DropdownMenuItem(
                             value: e,
@@ -190,28 +195,33 @@ class _WithdrawState extends State<Withdraw> {
                       }).toList(),
                       onChanged: (selectedMethod) {
                         setState(() {
-                          selectedMethod = selectedMethod;
+                          _selectedMethod = selectedMethod;
                         });
                       },
                       dropdownColor: Theme.of(context).primaryColorLight,
-                      value: selectedMethod['name'],
+                      value: _selectedMethod['name'],
                       icon: Icon(
                         Icons.arrow_forward_ios_rounded,
                         color: Theme.of(context).highlightColor,
                       ),
                       style: TextStyle(color: Colors.white),
-                      // hint: Text(
-                      //   'Select withdrawal method',
-                      //   style: TextStyle(
-                      //     fontFamily: 'Roboto Condensed',
-                      //     fontSize: 14,
-                      //     color: Theme.of(context).hintColor,
-                      //   ),
-                      // ),
-                      underline: SizedBox(),
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10)),
                       isExpanded: true,
+                      hint: Text(
+                        'Select a payment method',
+                        style: TextStyle(
+                          fontFamily: 'Roboto Condensed',
+                          fontSize: 14,
+                          color: Theme.of(context).highlightColor,
+                        ),
+                      ),
                     ),
                   ),
+                  Container(
+                    child: Text(_selectedMethod.length.toString()),
+                  )
                 ],
               ),
             )
