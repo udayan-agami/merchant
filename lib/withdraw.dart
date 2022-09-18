@@ -13,6 +13,15 @@ class Withdraw extends StatefulWidget {
 
 class _WithdrawState extends State<Withdraw> {
   var selectedLanguage = box.get('language', defaultValue: 1);
+  List withdrawMethos = [
+    {"name": "bKash", "id": 1},
+    {"name": "Rocket"},
+    {"name": "Nagad"},
+    {"name": "Upday"},
+    {"name": "Bank transfer"},
+    {"name": "Merchant Transfer"}
+  ];
+  Map selectedMethod = {};
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,64 +111,108 @@ class _WithdrawState extends State<Withdraw> {
               ),
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(10),
-              child: TextField(
-                decoration: InputDecoration(
-                  helperStyle: TextStyle(
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                  hintText: selectedLanguage == 1 ? 'Amount' : 'পরিমাণ',
-                  hintStyle: TextStyle(
-                    color: Theme.of(context).hintColor,
-                    fontFamily: 'Roboto Condensed',
-                    fontSize: 32,
-                  ),
-                  labelText: selectedLanguage == 1
-                      ? 'Withdraw amount'
-                      : 'উত্তোলনের পরিমাণ',
-                  labelStyle: TextStyle(
-                    fontFamily: 'Roboto Condensed',
-                    fontSize: 16,
-                    color: Theme.of(context).highlightColor,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(
-                      color: Theme.of(context).primaryColorDark,
-                      width: 3,
-                      style: BorderStyle.solid,
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                      counterText: "",
+                      helperStyle: TextStyle(
+                        color: Theme.of(context).primaryColorLight,
+                      ),
+                      hintText: selectedLanguage == 1 ? 'Amount' : 'পরিমাণ',
+                      hintStyle: TextStyle(
+                        color: Theme.of(context).hintColor,
+                        fontFamily: 'Roboto Condensed',
+                        fontSize: 22,
+                      ),
+                      labelText: selectedLanguage == 1
+                          ? 'Withdraw amount'
+                          : 'উত্তোলনের পরিমাণ',
+                      labelStyle: TextStyle(
+                        fontFamily: 'Roboto Condensed',
+                        fontSize: 16,
+                        color: Theme.of(context).highlightColor,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).primaryColorDark,
+                          width: 3,
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).highlightColor,
+                          width: 3,
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        MdiIcons.currencyBdt,
+                        color: Theme.of(context).highlightColor,
+                      ),
                     ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(
+                    cursorColor: Theme.of(context).highlightColor,
+                    style: TextStyle(
                       color: Theme.of(context).highlightColor,
-                      width: 3,
-                      style: BorderStyle.solid,
+                      fontSize: 22,
+                      fontFamily: 'Roboto Condensed',
+                    ),
+                    keyboardType: TextInputType.number,
+                    maxLength: 6,
+                    autocorrect: false,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    padding: EdgeInsets.all(1),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Theme.of(context).primaryColorDark,
+                        width: 3,
+                        style: BorderStyle.solid,
+                      ),
+                    ),
+                    child: DropdownButton(
+                      items: withdrawMethos.map((e) {
+                        return DropdownMenuItem(
+                            value: e,
+                            child: Text(
+                              e['name'],
+                              style: TextStyle(
+                                fontFamily: 'Roboto Condensed',
+                                fontSize: 14,
+                                color: Theme.of(context).highlightColor,
+                              ),
+                            ));
+                      }).toList(),
+                      onChanged: (selectedMethod) {
+                        setState(() {
+                          selectedMethod = selectedMethod;
+                        });
+                      },
+                      dropdownColor: Theme.of(context).primaryColorLight,
+                      value: selectedMethod['name'],
+                      icon: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Theme.of(context).highlightColor,
+                      ),
+                      style: TextStyle(color: Colors.white),
+                      // hint: Text(
+                      //   'Select withdrawal method',
+                      //   style: TextStyle(
+                      //     fontFamily: 'Roboto Condensed',
+                      //     fontSize: 14,
+                      //     color: Theme.of(context).hintColor,
+                      //   ),
+                      // ),
+                      underline: SizedBox(),
+                      isExpanded: true,
                     ),
                   ),
-                  prefixIcon: Icon(
-                    MdiIcons.currencyBdt,
-                    color: Theme.of(context).highlightColor,
-                  ),
-                  suffixIcon: IconButton(
-                    color: Theme.of(context).highlightColor,
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.next_plan_outlined,
-                      color: Theme.of(context).highlightColor,
-                    ),
-                    iconSize: 30,
-                  ),
-                ),
-                cursorColor: Theme.of(context).highlightColor,
-                style: TextStyle(
-                  color: Theme.of(context).highlightColor,
-                  fontSize: 32,
-                  fontFamily: 'Roboto Condensed',
-                ),
-                keyboardType: TextInputType.number,
-                maxLength: 6,
-                autocorrect: false,
+                ],
               ),
             )
           ],

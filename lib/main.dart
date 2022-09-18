@@ -7,6 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import './Splashscreen.dart';
 import './pin.dart';
 import './home.dart';
+import './withdraw.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_listener/hive_listener.dart';
@@ -93,7 +94,7 @@ class MyApp extends StatelessWidget {
                   : box.get('theme') == 4
                       ? _themeFour
                       : _themeThree,
-          home: const SplashScreen(),
+          home: const Withdraw(),
         );
       },
     );
