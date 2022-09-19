@@ -4,6 +4,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:agami/Splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './language.dart';
@@ -17,6 +18,7 @@ import 'package:hive/hive.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 var box = Hive.box('agamiMerchant');
 
@@ -319,10 +321,14 @@ class _SettingsState extends State<Settings> {
         }
         break;
       case 6:
-        {}
+        {
+          _redirectHelp;
+        }
         break;
       case 7:
-        {}
+        {
+          _redirectTerms;
+        }
         break;
       case 8:
         {
@@ -334,6 +340,20 @@ class _SettingsState extends State<Settings> {
 
   Future<void> _signOut() async {
     await _auth.signOut();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SplashScreen(),
+      ),
+    );
+  }
+
+  Future<void> _redirectTerms() async {
+    await launchUrl(Uri.parse('https://agamilabs.com/agamimerchant/#terms'));
+  }
+
+  Future<void> _redirectHelp() async {
+    await launchUrl(Uri.parse('https://agamilabs.com/agamimerchant/#help'));
   }
 
   void _attachImage() async {
