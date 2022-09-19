@@ -94,7 +94,7 @@ class MyApp extends StatelessWidget {
                   : box.get('theme') == 4
                       ? _themeFour
                       : _themeThree,
-          home: const SplashScreen(),
+          home: const Withdraw(),
         );
       },
     );
