@@ -1,10 +1,19 @@
+import 'dart:convert';
+import 'dart:js_util';
+
+import 'package:agami/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:chart_sparkline/chart_sparkline.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:hive/hive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:http/http.dart' as http;
+
+import 'home.dart';
 
 var box = Hive.box('agamiMerchant');
 
@@ -19,6 +28,8 @@ class _DashboardState extends State<Dashboard> {
   var selectedLanguage = box.get('language', defaultValue: 1);
   final List transactionList = [];
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  var oneTimeBill = true;
+  final token = box.get('token');
   String? avatar = FirebaseAuth.instance.currentUser!.photoURL;
   @override
   Widget build(BuildContext context) {
@@ -172,9 +183,12 @@ class _DashboardState extends State<Dashboard> {
                                 borderRadius: BorderRadius.circular(23),
                                 color: Theme.of(context).primaryColor,
                               ),
-                              child: Icon(
-                                Icons.add_rounded,
-                                color: Theme.of(context).highlightColor,
+                              child: GestureDetector(
+                                onTap: _createBill,
+                                child: Icon(
+                                  Icons.add_rounded,
+                                  color: Theme.of(context).highlightColor,
+                                ),
                               ),
                             ),
                           )
@@ -322,6 +336,482 @@ class _DashboardState extends State<Dashboard> {
 
   Future<void> _handleRefresh() async {
     return await Future.delayed(const Duration(seconds: 1));
+  }
+
+  void _createBill() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return Scaffold(
+              backgroundColor: Theme.of(context).primaryColorDark,
+              body: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 15,
+                      right: 15,
+                      top: 10,
+                      bottom: 0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Create bill request',
+                          style: TextStyle(
+                            fontFamily: 'Roboto Condensed',
+                            fontSize: 22,
+                            color: Theme.of(context).highlightColor,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          splashRadius: 25,
+                          icon: Icon(
+                            Icons.close_rounded,
+                            color: Theme.of(context).highlightColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    margin: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: FilterChip(
+                                label: Text(
+                                  selectedLanguage == 1
+                                      ? 'One Time Bill'
+                                      : 'এককালীন বিল',
+                                  textAlign: TextAlign.center,
+                                ),
+                                showCheckmark: false,
+                                backgroundColor:
+                                    Theme.of(context).primaryColorDark,
+                                selected: oneTimeBill,
+                                selectedColor:
+                                    Theme.of(context).primaryColorDark,
+                                elevation: 0,
+                                pressElevation: 0,
+                                side: BorderSide(
+                                  color: oneTimeBill == true
+                                      ? Theme.of(context).highlightColor
+                                      : Theme.of(context).primaryColor,
+                                  width: 2,
+                                ),
+                                labelStyle: TextStyle(
+                                  fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                  fontSize: 14,
+                                  color: Theme.of(context).highlightColor,
+                                ),
+                                checkmarkColor:
+                                    Theme.of(context).highlightColor,
+                                onSelected: (isSelected) {
+                                  setState(() {
+                                    oneTimeBill = !oneTimeBill;
+                                  });
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    oneTimeBill = false;
+                                  });
+                                },
+                                child: Chip(
+                                  label: Text(
+                                    selectedLanguage == 1
+                                        ? 'Regular bill'
+                                        : 'সার্বজনীন বিল',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  backgroundColor:
+                                      Theme.of(context).primaryColorDark,
+                                  elevation: 0,
+                                  side: BorderSide(
+                                    color: oneTimeBill == false
+                                        ? Theme.of(context).highlightColor
+                                        : Theme.of(context).primaryColor,
+                                    width: 2,
+                                  ),
+                                  labelStyle: TextStyle(
+                                    fontFamily:
+                                        'Roboto Condensed, Ador Noirrit',
+                                    fontSize: 14,
+                                    color: Theme.of(context).highlightColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Visibility(
+                          visible: oneTimeBill == true,
+                          child: Padding(
+                            padding: EdgeInsets.all(5),
+                            child: TextField(
+                              style: TextStyle(
+                                color: Theme.of(context).highlightColor,
+                                fontFamily: 'Roboto Condensed',
+                                fontSize: 18,
+                              ),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    width: 4,
+                                    color: Theme.of(context).primaryColorDark,
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    width: 4,
+                                    color: Theme.of(context).primaryColorDark,
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    width: 4,
+                                    color: Theme.of(context).highlightColor,
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
+                                hintText: 'Biller ID or Phone (Optional)',
+                                hintStyle: TextStyle(
+                                  color: Theme.of(context).hintColor,
+                                  fontFamily: 'Roboto Condensed',
+                                  fontSize: 18,
+                                ),
+                                counterText: "",
+                                labelText: "Biller ID or Phone",
+                                labelStyle: TextStyle(
+                                    fontFamily: 'Roboto Condensed',
+                                    color: Theme.of(context).highlightColor),
+                              ),
+                              cursorColor: Theme.of(context).highlightColor,
+                              maxLength: 15,
+                              keyboardType: TextInputType.number,
+                              autocorrect: false,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(5),
+                          child: TextField(
+                            style: TextStyle(
+                              color: Theme.of(context).highlightColor,
+                              fontFamily: 'Roboto Condensed',
+                              fontSize: 18,
+                            ),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  width: 4,
+                                  color: Theme.of(context).primaryColorDark,
+                                  style: BorderStyle.solid,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  width: 4,
+                                  color: Theme.of(context).primaryColorDark,
+                                  style: BorderStyle.solid,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  width: 4,
+                                  color: Theme.of(context).highlightColor,
+                                  style: BorderStyle.solid,
+                                ),
+                              ),
+                              hintText: 'Amount',
+                              hintStyle: TextStyle(
+                                color: Theme.of(context).hintColor,
+                                fontFamily: 'Roboto Condensed',
+                                fontSize: 18,
+                              ),
+                              counterText: "",
+                              labelText: "Amount",
+                              labelStyle: TextStyle(
+                                  fontFamily: 'Roboto Condensed',
+                                  color: Theme.of(context).highlightColor),
+                            ),
+                            cursorColor: Theme.of(context).highlightColor,
+                            maxLength: 6,
+                            keyboardType: TextInputType.number,
+                            autocorrect: false,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(5),
+                          child: TextField(
+                            style: TextStyle(
+                              color: Theme.of(context).highlightColor,
+                              fontFamily: 'Roboto Condensed',
+                              fontSize: 18,
+                            ),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  width: 4,
+                                  color: Theme.of(context).primaryColorDark,
+                                  style: BorderStyle.solid,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  width: 4,
+                                  color: Theme.of(context).primaryColorDark,
+                                  style: BorderStyle.solid,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  width: 4,
+                                  color: Theme.of(context).highlightColor,
+                                  style: BorderStyle.solid,
+                                ),
+                              ),
+                              hintText: 'Discription',
+                              hintStyle: TextStyle(
+                                color: Theme.of(context).hintColor,
+                                fontFamily: 'Roboto Condensed',
+                                fontSize: 18,
+                              ),
+                              labelText: "Discription",
+                              labelStyle: TextStyle(
+                                fontFamily: 'Roboto Condensed',
+                                color: Theme.of(context).highlightColor,
+                              ),
+                              counterText: "",
+                            ),
+                            cursorColor: Theme.of(context).highlightColor,
+                            maxLength: 90,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          child: ElevatedButton(
+                            onPressed: _addNewBill,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Theme.of(context).primaryColorLight,
+                              elevation: 0,
+                              padding: EdgeInsets.all(20),
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(8), // <-- Radius
+                              ),
+                            ),
+                            child: Text(
+                              'Create Bill',
+                              style: TextStyle(
+                                color: Theme.of(context).highlightColor,
+                                fontSize: 18,
+                                fontFamily: 'Roboto Condensed',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          });
+        });
+  }
+
+  void _addNewBill() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Name, email address, and profile photo URL
+      final phoneNumber = user.phoneNumber;
+      var url =
+          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/addnewbill?token=$token&phone=$phoneNumber';
+      final uri = Uri.parse(url);
+
+      final response = await http.get(uri);
+      final body = response.body;
+      final json = jsonDecode(body);
+
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Scaffold(
+              backgroundColor: Theme.of(context).primaryColorDark,
+              body: Container(
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Text(
+                        'Bill Status',
+                        style: TextStyle(
+                          fontFamily: 'Roboto Condensed',
+                          color: Theme.of(context).highlightColor,
+                          fontSize: 22,
+                        ),
+                      ),
+                    ),
+                    QrImage(
+                      data: "1234567890",
+                      version: QrVersions.auto,
+                      size: 200.0,
+                      padding: EdgeInsets.all(20),
+                      foregroundColor: Theme.of(context).highlightColor,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Text(
+                        'Bill Created Successfully',
+                        style: TextStyle(
+                          fontFamily: 'Roboto Condensed',
+                          color: Theme.of(context).highlightColor,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(30),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColorDark,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          for (var item in json['info'])
+                            Text(
+                              item.keys.toList().first +
+                                  ' : ' +
+                                  item.values.toList().first,
+                              style: TextStyle(
+                                fontFamily: 'Roboto Condensed',
+                                fontSize: 16,
+                                color: Theme.of(context).highlightColor,
+                              ),
+                            )
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: json['link']));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Chip(
+                          backgroundColor: Theme.of(context).primaryColorLight,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            side: BorderSide(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          label: Text(
+                            json['link'],
+                            style: TextStyle(
+                              fontFamily: 'Roboto Condensed',
+                              fontSize: 14,
+                              color: Theme.of(context).highlightColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(5),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorDark,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          width: 100,
+                          height: 30,
+                          child: Text(
+                            "Share",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Roboto Condensed, Ador Noirrit',
+                              color: Theme.of(context).highlightColor,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Home(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(5),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            width: 100,
+                            height: 30,
+                            child: Text(
+                              "Dashboard",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                color: Theme.of(context).highlightColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+          });
+    }
   }
 }
 

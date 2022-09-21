@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:agami/Splashscreen.dart';
+import 'package:agami/pin.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:file_picker/file_picker.dart';
@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:shimmer/shimmer.dart';
 
 var box = Hive.box('agamiMerchant');
 var storage = FirebaseStorage.instance;
@@ -23,10 +24,16 @@ class Business extends StatefulWidget {
 
 class _BusinessState extends State<Business> {
   var selectedLanguage = box.get('language', defaultValue: 1);
+  final token = box.get('token', defaultValue: 'null');
   String? avatar = FirebaseAuth.instance.currentUser!.photoURL;
-  List businessDetails = [
-    {"address": "", "document": "pending"}
-  ];
+  List businessDetails = [];
+
+  @override
+  void initState() {
+    _handleRefresh();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,26 +137,72 @@ class _BusinessState extends State<Business> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'Ma enterprize and co. Ma enterprize and co. Ma enterprize and co.',
-                                      style: TextStyle(
-                                        color: Theme.of(context).highlightColor,
-                                        fontFamily:
-                                            'Roboto Condensed, Ador Noirrit',
-                                        fontSize: 18,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(
-                                      'Anam Sarkar',
-                                      style: TextStyle(
-                                        color: Theme.of(context).highlightColor,
-                                        fontFamily:
-                                            'Roboto Condensed, Ador Noirrit',
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                    businessDetails.isEmpty
+                                        ? Shimmer.fromColors(
+                                            baseColor: Theme.of(context)
+                                                .primaryColorDark,
+                                            highlightColor: Theme.of(context)
+                                                .primaryColorLight,
+                                            child: Container(
+                                              margin: EdgeInsets.symmetric(
+                                                vertical: 5,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .primaryColorDark,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  50,
+                                                ),
+                                              ),
+                                              height: 14,
+                                              width: double.infinity,
+                                            ),
+                                          )
+                                        : Text(
+                                            businessDetails[0]['title'],
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .highlightColor,
+                                              fontFamily:
+                                                  'Roboto Condensed, Ador Noirrit',
+                                              fontSize: 18,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                    businessDetails.isEmpty
+                                        ? Shimmer.fromColors(
+                                            baseColor: Theme.of(context)
+                                                .primaryColorDark,
+                                            highlightColor: Theme.of(context)
+                                                .primaryColorLight,
+                                            child: Container(
+                                              margin: EdgeInsets.symmetric(
+                                                vertical: 5,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .primaryColorDark,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  50,
+                                                ),
+                                              ),
+                                              height: 14,
+                                              width: 100,
+                                            ),
+                                          )
+                                        : Text(
+                                            businessDetails[0]['owner'],
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .highlightColor,
+                                              fontFamily:
+                                                  'Roboto Condensed, Ador Noirrit',
+                                              fontSize: 14,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                   ],
                                 ),
                               ),
@@ -211,56 +264,79 @@ class _BusinessState extends State<Business> {
                             ),
                           ),
                         ),
-                        Visibility(
-                          visible: businessDetails[0]['address'].length > 0,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Theme.of(context).primaryColorDark,
-                            ),
-                            margin: const EdgeInsets.only(top: 8),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Flexible(
-                                    child: Container(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            selectedLanguage == 1
-                                                ? 'Address'
-                                                : 'ঠিকানা',
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .highlightColor,
-                                              fontFamily:
-                                                  'Roboto Condensed, Ador Noirrit',
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          Text(
-                                            'AKS tower, Lalmonir hat, Beside choto bridege, Gazipur AKS tower, Lalmonir hat, Beside choto bridege, Gazipur',
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .highlightColor,
-                                              fontFamily: 'Roboto Condensed',
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                        ],
+                        businessDetails.isEmpty
+                            ? Visibility(
+                                visible: businessDetails.isNotEmpty,
+                                child: Shimmer.fromColors(
+                                  baseColor: Theme.of(context).primaryColorDark,
+                                  highlightColor:
+                                      Theme.of(context).primaryColorLight,
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                      vertical: 5,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColorDark,
+                                      borderRadius: BorderRadius.circular(
+                                        50,
                                       ),
                                     ),
+                                    height: 14,
+                                    width: 100,
                                   ),
-                                ],
+                                ))
+                            : Visibility(
+                                visible: businessDetails.isEmpty ||
+                                    businessDetails[0]['address'].length > 0,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                  margin: const EdgeInsets.only(top: 8),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  selectedLanguage == 1
+                                                      ? 'Address'
+                                                      : 'ঠিকানা',
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .highlightColor,
+                                                    fontFamily:
+                                                        'Roboto Condensed, Ador Noirrit',
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  businessDetails[0]['address'],
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .highlightColor,
+                                                    fontFamily:
+                                                        'Roboto Condensed',
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                        //NID
+                        //business documents
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
@@ -291,62 +367,112 @@ class _BusinessState extends State<Business> {
                                             fontSize: 14,
                                           ),
                                         ),
-                                        Text(
-                                          selectedLanguage == 1 &&
-                                                  businessDetails[0]
-                                                          ['document'] ==
-                                                      'verified'
-                                              ? 'Trade license verified'
-                                              : selectedLanguage == 1 &&
-                                                      businessDetails[0]
-                                                              ['document'] !=
-                                                          'verified'
-                                                  ? 'Trade license not verified'
-                                                  : selectedLanguage == 2 &&
-                                                          businessDetails[0][
-                                                                  'document'] ==
-                                                              'verified'
-                                                      ? 'ট্রেড লাইসেন্স প্রতিপাদিত'
-                                                      : 'ট্রেড লাইসেন্স প্রতিপাদিত হয়নি',
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .highlightColor,
-                                            fontFamily: 'Roboto Condensed',
-                                            fontSize: 18,
-                                          ),
-                                        ),
+                                        businessDetails.isEmpty
+                                            ? Shimmer.fromColors(
+                                                baseColor: Theme.of(context)
+                                                    .primaryColorDark,
+                                                highlightColor:
+                                                    Theme.of(context)
+                                                        .primaryColorLight,
+                                                child: Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                    vertical: 5,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context)
+                                                        .primaryColorDark,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      50,
+                                                    ),
+                                                  ),
+                                                  height: 14,
+                                                  width: double.infinity,
+                                                ),
+                                              )
+                                            : Text(
+                                                selectedLanguage == 1 &&
+                                                        businessDetails[0]
+                                                                ['document'] ==
+                                                            'verified'
+                                                    ? 'Trade license verified'
+                                                    : selectedLanguage == 1 &&
+                                                            businessDetails[0][
+                                                                    'document'] !=
+                                                                'verified'
+                                                        ? 'Trade license not verified'
+                                                        : selectedLanguage ==
+                                                                    2 &&
+                                                                businessDetails[
+                                                                            0][
+                                                                        'document'] ==
+                                                                    'verified'
+                                                            ? 'ট্রেড লাইসেন্স প্রতিপাদিত'
+                                                            : 'ট্রেড লাইসেন্স প্রতিপাদিত হয়নি',
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .highlightColor,
+                                                  fontFamily:
+                                                      'Roboto Condensed',
+                                                  fontSize: 18,
+                                                ),
+                                              ),
                                       ],
                                     ),
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    Visibility(
-                                      visible: businessDetails[0]['document'] !=
-                                          'verified',
-                                      child: IconButton(
-                                        onPressed: _pickFile,
-                                        icon: Icon(
-                                          Icons.cloud_upload_outlined,
-                                          color:
-                                              Theme.of(context).highlightColor,
+                                businessDetails.isEmpty
+                                    ? Shimmer.fromColors(
+                                        baseColor:
+                                            Theme.of(context).primaryColorDark,
+                                        highlightColor:
+                                            Theme.of(context).primaryColorLight,
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                            vertical: 5,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            borderRadius: BorderRadius.circular(
+                                              50,
+                                            ),
+                                          ),
+                                          height: 14,
+                                          width: 20,
                                         ),
+                                      )
+                                    : Row(
+                                        children: [
+                                          Visibility(
+                                            visible: businessDetails[0]
+                                                    ['document'] !=
+                                                'verified',
+                                            child: IconButton(
+                                              onPressed: _pickFile,
+                                              icon: Icon(
+                                                Icons.cloud_upload_outlined,
+                                                color: Theme.of(context)
+                                                    .highlightColor,
+                                              ),
+                                            ),
+                                          ),
+                                          Visibility(
+                                            visible: businessDetails[0]
+                                                    ["document"] ==
+                                                'verified',
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Icon(
+                                                Icons.done_rounded,
+                                                color: Theme.of(context)
+                                                    .indicatorColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    Visibility(
-                                      visible: businessDetails[0]["document"] ==
-                                          'verified',
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Icon(
-                                          Icons.done_rounded,
-                                          color:
-                                              Theme.of(context).indicatorColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ],
                             ),
                           ),
@@ -388,12 +514,31 @@ class _BusinessState extends State<Business> {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       var url =
-          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/business';
+          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/business?token=$token';
       final uri = Uri.parse(url);
       final response = await http.get(uri);
       final body = response.body;
       final json = jsonDecode(body);
-      print(json);
+      if (json['error'] == 0) {
+        setState(() {
+          businessDetails = json['details'];
+          box.put('token', json['token']);
+        });
+      } else if (json['error'] == 1) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Pin(),
+          ),
+        );
+      }
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SplashScreen(),
+        ),
+      );
     }
   }
 }
