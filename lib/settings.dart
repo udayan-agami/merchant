@@ -1,19 +1,13 @@
-//import 'dart:html';
-//import 'dart:js';
-
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:agami/Splashscreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import './language.dart';
 import './devices.dart';
 import './business.dart';
 import './displayTheme.dart';
 import './withdraw.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:hive/hive.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -322,17 +316,17 @@ class _SettingsState extends State<Settings> {
         break;
       case 6:
         {
-          _redirectHelp;
+          _redirectHelp();
         }
         break;
       case 7:
         {
-          _redirectTerms;
+          _redirectTerms();
         }
         break;
       case 8:
         {
-          _signOut;
+          _signOut();
         }
         break;
     }

@@ -35,12 +35,7 @@ class _LanguageState extends State<Language> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Home(),
-                        ),
-                      );
+                      Navigator.of(context).pop();
                     },
                     icon: Icon(
                       Icons.undo,
@@ -58,6 +53,7 @@ class _LanguageState extends State<Language> {
                   ),
                   IconButton(
                     onPressed: () {
+                      box.put('language', language);
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -76,7 +72,6 @@ class _LanguageState extends State<Language> {
             ),
             GestureDetector(
               onTap: () {
-                box.put('language', 2);
                 setState(() {
                   language = 2;
                 });
@@ -118,7 +113,6 @@ class _LanguageState extends State<Language> {
             ),
             GestureDetector(
               onTap: () {
-                box.put('language', 1);
                 setState(() {
                   language = 1;
                 });
