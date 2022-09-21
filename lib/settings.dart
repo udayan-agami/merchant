@@ -338,7 +338,7 @@ class _SettingsState extends State<Settings> {
     }
   }
 
-  Future<void> _signOut() async {
+  void _signOut() async {
     await _auth.signOut();
     Navigator.pushReplacement(
       context,
@@ -348,11 +348,11 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  Future<void> _redirectTerms() async {
+  void _redirectTerms() async {
     await launchUrl(Uri.parse('https://agamilabs.com/agamimerchant/#terms'));
   }
 
-  Future<void> _redirectHelp() async {
+  void _redirectHelp() async {
     await launchUrl(Uri.parse('https://agamilabs.com/agamimerchant/#help'));
   }
 
@@ -390,8 +390,6 @@ class _SettingsState extends State<Settings> {
     );
     if (croppedFile != null) {
       final File imageFile = File(croppedFile.path);
-      setState(() {});
-      // upload file
       final phone = FirebaseAuth.instance.currentUser!.phoneNumber;
       final parsedPhone = phone!.split('+')[1];
       final fileName = 'avatar-$parsedPhone.jpg';
