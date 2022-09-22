@@ -74,9 +74,9 @@ class _WithdrawState extends State<Withdraw> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: _handleRefresh,
                       icon: Icon(
-                        Icons.done,
+                        Icons.refresh_rounded,
                         color: Theme.of(context).highlightColor,
                         size: 22,
                       ),
@@ -309,7 +309,8 @@ class _WithdrawState extends State<Withdraw> {
                 ),
               ),
               Visibility(
-                visible: _isDocumentVerified == 'verified',
+                visible:
+                    _isDocumentVerified == 'verified' && _isLoading != true,
                 child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
@@ -551,8 +552,6 @@ class _WithdrawState extends State<Withdraw> {
                                                 withdrawCredential[
                                                     fields['key']] = value;
                                               });
-                                              print(withdrawCredential
-                                                  .toString());
                                             },
                                           );
                                         },
@@ -577,13 +576,16 @@ class _WithdrawState extends State<Withdraw> {
                                 ),
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Theme.of(context).primaryColorLight,
+                                backgroundColor: Theme.of(context).primaryColor,
                                 elevation: 0,
                                 padding: EdgeInsets.all(20),
                                 shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.circular(8), // <-- Radius
+                                ),
+                                side: BorderSide(
+                                  width: 1,
+                                  color: Theme.of(context).primaryColorDark,
                                 ),
                               ),
                             ),
@@ -638,6 +640,39 @@ class _WithdrawState extends State<Withdraw> {
           _selectedMethod = null;
           box.put('token', json['token']);
         });
+        showDialog(
+          context: context,
+          builder: (context) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Scaffold(
+                backgroundColor: Color.fromARGB(183, 0, 0, 0),
+                body: Center(
+                  child: Container(
+                    margin: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(25),
+                    constraints: BoxConstraints(maxWidth: 350),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      json['message'],
+                      style: TextStyle(
+                        fontFamily: 'Roboto Condensed',
+                        fontSize: 14,
+                        fontStyle: FontStyle.italic,
+                        color: Theme.of(context).highlightColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
       } else if (json['error'] == 1) {
         Navigator.pushReplacement(
           context,

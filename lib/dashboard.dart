@@ -8,8 +8,10 @@ import 'package:hive/hive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:http/http.dart' as http;
-
-import 'home.dart';
+import 'package:shimmer/shimmer.dart';
+import './Splashscreen.dart';
+import './pin.dart';
+import './home.dart';
 
 var box = Hive.box('agamiMerchant');
 
@@ -25,8 +27,25 @@ class _DashboardState extends State<Dashboard> {
   final List transactionList = [];
   final FirebaseAuth _auth = FirebaseAuth.instance;
   var oneTimeBill = true;
+  var billerid = '';
+  var description = '';
+  var amount = '';
+  var isLoading = false;
   final token = box.get('token');
+  var balance = '';
+  var growth = '';
+  var comparison = '';
+  var pending = '';
+  var paid = '';
+  List weakdata = [];
   String? avatar = FirebaseAuth.instance.currentUser!.photoURL;
+
+  @override
+  void initState() {
+    _handleRefresh();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -98,13 +117,32 @@ class _DashboardState extends State<Dashboard> {
                           color: Theme.of(context).highlightColor,
                           size: 16,
                         ),
-                        Text(
-                          '5672.25',
-                          style: TextStyle(
-                              color: Theme.of(context).highlightColor,
-                              fontSize: 36,
-                              fontFamily: 'Roboto Condensed'),
-                        ),
+                        isLoading == true
+                            ? Shimmer.fromColors(
+                                baseColor: Theme.of(context).primaryColorDark,
+                                highlightColor:
+                                    Theme.of(context).primaryColorLight,
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: 5,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColorDark,
+                                    borderRadius: BorderRadius.circular(
+                                      50,
+                                    ),
+                                  ),
+                                  height: 30,
+                                  width: 60,
+                                ),
+                              )
+                            : Text(
+                                balance,
+                                style: TextStyle(
+                                    color: Theme.of(context).highlightColor,
+                                    fontSize: 36,
+                                    fontFamily: 'Roboto Condensed'),
+                              ),
                       ],
                     ),
                     Column(
@@ -114,13 +152,32 @@ class _DashboardState extends State<Dashboard> {
                           color: Theme.of(context).highlightColor,
                           size: 20,
                         ),
-                        Text(
-                          '10%',
-                          style: TextStyle(
-                              fontFamily: 'Roboto Condensed',
-                              fontSize: 14,
-                              color: Theme.of(context).highlightColor),
-                        )
+                        isLoading == true
+                            ? Shimmer.fromColors(
+                                baseColor: Theme.of(context).primaryColorDark,
+                                highlightColor:
+                                    Theme.of(context).primaryColorLight,
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: 5,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColorDark,
+                                    borderRadius: BorderRadius.circular(
+                                      50,
+                                    ),
+                                  ),
+                                  height: 12,
+                                  width: 20,
+                                ),
+                              )
+                            : Text(
+                                '$growth%',
+                                style: TextStyle(
+                                    fontFamily: 'Roboto Condensed',
+                                    fontSize: 14,
+                                    color: Theme.of(context).highlightColor),
+                              )
                       ],
                     )
                   ],
@@ -145,13 +202,32 @@ class _DashboardState extends State<Dashboard> {
                                 fontFamily: 'Roboto Condensed, Ador Noirrit',
                                 fontSize: 14),
                           ),
-                          Text(
-                            '4',
-                            style: TextStyle(
-                                color: Theme.of(context).highlightColor,
-                                fontFamily: 'Roboto Condensed',
-                                fontSize: 28),
-                          ),
+                          isLoading == true
+                              ? Shimmer.fromColors(
+                                  baseColor: Theme.of(context).primaryColorDark,
+                                  highlightColor:
+                                      Theme.of(context).primaryColorLight,
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                      vertical: 5,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColorDark,
+                                      borderRadius: BorderRadius.circular(
+                                        50,
+                                      ),
+                                    ),
+                                    height: 25,
+                                    width: 60,
+                                  ),
+                                )
+                              : Text(
+                                  pending,
+                                  style: TextStyle(
+                                      color: Theme.of(context).highlightColor,
+                                      fontFamily: 'Roboto Condensed',
+                                      fontSize: 28),
+                                ),
                         ],
                       ),
                     ),
@@ -201,13 +277,32 @@ class _DashboardState extends State<Dashboard> {
                                 fontFamily: 'Roboto Condensed',
                                 fontSize: 14),
                           ),
-                          Text(
-                            '41',
-                            style: TextStyle(
-                                color: Theme.of(context).highlightColor,
-                                fontFamily: 'Roboto Condensed',
-                                fontSize: 28),
-                          ),
+                          isLoading == true
+                              ? Shimmer.fromColors(
+                                  baseColor: Theme.of(context).primaryColorDark,
+                                  highlightColor:
+                                      Theme.of(context).primaryColorLight,
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                      vertical: 5,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColorDark,
+                                      borderRadius: BorderRadius.circular(
+                                        50,
+                                      ),
+                                    ),
+                                    height: 25,
+                                    width: 60,
+                                  ),
+                                )
+                              : Text(
+                                  paid,
+                                  style: TextStyle(
+                                      color: Theme.of(context).highlightColor,
+                                      fontFamily: 'Roboto Condensed',
+                                      fontSize: 28),
+                                ),
                         ],
                       ),
                     )
@@ -223,7 +318,104 @@ class _DashboardState extends State<Dashboard> {
                 child: const graphData(),
               ),
               Visibility(
-                visible: transactionList.isEmpty ? true : false,
+                visible: isLoading == true,
+                child: Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Shimmer.fromColors(
+                        baseColor: Theme.of(context).primaryColor,
+                        highlightColor: Theme.of(context).primaryColorLight,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorDark,
+                            borderRadius: BorderRadius.circular(
+                              50,
+                            ),
+                          ),
+                          height: 14,
+                          width: MediaQuery.of(context).size.width * 0.65,
+                        ),
+                      ),
+                      Shimmer.fromColors(
+                        baseColor: Theme.of(context).primaryColor,
+                        highlightColor: Theme.of(context).primaryColorLight,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorDark,
+                            borderRadius: BorderRadius.circular(
+                              50,
+                            ),
+                          ),
+                          height: 14,
+                          width: MediaQuery.of(context).size.width * 0.80,
+                        ),
+                      ),
+                      Shimmer.fromColors(
+                        baseColor: Theme.of(context).primaryColor,
+                        highlightColor: Theme.of(context).primaryColorLight,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorDark,
+                            borderRadius: BorderRadius.circular(
+                              50,
+                            ),
+                          ),
+                          height: 14,
+                          width: MediaQuery.of(context).size.width * 0.65,
+                        ),
+                      ),
+                      Shimmer.fromColors(
+                        baseColor: Theme.of(context).primaryColor,
+                        highlightColor: Theme.of(context).primaryColorLight,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorDark,
+                            borderRadius: BorderRadius.circular(
+                              50,
+                            ),
+                          ),
+                          height: 14,
+                          width: MediaQuery.of(context).size.width * 0.80,
+                        ),
+                      ),
+                      Shimmer.fromColors(
+                        baseColor: Theme.of(context).primaryColor,
+                        highlightColor: Theme.of(context).primaryColorLight,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorDark,
+                            borderRadius: BorderRadius.circular(
+                              50,
+                            ),
+                          ),
+                          height: 14,
+                          width: MediaQuery.of(context).size.width * 0.65,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: transactionList.isEmpty && isLoading != true,
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: SizedBox(
@@ -233,7 +425,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
               Visibility(
-                visible: transactionList.isEmpty ? false : true,
+                visible: transactionList.isEmpty && isLoading != true,
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.symmetric(
@@ -331,7 +523,44 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Future<void> _handleRefresh() async {
-    return await Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      isLoading = true;
+    });
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      var url =
+          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/today?token=$token';
+      final uri = Uri.parse(url);
+      final response = await http.get(uri);
+      final body = response.body;
+      final json = jsonDecode(body);
+      if (json['error'] == 0) {
+        box.put('token', json['token']);
+        setState(() {
+          pending = json['pending'].toString();
+          paid = json['paid'].toString();
+          balance = json['balance'].toString();
+          growth = json['growth'].toString();
+          comparison = json['comparison'].toString();
+          weakdata = json['weekdata'];
+          isLoading = false;
+        });
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Pin(),
+          ),
+        );
+      }
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SplashScreen(),
+        ),
+      );
+    }
   }
 
   void _createBill() {
@@ -341,110 +570,75 @@ class _DashboardState extends State<Dashboard> {
           return StatefulBuilder(builder: (context, setState) {
             return Scaffold(
               backgroundColor: Theme.of(context).primaryColorDark,
-              body: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 15,
-                      right: 15,
-                      top: 10,
-                      bottom: 0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Create bill request',
-                          style: TextStyle(
-                            fontFamily: 'Roboto Condensed',
-                            fontSize: 22,
-                            color: Theme.of(context).highlightColor,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          splashRadius: 25,
-                          icon: Icon(
-                            Icons.close_rounded,
-                            color: Theme.of(context).highlightColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    margin: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: FilterChip(
-                                label: Text(
-                                  selectedLanguage == 1
-                                      ? 'One Time Bill'
-                                      : 'এককালীন বিল',
-                                  textAlign: TextAlign.center,
-                                ),
-                                showCheckmark: false,
-                                backgroundColor:
-                                    Theme.of(context).primaryColorDark,
-                                selected: oneTimeBill,
-                                selectedColor:
-                                    Theme.of(context).primaryColorDark,
-                                elevation: 0,
-                                pressElevation: 0,
-                                side: BorderSide(
-                                  color: oneTimeBill == true
-                                      ? Theme.of(context).highlightColor
-                                      : Theme.of(context).primaryColor,
-                                  width: 2,
-                                ),
-                                labelStyle: TextStyle(
-                                  fontFamily: 'Roboto Condensed, Ador Noirrit',
-                                  fontSize: 14,
-                                  color: Theme.of(context).highlightColor,
-                                ),
-                                checkmarkColor:
-                                    Theme.of(context).highlightColor,
-                                onSelected: (isSelected) {
-                                  setState(() {
-                                    oneTimeBill = !oneTimeBill;
-                                  });
-                                },
-                              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 15,
+                        right: 15,
+                        top: 10,
+                        bottom: 0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            selectedLanguage == 1
+                                ? 'Create bill request'
+                                : 'রশিদ তৈরি',
+                            style: TextStyle(
+                              fontFamily: 'Roboto Condensed, Ador Noirrit',
+                              fontSize: 22,
+                              color: Theme.of(context).highlightColor,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    oneTimeBill = false;
-                                  });
-                                },
-                                child: Chip(
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            splashRadius: 25,
+                            icon: Icon(
+                              Icons.close_rounded,
+                              color: Theme.of(context).highlightColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: FilterChip(
                                   label: Text(
                                     selectedLanguage == 1
-                                        ? 'Regular bill'
-                                        : 'সার্বজনীন বিল',
+                                        ? 'One Time Bill'
+                                        : 'এককালীন বিল',
                                     textAlign: TextAlign.center,
                                   ),
+                                  showCheckmark: false,
                                   backgroundColor:
                                       Theme.of(context).primaryColorDark,
+                                  selected: oneTimeBill,
+                                  selectedColor:
+                                      Theme.of(context).primaryColorDark,
                                   elevation: 0,
+                                  pressElevation: 0,
                                   side: BorderSide(
-                                    color: oneTimeBill == false
+                                    color: oneTimeBill == true
                                         ? Theme.of(context).highlightColor
                                         : Theme.of(context).primaryColor,
-                                    width: 2,
+                                    width: 0,
                                   ),
                                   labelStyle: TextStyle(
                                     fontFamily:
@@ -452,14 +646,116 @@ class _DashboardState extends State<Dashboard> {
                                     fontSize: 14,
                                     color: Theme.of(context).highlightColor,
                                   ),
+                                  checkmarkColor:
+                                      Theme.of(context).highlightColor,
+                                  onSelected: (isSelected) {
+                                    setState(() {
+                                      oneTimeBill = !oneTimeBill;
+                                    });
+                                  },
                                 ),
                               ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      oneTimeBill = false;
+                                    });
+                                  },
+                                  child: Chip(
+                                    label: Text(
+                                      selectedLanguage == 1
+                                          ? 'Regular bill'
+                                          : 'সার্বজনীন বিল',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    backgroundColor:
+                                        Theme.of(context).primaryColorDark,
+                                    elevation: 0,
+                                    side: BorderSide(
+                                      color: oneTimeBill == false
+                                          ? Theme.of(context).highlightColor
+                                          : Theme.of(context).primaryColor,
+                                      width: 0,
+                                    ),
+                                    labelStyle: TextStyle(
+                                      fontFamily:
+                                          'Roboto Condensed, Ador Noirrit',
+                                      fontSize: 14,
+                                      color: Theme.of(context).highlightColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Visibility(
+                            visible: oneTimeBill == true,
+                            child: Padding(
+                              padding: EdgeInsets.all(5),
+                              child: TextField(
+                                style: TextStyle(
+                                  color: Theme.of(context).highlightColor,
+                                  fontFamily: 'Roboto Condensed',
+                                  fontSize: 18,
+                                ),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      width: 4,
+                                      color: Theme.of(context).primaryColorDark,
+                                      style: BorderStyle.solid,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      width: 4,
+                                      color: Theme.of(context).primaryColorDark,
+                                      style: BorderStyle.solid,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      width: 4,
+                                      color: Theme.of(context).highlightColor,
+                                      style: BorderStyle.solid,
+                                    ),
+                                  ),
+                                  hintText: selectedLanguage == 1
+                                      ? 'Biller ID or Phone (Optional)'
+                                      : 'বিলদাতার আইডি বা ফোন (অনাবশ্যক)',
+                                  hintStyle: TextStyle(
+                                    color: Theme.of(context).hintColor,
+                                    fontFamily:
+                                        'Roboto Condensed, Ador Noirrit',
+                                    fontSize: 18,
+                                  ),
+                                  counterText: "",
+                                  labelText: selectedLanguage == 1
+                                      ? "Biller ID or Phone"
+                                      : "বিলদাতার আইডি বা ফোন",
+                                  labelStyle: TextStyle(
+                                      fontFamily:
+                                          'Roboto Condensed, Ador Noirrit',
+                                      color: Theme.of(context).highlightColor),
+                                ),
+                                cursorColor: Theme.of(context).highlightColor,
+                                maxLength: 15,
+                                keyboardType: TextInputType.number,
+                                autocorrect: false,
+                                onChanged: (value) {
+                                  setState(() {
+                                    billerid = value;
+                                  });
+                                },
+                              ),
                             ),
-                          ],
-                        ),
-                        Visibility(
-                          visible: oneTimeBill == true,
-                          child: Padding(
+                          ),
+                          Padding(
                             padding: EdgeInsets.all(5),
                             child: TextField(
                               style: TextStyle(
@@ -492,154 +788,122 @@ class _DashboardState extends State<Dashboard> {
                                     style: BorderStyle.solid,
                                   ),
                                 ),
-                                hintText: 'Biller ID or Phone (Optional)',
+                                hintText:
+                                    selectedLanguage == 1 ? 'Amount' : 'পরিমাণ',
                                 hintStyle: TextStyle(
                                   color: Theme.of(context).hintColor,
-                                  fontFamily: 'Roboto Condensed',
+                                  fontFamily: 'Roboto Condensed, Ador Noirrit',
                                   fontSize: 18,
                                 ),
                                 counterText: "",
-                                labelText: "Biller ID or Phone",
+                                labelText:
+                                    selectedLanguage == 1 ? 'Amount' : 'পরিমাণ',
                                 labelStyle: TextStyle(
-                                    fontFamily: 'Roboto Condensed',
+                                    fontFamily:
+                                        'Roboto Condensed, Ador Noirrit',
                                     color: Theme.of(context).highlightColor),
                               ),
                               cursorColor: Theme.of(context).highlightColor,
-                              maxLength: 15,
+                              maxLength: 6,
                               keyboardType: TextInputType.number,
                               autocorrect: false,
+                              onChanged: (value) {
+                                setState(() {
+                                  amount = value;
+                                });
+                              },
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(5),
-                          child: TextField(
-                            style: TextStyle(
-                              color: Theme.of(context).highlightColor,
-                              fontFamily: 'Roboto Condensed',
-                              fontSize: 18,
-                            ),
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                  width: 4,
-                                  color: Theme.of(context).primaryColorDark,
-                                  style: BorderStyle.solid,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                  width: 4,
-                                  color: Theme.of(context).primaryColorDark,
-                                  style: BorderStyle.solid,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                  width: 4,
-                                  color: Theme.of(context).highlightColor,
-                                  style: BorderStyle.solid,
-                                ),
-                              ),
-                              hintText: 'Amount',
-                              hintStyle: TextStyle(
-                                color: Theme.of(context).hintColor,
-                                fontFamily: 'Roboto Condensed',
-                                fontSize: 18,
-                              ),
-                              counterText: "",
-                              labelText: "Amount",
-                              labelStyle: TextStyle(
-                                  fontFamily: 'Roboto Condensed',
-                                  color: Theme.of(context).highlightColor),
-                            ),
-                            cursorColor: Theme.of(context).highlightColor,
-                            maxLength: 6,
-                            keyboardType: TextInputType.number,
-                            autocorrect: false,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(5),
-                          child: TextField(
-                            style: TextStyle(
-                              color: Theme.of(context).highlightColor,
-                              fontFamily: 'Roboto Condensed',
-                              fontSize: 18,
-                            ),
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                  width: 4,
-                                  color: Theme.of(context).primaryColorDark,
-                                  style: BorderStyle.solid,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                  width: 4,
-                                  color: Theme.of(context).primaryColorDark,
-                                  style: BorderStyle.solid,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                  width: 4,
-                                  color: Theme.of(context).highlightColor,
-                                  style: BorderStyle.solid,
-                                ),
-                              ),
-                              hintText: 'Discription',
-                              hintStyle: TextStyle(
-                                color: Theme.of(context).hintColor,
-                                fontFamily: 'Roboto Condensed',
-                                fontSize: 18,
-                              ),
-                              labelText: "Discription",
-                              labelStyle: TextStyle(
-                                fontFamily: 'Roboto Condensed',
-                                color: Theme.of(context).highlightColor,
-                              ),
-                              counterText: "",
-                            ),
-                            cursorColor: Theme.of(context).highlightColor,
-                            maxLength: 90,
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          child: ElevatedButton(
-                            onPressed: _addNewBill,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Theme.of(context).primaryColorLight,
-                              elevation: 0,
-                              padding: EdgeInsets.all(20),
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(8), // <-- Radius
-                              ),
-                            ),
-                            child: Text(
-                              'Create Bill',
+                          Padding(
+                            padding: EdgeInsets.all(5),
+                            child: TextField(
                               style: TextStyle(
                                 color: Theme.of(context).highlightColor,
-                                fontSize: 18,
                                 fontFamily: 'Roboto Condensed',
+                                fontSize: 18,
+                              ),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    width: 4,
+                                    color: Theme.of(context).primaryColorDark,
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    width: 4,
+                                    color: Theme.of(context).primaryColorDark,
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    width: 4,
+                                    color: Theme.of(context).highlightColor,
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
+                                hintText: selectedLanguage == 1
+                                    ? 'Discription'
+                                    : 'বিবরণ',
+                                hintStyle: TextStyle(
+                                  color: Theme.of(context).hintColor,
+                                  fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                  fontSize: 18,
+                                ),
+                                labelText: selectedLanguage == 1
+                                    ? "Discription"
+                                    : "বিবরণ",
+                                labelStyle: TextStyle(
+                                  fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                  color: Theme.of(context).highlightColor,
+                                ),
+                                counterText: "",
+                              ),
+                              cursorColor: Theme.of(context).highlightColor,
+                              maxLength: 90,
+                              onChanged: (value) {
+                                setState(() {
+                                  description = value;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            child: ElevatedButton(
+                              onPressed: _addNewBill,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Theme.of(context).primaryColorLight,
+                                elevation: 0,
+                                padding: EdgeInsets.all(20),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(8), // <-- Radius
+                                ),
+                              ),
+                              child: Text(
+                                selectedLanguage == 1
+                                    ? 'Create Bill'
+                                    : 'প্রস্তুত',
+                                style: TextStyle(
+                                  color: Theme.of(context).highlightColor,
+                                  fontSize: 18,
+                                  fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           });
@@ -648,140 +912,115 @@ class _DashboardState extends State<Dashboard> {
 
   void _addNewBill() async {
     final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      // Name, email address, and profile photo URL
-      final phoneNumber = user.phoneNumber;
+    if (user != null && amount.length >= 1 && description.length >= 1) {
       var url =
-          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/addnewbill?token=$token&phone=$phoneNumber';
+          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/addnewbill?token=$token&billerid=$billerid&amount=$amount&description=$description&onetimebill=$oneTimeBill';
       final uri = Uri.parse(url);
-
       final response = await http.get(uri);
       final body = response.body;
       final json = jsonDecode(body);
-
-      showDialog(
+      if (json['error'] == 0) {
+        showDialog(
           context: context,
           builder: (context) {
             return Scaffold(
               backgroundColor: Theme.of(context).primaryColorDark,
-              body: Container(
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Text(
-                        'Bill Status',
-                        style: TextStyle(
-                          fontFamily: 'Roboto Condensed',
-                          color: Theme.of(context).highlightColor,
-                          fontSize: 22,
+              body: SingleChildScrollView(
+                child: Container(
+                  height: MediaQuery.of(context).size.height - 20,
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Text(
+                          selectedLanguage == 1 ? 'Bill Status' : 'বিল অবস্থা',
+                          style: TextStyle(
+                            fontFamily: 'Roboto Condensed, Ador Noirrit',
+                            color: Theme.of(context).highlightColor,
+                            fontSize: 22,
+                          ),
                         ),
                       ),
-                    ),
-                    QrImage(
-                      data: "1234567890",
-                      version: QrVersions.auto,
-                      size: 200.0,
-                      padding: EdgeInsets.all(20),
-                      foregroundColor: Theme.of(context).highlightColor,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Text(
-                        'Bill Created Successfully',
-                        style: TextStyle(
-                          fontFamily: 'Roboto Condensed',
-                          color: Theme.of(context).highlightColor,
-                          fontSize: 18,
+                      QrImage(
+                        data: json['link'],
+                        version: QrVersions.auto,
+                        size: 200.0,
+                        padding: EdgeInsets.all(20),
+                        foregroundColor: Theme.of(context).highlightColor,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Text(
+                          selectedLanguage == 1
+                              ? 'Bill Created Successfully'
+                              : 'বিল সফলভাবে প্রস্তুত হয়েছে',
+                          style: TextStyle(
+                            fontFamily: 'Roboto Condensed, Ador Noirrit',
+                            color: Theme.of(context).highlightColor,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(30),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColorDark,
-                        borderRadius: BorderRadius.circular(15),
+                      Container(
+                        padding: EdgeInsets.all(30),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColorDark,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            for (var item in json['info'])
+                              Text(
+                                item.keys.toList().first +
+                                    ' : ' +
+                                    item.values.toList().first,
+                                style: TextStyle(
+                                  fontFamily: 'Roboto Condensed',
+                                  fontSize: 16,
+                                  color: Theme.of(context).highlightColor,
+                                ),
+                              )
+                          ],
+                        ),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          for (var item in json['info'])
-                            Text(
-                              item.keys.toList().first +
-                                  ' : ' +
-                                  item.values.toList().first,
+                      GestureDetector(
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: json['link']));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Chip(
+                            backgroundColor:
+                                Theme.of(context).primaryColorLight,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              side: BorderSide(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                            label: Text(
+                              json['link'],
                               style: TextStyle(
                                 fontFamily: 'Roboto Condensed',
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: Theme.of(context).highlightColor,
                               ),
-                            )
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Clipboard.setData(ClipboardData(text: json['link']));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Chip(
-                          backgroundColor: Theme.of(context).primaryColorLight,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            side: BorderSide(
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          label: Text(
-                            json['link'],
-                            style: TextStyle(
-                              fontFamily: 'Roboto Condensed',
-                              fontSize: 14,
-                              color: Theme.of(context).highlightColor,
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.all(5),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColorDark,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          width: 100,
-                          height: 30,
-                          child: Text(
-                            "Share",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'Roboto Condensed, Ador Noirrit',
-                              color: Theme.of(context).highlightColor,
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Home(),
-                              ),
-                            );
-                          },
-                          child: Container(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
                             margin: EdgeInsets.all(5),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
@@ -791,7 +1030,7 @@ class _DashboardState extends State<Dashboard> {
                             width: 100,
                             height: 30,
                             child: Text(
-                              "Dashboard",
+                              selectedLanguage == 1 ? "Share" : "ভাগাভাগি",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: 'Roboto Condensed, Ador Noirrit',
@@ -799,14 +1038,96 @@ class _DashboardState extends State<Dashboard> {
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const Home(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(5),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColorDark,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              width: 100,
+                              height: 30,
+                              child: Text(
+                                selectedLanguage == 1
+                                    ? "Dashboard"
+                                    : "ড্যাশবোর্ড",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                  color: Theme.of(context).highlightColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             );
-          });
+          },
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Pin(),
+          ),
+        );
+      }
+    } else if (amount.length == 0 || description.length == 0) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Scaffold(
+              backgroundColor: Color.fromARGB(183, 0, 0, 0),
+              body: Center(
+                child: Container(
+                  margin: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(25),
+                  constraints: BoxConstraints(maxWidth: 350),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Text(
+                    selectedLanguage == 1
+                        ? 'Amount and description of bill can not be null'
+                        : 'অলিখিত বিলের পরিমাণ ও হেতু অগ্রহণযোগ্য',
+                    style: TextStyle(
+                      fontFamily: 'Roboto Condensed, Ador Noirrit',
+                      fontSize: 14,
+                      fontStyle: FontStyle.italic,
+                      color: Theme.of(context).highlightColor,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SplashScreen(),
+        ),
+      );
     }
   }
 }
