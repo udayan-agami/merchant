@@ -45,6 +45,7 @@ ThemeData _themeOne = ThemeData(
   hintColor: const Color(0xFFACACAC),
   indicatorColor: const Color(0xFF4D850D),
   splashColor: const Color(0xFFC4C4C4),
+  primarySwatch: Colors.grey,
 );
 ThemeData _themeTwo = ThemeData(
   primaryColor: const Color(0xFFFFD600),
@@ -54,16 +55,17 @@ ThemeData _themeTwo = ThemeData(
   hintColor: const Color(0xFF4C4000),
   indicatorColor: Colors.green,
   splashColor: const Color(0xFFCCAb00),
+  primarySwatch: Colors.amber,
 );
 ThemeData _themeThree = ThemeData(
-  primaryColor: const Color(0xFF181D5A),
-  primaryColorDark: const Color(0xFF050933),
-  primaryColorLight: const Color(0xFF434B96),
-  highlightColor: Colors.white,
-  hintColor: Colors.grey,
-  indicatorColor: Colors.lightGreenAccent,
-  splashColor: const Color(0xFF434B96),
-);
+    primaryColor: const Color(0xFF181D5A),
+    primaryColorDark: const Color(0xFF050933),
+    primaryColorLight: const Color(0xFF434B96),
+    highlightColor: Colors.white,
+    hintColor: Colors.grey,
+    indicatorColor: Colors.lightGreenAccent,
+    splashColor: const Color(0xFF434B96),
+    primarySwatch: Colors.indigo);
 ThemeData _themeFour = ThemeData(
   primaryColor: const Color(0xFF2C3E50),
   primaryColorDark: const Color(0xFF233240),
@@ -72,6 +74,7 @@ ThemeData _themeFour = ThemeData(
   hintColor: const Color(0xFFC0C5CB),
   indicatorColor: Colors.green,
   splashColor: const Color(0xFF808B96),
+  primarySwatch: Colors.blueGrey,
 );
 
 class MyApp extends StatelessWidget {

@@ -1,8 +1,13 @@
-//import 'dart:html';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:hive/hive.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import './Splashscreen.dart';
+import './pin.dart';
 
 var box = Hive.box('agamiMerchant');
 
@@ -15,65 +20,32 @@ class History extends StatefulWidget {
 
 class _HistoryState extends State<History> {
   var selectedLanguage = box.get('language', defaultValue: 1);
+  var _isLoading = false;
+  var token = box.get('token', defaultValue: 'null');
   Map chips = {
-    "paid": true,
-    "pending": true,
-    "postponed": true,
-    "today": false,
-    "week": true,
-    "month": false,
+    "payments": true,
+    "bills": true,
+    "withdraws": true,
+    "from": "",
+    "to": "",
     "asc": false,
   };
-  List transactionList = [
-    {
-      "name": "A. Basir",
-      "status": "Withdraw",
-      "amount": "25000",
-      "trx": "D5G46G84W6W5"
-    },
-    {
-      "name": "A. Basir",
-      "status": "Withdraw",
-      "amount": "25000",
-      "trx": "D5G46G84W6W5"
-    },
-    {
-      "name": "A. Basir",
-      "status": "Withdraw",
-      "amount": "25000",
-      "trx": "D5G46G84W6W5"
-    },
-    {
-      "name": "A. Basir",
-      "status": "Withdraw",
-      "amount": "25000",
-      "trx": "D5G46G84W6W5"
-    },
-    {
-      "name": "A. Basir",
-      "status": "Withdraw",
-      "amount": "25000",
-      "trx": "D5G46G84W6W5"
-    },
-    {
-      "name": "A. Basir",
-      "status": "Withdraw",
-      "amount": "25000",
-      "trx": "D5G46G84W6W5"
-    },
-    {
-      "name": "A. Basir",
-      "status": "Withdraw",
-      "amount": "25000",
-      "trx": "D5G46G84W6W5"
-    },
-    {
-      "name": "A. Basir",
-      "status": "Withdraw",
-      "amount": "25000",
-      "trx": "D5G46G84W6W5"
-    },
-  ];
+  Map historyCard = {
+    "payments": 0,
+    "bills": 0,
+    "withdraws": 0,
+  };
+  List transactionList = [];
+
+  @override
+  void initState() {
+    _handleRefresh();
+    chips['from'] =
+        '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}';
+    chips['to'] =
+        '${DateTime.now().subtract(const Duration(days: 30)).day}-${DateTime.now().subtract(const Duration(days: 30)).month}-${DateTime.now().subtract(const Duration(days: 30)).year}';
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,106 +99,161 @@ class _HistoryState extends State<History> {
                         ),
                       ),
 
-                      //bill summary
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColorDark,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      Visibility(
+                        visible: _isLoading,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorDark,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
                             children: [
-                              //qty of paid bill
-                              Column(
-                                children: [
-                                  Text(
-                                    selectedLanguage == 1 ? 'Paid' : 'পরিশোধিত',
-                                    style: TextStyle(
-                                      color: Theme.of(context).highlightColor,
-                                      fontFamily:
-                                          'Roboto Condensed, Ador Noirrit',
-                                      fontSize: 15,
+                              Shimmer.fromColors(
+                                baseColor: Theme.of(context).primaryColorDark,
+                                highlightColor:
+                                    Theme.of(context).primaryColorLight,
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColorDark,
+                                    borderRadius: BorderRadius.circular(
+                                      50,
                                     ),
                                   ),
-                                  Text(
-                                    '526',
-                                    style: TextStyle(
-                                      color: Theme.of(context).hintColor,
-                                      fontFamily: 'Roboto Condensed',
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              //divider
-                              SizedBox(
-                                height: 30,
-                                child: VerticalDivider(
-                                  color: Theme.of(context).primaryColorLight,
-                                  thickness: 0.2,
+                                  height: 10,
+                                  width: double.infinity,
                                 ),
                               ),
-                              //qty of unpaid bill
-                              Column(
-                                children: [
-                                  Text(
-                                    selectedLanguage == 1
-                                        ? 'Pending'
-                                        : 'প্রক্রিয়াধীন',
-                                    style: TextStyle(
-                                      color: Theme.of(context).highlightColor,
-                                      fontFamily:
-                                          'Roboto Condensed, Ador Noirrit',
-                                      fontSize: 15,
+                              Shimmer.fromColors(
+                                baseColor: Theme.of(context).primaryColorDark,
+                                highlightColor:
+                                    Theme.of(context).primaryColorLight,
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColorDark,
+                                    borderRadius: BorderRadius.circular(
+                                      50,
                                     ),
                                   ),
-                                  Text(
-                                    '4',
-                                    style: TextStyle(
-                                      color: Theme.of(context).hintColor,
-                                      fontFamily: 'Roboto Condensed',
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              //divider
-                              SizedBox(
-                                height: 30,
-                                child: VerticalDivider(
-                                  color: Theme.of(context).primaryColorLight,
-                                  thickness: 0.2,
+                                  height: 8,
+                                  width: double.infinity,
                                 ),
-                              ),
-                              //qty of cenceled bill
-                              Column(
-                                children: [
-                                  Text(
-                                    selectedLanguage == 1
-                                        ? 'Postponed'
-                                        : 'বাতিলকৃত',
-                                    style: TextStyle(
-                                      color: Theme.of(context).highlightColor,
-                                      fontFamily:
-                                          'Roboto Condensed, Ador Noirrit',
-                                      fontSize: 15,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      //bill summary
+                      Visibility(
+                        visible: _isLoading == false,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorDark,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                //qty of payments bill
+                                Column(
+                                  children: [
+                                    Text(
+                                      selectedLanguage == 1
+                                          ? 'Payments'
+                                          : 'আদায়',
+                                      style: TextStyle(
+                                        color: Theme.of(context).highlightColor,
+                                        fontFamily:
+                                            'Roboto Condensed, Ador Noirrit',
+                                        fontSize: 15,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    '25',
-                                    style: TextStyle(
-                                      color: Theme.of(context).hintColor,
-                                      fontFamily: 'Roboto Condensed',
-                                      fontSize: 12,
+                                    Text(
+                                      '526',
+                                      style: TextStyle(
+                                        color: Theme.of(context).hintColor,
+                                        fontFamily: 'Roboto Condensed',
+                                        fontSize: 12,
+                                      ),
                                     ),
+                                  ],
+                                ),
+
+                                //divider
+                                SizedBox(
+                                  height: 30,
+                                  child: VerticalDivider(
+                                    color: Theme.of(context).primaryColorLight,
+                                    thickness: 0.2,
                                   ),
-                                ],
-                              ),
-                            ]),
+                                ),
+                                //qty of unpayments bill
+                                Column(
+                                  children: [
+                                    Text(
+                                      selectedLanguage == 1 ? 'Bills' : 'রশিদ',
+                                      style: TextStyle(
+                                        color: Theme.of(context).highlightColor,
+                                        fontFamily:
+                                            'Roboto Condensed, Ador Noirrit',
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    Text(
+                                      '4',
+                                      style: TextStyle(
+                                        color: Theme.of(context).hintColor,
+                                        fontFamily: 'Roboto Condensed',
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                //divider
+                                SizedBox(
+                                  height: 30,
+                                  child: VerticalDivider(
+                                    color: Theme.of(context).primaryColorLight,
+                                    thickness: 0.2,
+                                  ),
+                                ),
+                                //qty of cenceled bill
+                                Column(
+                                  children: [
+                                    Text(
+                                      selectedLanguage == 1
+                                          ? 'Withdraws'
+                                          : 'উত্তোলন',
+                                      style: TextStyle(
+                                        color: Theme.of(context).highlightColor,
+                                        fontFamily:
+                                            'Roboto Condensed, Ador Noirrit',
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    Text(
+                                      '25',
+                                      style: TextStyle(
+                                        color: Theme.of(context).hintColor,
+                                        fontFamily: 'Roboto Condensed',
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ]),
+                        ),
                       )
                     ],
                   ),
@@ -241,7 +268,7 @@ class _HistoryState extends State<History> {
                   ),
                   child: Column(
                     children: [
-                      // paid pending postponed
+                      // payments bills withdraws
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -249,18 +276,18 @@ class _HistoryState extends State<History> {
                             padding: const EdgeInsets.all(5),
                             child: FilterChip(
                               label: Text(
-                                selectedLanguage == 1 ? 'Paid' : 'পরিশোধিত',
+                                selectedLanguage == 1 ? 'Payments' : 'আদায়',
                                 textAlign: TextAlign.center,
                               ),
                               showCheckmark: false,
                               backgroundColor:
                                   Theme.of(context).primaryColorDark,
-                              selected: chips['paid'],
+                              selected: chips['payments'],
                               selectedColor: Theme.of(context).primaryColorDark,
                               elevation: 0,
                               pressElevation: 0,
                               side: BorderSide(
-                                color: chips['paid']
+                                color: chips['payments']
                                     ? Theme.of(context).highlightColor
                                     : Theme.of(context).primaryColorDark,
                                 width: 2,
@@ -273,7 +300,7 @@ class _HistoryState extends State<History> {
                               checkmarkColor: Theme.of(context).highlightColor,
                               onSelected: (isSelected) {
                                 setState(() {
-                                  chips['paid'] = !chips['paid'];
+                                  chips['payments'] = !chips['payments'];
                                 });
                               },
                             ),
@@ -282,20 +309,18 @@ class _HistoryState extends State<History> {
                             padding: const EdgeInsets.all(5),
                             child: FilterChip(
                               label: Text(
-                                selectedLanguage == 1
-                                    ? 'Pending'
-                                    : 'প্রক্রিয়াধীন',
+                                selectedLanguage == 1 ? 'Bills' : 'রশিদ',
                                 textAlign: TextAlign.center,
                               ),
                               showCheckmark: false,
                               backgroundColor:
                                   Theme.of(context).primaryColorDark,
-                              selected: chips['pending'],
+                              selected: chips['bills'],
                               selectedColor: Theme.of(context).primaryColorDark,
                               elevation: 0,
                               pressElevation: 0,
                               side: BorderSide(
-                                color: chips['pending']
+                                color: chips['bills']
                                     ? Theme.of(context).highlightColor
                                     : Theme.of(context).primaryColor,
                                 width: 2,
@@ -308,7 +333,7 @@ class _HistoryState extends State<History> {
                               checkmarkColor: Theme.of(context).highlightColor,
                               onSelected: (isSelected) {
                                 setState(() {
-                                  chips['pending'] = !chips['pending'];
+                                  chips['bills'] = !chips['bills'];
                                 });
                               },
                             ),
@@ -318,19 +343,19 @@ class _HistoryState extends State<History> {
                             child: FilterChip(
                               label: Text(
                                 selectedLanguage == 1
-                                    ? 'Postponed'
-                                    : 'বাতিলকৃত',
+                                    ? 'Widthdraws'
+                                    : 'উত্তোলন',
                                 textAlign: TextAlign.center,
                               ),
                               showCheckmark: false,
                               backgroundColor:
                                   Theme.of(context).primaryColorDark,
-                              selected: chips['postponed'],
+                              selected: chips['withdraws'],
                               selectedColor: Theme.of(context).primaryColorDark,
                               elevation: 0,
                               pressElevation: 0,
                               side: BorderSide(
-                                  color: chips['postponed']
+                                  color: chips['withdraws']
                                       ? Theme.of(context).highlightColor
                                       : Theme.of(context).primaryColorDark,
                                   width: 2,
@@ -343,7 +368,7 @@ class _HistoryState extends State<History> {
                               checkmarkColor: Theme.of(context).highlightColor,
                               onSelected: (isSelected) {
                                 setState(() {
-                                  chips['postponed'] = !chips['postponed'];
+                                  chips['withdraws'] = !chips['withdraws'];
                                 });
                               },
                             ),
@@ -361,109 +386,50 @@ class _HistoryState extends State<History> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(5),
-                            child: FilterChip(
-                              label: const Text(
-                                'July',
-                                textAlign: TextAlign.center,
+                            child: GestureDetector(
+                              onTap: _pickFromDate,
+                              child: Chip(
+                                label: Text(
+                                  chips['from'],
+                                  textAlign: TextAlign.center,
+                                ),
+                                backgroundColor:
+                                    Theme.of(context).primaryColorDark,
+                                elevation: 0,
+                                side: BorderSide(
+                                    color: Theme.of(context).highlightColor,
+                                    width: 2,
+                                    style: BorderStyle.solid),
+                                labelStyle: TextStyle(
+                                  fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                  fontSize: 14,
+                                  color: Theme.of(context).highlightColor,
+                                ),
                               ),
-                              showCheckmark: false,
-                              backgroundColor:
-                                  Theme.of(context).primaryColorDark,
-                              selected: chips['month'],
-                              selectedColor: Theme.of(context).primaryColorDark,
-                              elevation: 0,
-                              pressElevation: 0,
-                              side: BorderSide(
-                                  color: chips['month']
-                                      ? Theme.of(context).highlightColor
-                                      : Theme.of(context).primaryColorDark,
-                                  width: 2,
-                                  style: BorderStyle.solid),
-                              labelStyle: TextStyle(
-                                fontFamily: 'Roboto Condensed, Ador Noirrit',
-                                fontSize: 14,
-                                color: Theme.of(context).highlightColor,
-                              ),
-                              checkmarkColor: Theme.of(context).highlightColor,
-                              onSelected: (isSelected) {
-                                setState(() {
-                                  chips['today'] = false;
-                                  chips['week'] = false;
-                                  chips['month'] = true;
-                                });
-                              },
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(5),
-                            child: FilterChip(
-                              label: Text(
-                                selectedLanguage == 1
-                                    ? 'Last week'
-                                    : 'বিগত সপ্তাহ',
-                                textAlign: TextAlign.center,
+                            child: GestureDetector(
+                              onTap: _pickToDate,
+                              child: Chip(
+                                label: Text(
+                                  chips['to'],
+                                  textAlign: TextAlign.center,
+                                ),
+                                backgroundColor:
+                                    Theme.of(context).primaryColorDark,
+                                elevation: 0,
+                                side: BorderSide(
+                                    color: Theme.of(context).highlightColor,
+                                    width: 2,
+                                    style: BorderStyle.solid),
+                                labelStyle: TextStyle(
+                                  fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                  fontSize: 14,
+                                  color: Theme.of(context).highlightColor,
+                                ),
                               ),
-                              showCheckmark: false,
-                              backgroundColor:
-                                  Theme.of(context).primaryColorDark,
-                              selected: chips['week'],
-                              selectedColor: Theme.of(context).primaryColorDark,
-                              elevation: 0,
-                              pressElevation: 0,
-                              side: BorderSide(
-                                  color: chips['week']
-                                      ? Theme.of(context).highlightColor
-                                      : Theme.of(context).primaryColorDark,
-                                  width: 2,
-                                  style: BorderStyle.solid),
-                              labelStyle: TextStyle(
-                                fontFamily: 'Roboto Condensed, Ador Noirrit',
-                                fontSize: 14,
-                                color: Theme.of(context).highlightColor,
-                              ),
-                              checkmarkColor: Theme.of(context).highlightColor,
-                              onSelected: (isSelected) {
-                                setState(() {
-                                  chips['today'] = false;
-                                  chips['week'] = true;
-                                  chips['month'] = false;
-                                });
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: FilterChip(
-                              label: Text(
-                                selectedLanguage == 1 ? 'Today' : 'আজ',
-                                textAlign: TextAlign.center,
-                              ),
-                              showCheckmark: false,
-                              backgroundColor:
-                                  Theme.of(context).primaryColorDark,
-                              selected: chips['today'],
-                              selectedColor: Theme.of(context).primaryColorDark,
-                              elevation: 0,
-                              pressElevation: 0,
-                              side: BorderSide(
-                                  color: chips['today']
-                                      ? Theme.of(context).highlightColor
-                                      : Theme.of(context).primaryColorDark,
-                                  width: 2,
-                                  style: BorderStyle.solid),
-                              labelStyle: TextStyle(
-                                fontFamily: 'Roboto Condensed, Ador Noirrit',
-                                fontSize: 14,
-                                color: Theme.of(context).highlightColor,
-                              ),
-                              checkmarkColor: Theme.of(context).highlightColor,
-                              onSelected: (isSelected) {
-                                setState(() {
-                                  chips['today'] = true;
-                                  chips['week'] = false;
-                                  chips['month'] = false;
-                                });
-                              },
                             ),
                           ),
                         ],
@@ -538,6 +504,221 @@ class _HistoryState extends State<History> {
                         ],
                       )
                     ],
+                  ),
+                ),
+                Visibility(
+                  visible: _isLoading,
+                  child: Container(
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Shimmer.fromColors(
+                          baseColor: Theme.of(context).primaryColor,
+                          highlightColor: Theme.of(context).primaryColorLight,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            height: 12,
+                            width: double.infinity,
+                          ),
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: Theme.of(context).primaryColor,
+                          highlightColor: Theme.of(context).primaryColorLight,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            height: 12,
+                            width: MediaQuery.of(context).size.width * 0.7,
+                          ),
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: Theme.of(context).primaryColor,
+                          highlightColor: Theme.of(context).primaryColorLight,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            height: 12,
+                            width: double.infinity,
+                          ),
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: Theme.of(context).primaryColor,
+                          highlightColor: Theme.of(context).primaryColorLight,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            height: 12,
+                            width: MediaQuery.of(context).size.width * 0.7,
+                          ),
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: Theme.of(context).primaryColor,
+                          highlightColor: Theme.of(context).primaryColorLight,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            height: 12,
+                            width: double.infinity,
+                          ),
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: Theme.of(context).primaryColor,
+                          highlightColor: Theme.of(context).primaryColorLight,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            height: 12,
+                            width: MediaQuery.of(context).size.width * 0.7,
+                          ),
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: Theme.of(context).primaryColor,
+                          highlightColor: Theme.of(context).primaryColorLight,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            height: 12,
+                            width: double.infinity,
+                          ),
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: Theme.of(context).primaryColor,
+                          highlightColor: Theme.of(context).primaryColorLight,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            height: 12,
+                            width: MediaQuery.of(context).size.width * 0.7,
+                          ),
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: Theme.of(context).primaryColor,
+                          highlightColor: Theme.of(context).primaryColorLight,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            height: 12,
+                            width: double.infinity,
+                          ),
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: Theme.of(context).primaryColor,
+                          highlightColor: Theme.of(context).primaryColorLight,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            height: 12,
+                            width: MediaQuery.of(context).size.width * 0.7,
+                          ),
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: Theme.of(context).primaryColor,
+                          highlightColor: Theme.of(context).primaryColorLight,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            height: 12,
+                            width: double.infinity,
+                          ),
+                        ),
+                        Shimmer.fromColors(
+                          baseColor: Theme.of(context).primaryColor,
+                          highlightColor: Theme.of(context).primaryColorLight,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(
+                                50,
+                              ),
+                            ),
+                            height: 12,
+                            width: MediaQuery.of(context).size.width * 0.7,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Visibility(
@@ -637,7 +818,74 @@ class _HistoryState extends State<History> {
     );
   }
 
+  void _pickFromDate() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    ).then((value) {
+      setState(() {
+        if (value != null) {
+          chips['from'] =
+              '${value.day.toString()}-${value.month.toString()}-${value.year.toString()}';
+        }
+      });
+    });
+  }
+
+  void _pickToDate() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    ).then((value) {
+      setState(() {
+        if (value != null) {
+          chips['to'] =
+              '${value.day.toString()}-${value.month.toString()}-${value.year.toString()}';
+        }
+      });
+    });
+  }
+
   Future<void> _handleRefresh() async {
-    return await Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      _isLoading = true;
+    });
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      var url =
+          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/today?token=$token';
+      final uri = Uri.parse(url);
+      final response = await http.get(uri);
+      final body = response.body;
+      final json = jsonDecode(body);
+      if (json['error'] == 0) {
+        box.put('token', json['token']);
+        setState(() {
+          _isLoading = false;
+          historyCard['payments'] = json['payments'];
+          historyCard['bills'] = json['bills'];
+          historyCard['withdraws'] = json['withdraws'];
+          transactionList = json['transactions'];
+        });
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Pin(),
+          ),
+        );
+      }
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SplashScreen(),
+        ),
+      );
+    }
   }
 }

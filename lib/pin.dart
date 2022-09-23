@@ -1,12 +1,9 @@
 import 'dart:convert';
-
 import 'package:agami/home.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 var box = Hive.box('agamiMerchant');
 
@@ -20,10 +17,11 @@ class Pin extends StatefulWidget {
 class _PinState extends State<Pin> {
   var enteredPin = '';
   var pinLabel = 'Enter PIN';
+  var selectedLanguage = box.get('language', defaultValue: 1);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 1, 19, 59),
+      backgroundColor: Theme.of(context).primaryColorDark,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,8 +134,8 @@ class _PinState extends State<Pin> {
                         child: Chip(
                           label: Text(
                             pinLabel,
-                            style: const TextStyle(
-                              color: Color.fromARGB(255, 12, 42, 109),
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
                               fontFamily: 'Roboto Condensed',
                               fontSize: 14,
                             ),
