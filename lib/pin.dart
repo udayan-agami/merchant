@@ -26,6 +26,7 @@ class _PinState extends State<Pin> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Text('data'),
             Flexible(
               child: Container(
                 decoration: const BoxDecoration(
