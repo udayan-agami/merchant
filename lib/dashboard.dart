@@ -24,8 +24,9 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   var selectedLanguage = box.get('language', defaultValue: 1);
-  final List transactionList = [];
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  List transactionList = [];
+  List<double> weekdata = [0, 0, 0, 0, 0, 0, 0];
+  List weekdates = [];
   var oneTimeBill = true;
   var billerid = '';
   var description = '';
@@ -35,9 +36,8 @@ class _DashboardState extends State<Dashboard> {
   var balance = '';
   var growth = '';
   var comparison = '';
-  var pending = '';
-  var paid = '';
-  List weakdata = [];
+  var today = '';
+  var yesterday = '';
   String? avatar = FirebaseAuth.instance.currentUser!.photoURL;
 
   @override
@@ -147,10 +147,29 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     Column(
                       children: [
-                        Icon(
-                          Icons.trending_up_rounded,
-                          color: Theme.of(context).highlightColor,
-                          size: 20,
+                        Visibility(
+                          visible: comparison == '0',
+                          child: Icon(
+                            Icons.trending_up_rounded,
+                            color: Theme.of(context).highlightColor,
+                            size: 20,
+                          ),
+                        ),
+                        Visibility(
+                          visible: comparison == '1',
+                          child: Icon(
+                            Icons.trending_down_rounded,
+                            color: Theme.of(context).highlightColor,
+                            size: 20,
+                          ),
+                        ),
+                        Visibility(
+                          visible: comparison == '2',
+                          child: Icon(
+                            Icons.trending_flat_rounded,
+                            color: Theme.of(context).highlightColor,
+                            size: 20,
+                          ),
                         ),
                         isLoading == true
                             ? Shimmer.fromColors(
@@ -196,7 +215,7 @@ class _DashboardState extends State<Dashboard> {
                       child: Column(
                         children: [
                           Text(
-                            selectedLanguage == 1 ? 'Pending' : 'প্রক্রিয়াধীন',
+                            selectedLanguage == 1 ? 'Today' : 'আজ',
                             style: TextStyle(
                                 color: Theme.of(context).highlightColor,
                                 fontFamily: 'Roboto Condensed, Ador Noirrit',
@@ -222,7 +241,7 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                 )
                               : Text(
-                                  pending,
+                                  today,
                                   style: TextStyle(
                                       color: Theme.of(context).highlightColor,
                                       fontFamily: 'Roboto Condensed',
@@ -271,7 +290,7 @@ class _DashboardState extends State<Dashboard> {
                       child: Column(
                         children: [
                           Text(
-                            selectedLanguage == 1 ? 'Paid' : 'পরিশোধিত',
+                            selectedLanguage == 1 ? 'Yesterday' : 'গতকাল',
                             style: TextStyle(
                                 color: Theme.of(context).highlightColor,
                                 fontFamily: 'Roboto Condensed',
@@ -297,7 +316,7 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                 )
                               : Text(
-                                  paid,
+                                  yesterday,
                                   style: TextStyle(
                                       color: Theme.of(context).highlightColor,
                                       fontFamily: 'Roboto Condensed',
@@ -315,7 +334,7 @@ class _DashboardState extends State<Dashboard> {
                 decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.circular(15)),
-                child: const graphData(),
+                child: graphData(weekdata: weekdata, weekdates: weekdates),
               ),
               Visibility(
                 visible: isLoading == true,
@@ -425,7 +444,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
               Visibility(
-                visible: transactionList.isEmpty && isLoading != true,
+                visible: transactionList.isNotEmpty && isLoading != true,
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.symmetric(
@@ -468,7 +487,7 @@ class _DashboardState extends State<Dashboard> {
                                     Column(
                                       children: [
                                         Text(
-                                          transaction['name'],
+                                          transaction['date'],
                                           style: TextStyle(
                                               fontFamily: 'Roboto Condensed',
                                               fontSize: 18,
@@ -488,7 +507,7 @@ class _DashboardState extends State<Dashboard> {
                                     Column(
                                       children: [
                                         Text(
-                                          transaction['amount'],
+                                          transaction['type'],
                                           style: TextStyle(
                                               color:
                                                   Theme.of(context).hintColor,
@@ -496,7 +515,7 @@ class _DashboardState extends State<Dashboard> {
                                               fontFamily: 'Roboto Condensed'),
                                         ),
                                         Text(
-                                          transaction['status'],
+                                          transaction['amount'],
                                           style: TextStyle(
                                               color: Theme.of(context)
                                                   .indicatorColor,
@@ -537,12 +556,14 @@ class _DashboardState extends State<Dashboard> {
       if (json['error'] == 0) {
         box.put('token', json['token']);
         setState(() {
-          pending = json['pending'].toString();
-          paid = json['paid'].toString();
+          today = json['weekdata'][0].toString();
+          yesterday = json['weekdata'][1].toString();
           balance = json['balance'].toString();
           growth = json['growth'].toString();
           comparison = json['comparison'].toString();
-          weakdata = json['weekdata'];
+          weekdata = List<double>.from(json['weekdata']);
+          weekdates = json['days'];
+          transactionList = json['transactions'];
           isLoading = false;
         });
       } else {
@@ -1133,7 +1154,11 @@ class _DashboardState extends State<Dashboard> {
 }
 
 class graphData extends StatefulWidget {
-  const graphData({Key? key}) : super(key: key);
+  graphData({Key? key, required this.weekdata, required this.weekdates})
+      : super(key: key);
+
+  List<double> weekdata;
+  List weekdates;
 
   @override
   State<graphData> createState() => _graphDataState();
@@ -1145,7 +1170,7 @@ class _graphDataState extends State<graphData> {
     return Column(
       children: [
         Sparkline(
-          data: [2300, 5000, 2000, 200, 301, 0, 750],
+          data: widget.weekdata,
           // backgroundColor: Colors.red,
           // lineColor: Colors.lightGreen[500]!,
           // fillMode: FillMode.below,
@@ -1181,57 +1206,15 @@ class _graphDataState extends State<graphData> {
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
-                '23',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontFamily: 'Roboto Condensed',
-                    fontSize: 12),
-              ),
-              Text(
-                '24',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontFamily: 'Roboto Condensed',
-                  fontSize: 12,
+            children: [
+              for (var date in widget.weekdates)
+                Text(
+                  date.toString(),
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontFamily: 'Roboto Condensed',
+                      fontSize: 12),
                 ),
-              ),
-              Text(
-                '25',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontFamily: 'Roboto Condensed',
-                    fontSize: 12),
-              ),
-              Text(
-                '26',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontFamily: 'Roboto Condensed',
-                    fontSize: 12),
-              ),
-              Text(
-                '27',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontFamily: 'Roboto Condensed',
-                    fontSize: 12),
-              ),
-              Text(
-                '28',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontFamily: 'Roboto Condensed',
-                    fontSize: 12),
-              ),
-              Text(
-                '29',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontFamily: 'Roboto Condensed',
-                    fontSize: 12),
-              ),
             ],
           ),
         ),

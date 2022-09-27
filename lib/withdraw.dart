@@ -23,7 +23,7 @@ class _WithdrawState extends State<Withdraw> {
   //variables
   final token = box.get('token', defaultValue: 'null');
   var selectedLanguage = box.get('language', defaultValue: 1);
-  var balance = 0;
+  var balance = '0';
   List withdrawMethos = [];
   String? _amountToWithdraw;
   Map withdrawCredential = {};
@@ -248,7 +248,8 @@ class _WithdrawState extends State<Withdraw> {
               ),
               Visibility(
                 visible: _isDocumentVerified != null &&
-                    _isDocumentVerified != "verified",
+                    _isDocumentVerified != "verified" &&
+                    _isLoading == false,
                 child: Container(
                   margin: EdgeInsets.all(10),
                   padding: EdgeInsets.symmetric(
@@ -619,7 +620,7 @@ class _WithdrawState extends State<Withdraw> {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       var url =
-          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/requestwithdraw';
+          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/withdraw';
       final uri = Uri.parse(url);
       withdrawCredential['amount'] = _amountToWithdraw;
       withdrawCredential['token'] = token;
@@ -632,7 +633,7 @@ class _WithdrawState extends State<Withdraw> {
       );
       final body = response.body;
       final json = jsonDecode(body);
-
+      print(json);
       if (json['error'] == 0) {
         setState(() {
           balance = json['newbalance'];

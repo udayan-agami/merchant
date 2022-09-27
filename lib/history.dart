@@ -30,10 +30,12 @@ class _HistoryState extends State<History> {
     "to": "",
     "asc": false,
   };
+  String datefrom = "";
+  String dateto = "";
   Map historyCard = {
-    "payments": 0,
-    "bills": 0,
-    "withdraws": 0,
+    "payments": '0',
+    "bills": '0',
+    "withdraws": '0',
   };
   List transactionList = [];
 
@@ -42,8 +44,12 @@ class _HistoryState extends State<History> {
     _handleRefresh();
     chips['from'] =
         '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}';
+    datefrom =
+        '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day} 12:59:59 PM';
     chips['to'] =
         '${DateTime.now().subtract(const Duration(days: 30)).day}-${DateTime.now().subtract(const Duration(days: 30)).month}-${DateTime.now().subtract(const Duration(days: 30)).year}';
+    dateto =
+        '${DateTime.now().subtract(const Duration(days: 30)).year}-${DateTime.now().subtract(const Duration(days: 30)).month}-${DateTime.now().subtract(const Duration(days: 30)).day} 00:00:00 AM';
     super.initState();
   }
 
@@ -179,7 +185,7 @@ class _HistoryState extends State<History> {
                                       ),
                                     ),
                                     Text(
-                                      '526',
+                                      historyCard['payments'],
                                       style: TextStyle(
                                         color: Theme.of(context).hintColor,
                                         fontFamily: 'Roboto Condensed',
@@ -210,7 +216,7 @@ class _HistoryState extends State<History> {
                                       ),
                                     ),
                                     Text(
-                                      '4',
+                                      historyCard['bills'],
                                       style: TextStyle(
                                         color: Theme.of(context).hintColor,
                                         fontFamily: 'Roboto Condensed',
@@ -243,7 +249,7 @@ class _HistoryState extends State<History> {
                                       ),
                                     ),
                                     Text(
-                                      '25',
+                                      historyCard['withdraws'],
                                       style: TextStyle(
                                         color: Theme.of(context).hintColor,
                                         fontFamily: 'Roboto Condensed',
@@ -479,7 +485,7 @@ class _HistoryState extends State<History> {
                           Padding(
                             padding: const EdgeInsets.all(5),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: _searchHistory,
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
                                 primary: Theme.of(context).primaryColorDark,
@@ -765,7 +771,7 @@ class _HistoryState extends State<History> {
                                       Column(
                                         children: [
                                           Text(
-                                            transaction['name'],
+                                            transaction['date'],
                                             style: TextStyle(
                                                 fontFamily: 'Roboto Condensed',
                                                 fontSize: 18,
@@ -785,7 +791,7 @@ class _HistoryState extends State<History> {
                                       Column(
                                         children: [
                                           Text(
-                                            transaction['amount'],
+                                            transaction['type'],
                                             style: TextStyle(
                                                 color:
                                                     Theme.of(context).hintColor,
@@ -793,7 +799,7 @@ class _HistoryState extends State<History> {
                                                 fontFamily: 'Roboto Condensed'),
                                           ),
                                           Text(
-                                            transaction['status'],
+                                            transaction['amount'],
                                             style: TextStyle(
                                                 color: Theme.of(context)
                                                     .indicatorColor,
@@ -829,6 +835,8 @@ class _HistoryState extends State<History> {
         if (value != null) {
           chips['from'] =
               '${value.day.toString()}-${value.month.toString()}-${value.year.toString()}';
+          datefrom =
+              '${value.year.toString()}-${value.month.toString()}-${value.day.toString()} 12:59:59 PM';
         }
       });
     });
@@ -845,6 +853,8 @@ class _HistoryState extends State<History> {
         if (value != null) {
           chips['to'] =
               '${value.day.toString()}-${value.month.toString()}-${value.year.toString()}';
+          dateto =
+              '${value.year.toString()}-${value.month.toString()}-${value.day.toString()} 00:00:00 AM';
         }
       });
     });
@@ -857,7 +867,61 @@ class _HistoryState extends State<History> {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       var url =
-          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/today?token=$token';
+          "https://us-central1-amardokan-5e0da.cloudfunctions.net/app/history?token=$token";
+      final uri = Uri.parse(url);
+      final response = await http.get(uri);
+      final body = response.body;
+      final json = jsonDecode(body);
+      print(url);
+      if (json['error'] == 0) {
+        box.put('token', json['token']);
+        setState(() {
+          _isLoading = false;
+          historyCard['payments'] = json['payment'];
+          historyCard['bills'] = json['bill'];
+          historyCard['withdraws'] = json['withdraw'];
+          transactionList = json['transactions'];
+        });
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Pin(),
+          ),
+        );
+      }
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SplashScreen(),
+        ),
+      );
+    }
+  }
+
+  void _searchHistory() async {
+    setState(() {
+      _isLoading = true;
+    });
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      var restparams = '';
+      if (chips['payments'] == true) {
+        restparams = restparams + '&payment=true';
+      }
+      if (chips['withdraws'] == true) {
+        restparams = restparams + '&withdraw=true';
+      }
+      if (chips['bills'] == true) {
+        restparams = restparams + '&bill=true';
+      }
+      if (chips['asc'] == true) {
+        restparams = restparams + '&order=asc';
+      }
+      var url =
+          "https://us-central1-amardokan-5e0da.cloudfunctions.net/app/history?token=$token&datefrom=$datefrom&dateto=$dateto$restparams";
+      print(url);
       final uri = Uri.parse(url);
       final response = await http.get(uri);
       final body = response.body;
@@ -866,9 +930,9 @@ class _HistoryState extends State<History> {
         box.put('token', json['token']);
         setState(() {
           _isLoading = false;
-          historyCard['payments'] = json['payments'];
-          historyCard['bills'] = json['bills'];
-          historyCard['withdraws'] = json['withdraws'];
+          historyCard['payments'] = json['payment'];
+          historyCard['bills'] = json['bill'];
+          historyCard['withdraws'] = json['withdraw'];
           transactionList = json['transactions'];
         });
       } else {
