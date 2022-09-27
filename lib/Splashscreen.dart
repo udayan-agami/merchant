@@ -52,6 +52,14 @@ class _SplashScreenState extends State<SplashScreen> {
               fit: BoxFit.cover,
             ),
           ),
+          Opacity(
+            opacity: 0.82,
+            child: Container(
+              height: double.infinity,
+              width: double.infinity,
+              color: Theme.of(context).primaryColorDark,
+            ),
+          ),
           Container(
             color: Colors.transparent,
             child: Row(

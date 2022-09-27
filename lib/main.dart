@@ -1,14 +1,7 @@
-import 'package:agami/business.dart';
-import 'package:agami/home.dart';
-import 'package:agami/settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import './Splashscreen.dart';
-import './pin.dart';
-import './home.dart';
-import './withdraw.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_listener/hive_listener.dart';
 

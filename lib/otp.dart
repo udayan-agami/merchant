@@ -32,7 +32,7 @@ class _OtpState extends State<Otp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF24bd95),
+      backgroundColor: const Color(0xFF174DB1),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -108,10 +108,9 @@ class _OtpState extends State<Otp> {
                       helper = true;
                     }),
                     decoration: InputDecoration(
+                      constraints: BoxConstraints(maxHeight: 80),
                       suffix: TextButton(
-                        onPressed: () {
-                          print('pressd');
-                        },
+                        onPressed: _resendCode,
                         style: TextButton.styleFrom(
                           backgroundColor: const Color(0xFF004FC9),
                         ),
