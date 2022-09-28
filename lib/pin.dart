@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
+import './Splashscreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 var box = Hive.box('agamiMerchant');
 
@@ -26,133 +28,189 @@ class _PinState extends State<Pin> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('data'),
-            Flexible(
-              child: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('./assets/pin-back.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromARGB(143, 12, 43, 109),
-                        Color.fromARGB(255, 1, 19, 59),
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  OutlinedButton(
+                    onPressed: () async {
+                      await launchUrl(Uri.parse('tel://+8801974766899'));
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColorDark,
+                      side: BorderSide(
+                        width: 1,
+                        color: Theme.of(context).hintColor,
+                        style: BorderStyle.solid,
+                      ),
+                    ),
+                    child: Text(
+                      'Help',
+                      style: TextStyle(
+                        fontFamily: 'Roboto Condensed Ador Noirrit',
+                        fontSize: 12,
+                        color: Theme.of(context).highlightColor,
+                      ),
                     ),
                   ),
-                  width: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SizedBox(
-                        width: 200,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(78, 255, 255, 255),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 10,
-                                ),
-                                child: Icon(
-                                  Icons.circle,
-                                  color: enteredPin.length >= 1
-                                      ? const Color.fromARGB(110, 0, 0, 0)
-                                      : Colors.transparent,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(78, 255, 255, 255),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 10,
-                                ),
-                                child: Icon(
-                                  Icons.circle,
-                                  color: enteredPin.length >= 2
-                                      ? const Color.fromARGB(110, 0, 0, 0)
-                                      : Colors.transparent,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(78, 255, 255, 255),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 10,
-                                ),
-                                child: Icon(
-                                  Icons.circle,
-                                  color: enteredPin.length >= 3
-                                      ? const Color.fromARGB(110, 0, 0, 0)
-                                      : Colors.transparent,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(78, 255, 255, 255),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 10,
-                                ),
-                                child: Icon(
-                                  Icons.circle,
-                                  color: enteredPin.length >= 4
-                                      ? const Color.fromARGB(110, 0, 0, 0)
-                                      : Colors.transparent,
-                                ),
-                              ),
-                            ),
-                          ],
+                  OutlinedButton(
+                    onPressed: () async {
+                      final FirebaseAuth _auth = FirebaseAuth.instance;
+                      await _auth.signOut();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SplashScreen(),
                         ),
+                      );
+                    },
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColorDark,
+                      side: BorderSide(
+                        width: 1,
+                        color: Theme.of(context).hintColor,
+                        style: BorderStyle.solid,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Chip(
-                          label: Text(
-                            pinLabel,
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontFamily: 'Roboto Condensed',
-                              fontSize: 14,
+                    ),
+                    child: Text(
+                      'Logout',
+                      style: TextStyle(
+                        fontFamily: 'Roboto Condensed Ador Noirrit',
+                        fontSize: 12,
+                        color: Theme.of(context).highlightColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              fit: FlexFit.loose,
+              child: Container(
+                height: 1000,
+                child: Image.asset(
+                  './assets/pin-back.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColorDark,
+              ),
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    width: 200,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(78, 255, 255, 255),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
+                            child: Icon(
+                              Icons.circle,
+                              color: enteredPin.length >= 1
+                                  ? const Color.fromARGB(110, 0, 0, 0)
+                                  : Colors.transparent,
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                        Container(
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(78, 255, 255, 255),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
+                            child: Icon(
+                              Icons.circle,
+                              color: enteredPin.length >= 2
+                                  ? const Color.fromARGB(110, 0, 0, 0)
+                                  : Colors.transparent,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(78, 255, 255, 255),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
+                            child: Icon(
+                              Icons.circle,
+                              color: enteredPin.length >= 3
+                                  ? const Color.fromARGB(110, 0, 0, 0)
+                                  : Colors.transparent,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(78, 255, 255, 255),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
+                            child: Icon(
+                              Icons.circle,
+                              color: enteredPin.length >= 4
+                                  ? const Color.fromARGB(110, 0, 0, 0)
+                                  : Colors.transparent,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Chip(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      side: BorderSide(
+                        width: 1,
+                        color: Theme.of(context).primaryColor,
+                        style: BorderStyle.solid,
+                      ),
+                      label: Text(
+                        pinLabel,
+                        style: TextStyle(
+                          color: Theme.of(context).highlightColor,
+                          fontFamily: 'Roboto Condensed',
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Container(
               padding: const EdgeInsets.all(10),
               margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 12, 42, 109),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
@@ -175,10 +233,10 @@ class _PinState extends State<Pin> {
                               color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: const Text(
+                            child: Text(
                               '1',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontSize: 22,
                                 fontFamily: 'Roboto Condensed',
                               ),
@@ -195,10 +253,10 @@ class _PinState extends State<Pin> {
                               color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: const Text(
+                            child: Text(
                               '2',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontSize: 22,
                                 fontFamily: 'Roboto Condensed',
                               ),
@@ -215,10 +273,10 @@ class _PinState extends State<Pin> {
                               color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: const Text(
+                            child: Text(
                               '3',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontSize: 22,
                                 fontFamily: 'Roboto Condensed',
                               ),
@@ -243,10 +301,10 @@ class _PinState extends State<Pin> {
                               color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: const Text(
+                            child: Text(
                               '4',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontSize: 22,
                                 fontFamily: 'Roboto Condensed',
                               ),
@@ -263,10 +321,10 @@ class _PinState extends State<Pin> {
                               color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: const Text(
+                            child: Text(
                               '5',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontSize: 22,
                                 fontFamily: 'Roboto Condensed',
                               ),
@@ -283,10 +341,10 @@ class _PinState extends State<Pin> {
                               color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: const Text(
+                            child: Text(
                               '6',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontSize: 22,
                                 fontFamily: 'Roboto Condensed',
                               ),
@@ -311,10 +369,10 @@ class _PinState extends State<Pin> {
                               color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: const Text(
+                            child: Text(
                               '7',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontSize: 22,
                                 fontFamily: 'Roboto Condensed',
                               ),
@@ -331,10 +389,10 @@ class _PinState extends State<Pin> {
                               color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: const Text(
+                            child: Text(
                               '8',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontSize: 22,
                                 fontFamily: 'Roboto Condensed',
                               ),
@@ -351,10 +409,10 @@ class _PinState extends State<Pin> {
                               color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: const Text(
+                            child: Text(
                               '9',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontSize: 22,
                                 fontFamily: 'Roboto Condensed',
                               ),
@@ -383,9 +441,9 @@ class _PinState extends State<Pin> {
                               color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.backspace_outlined,
-                              color: Colors.white,
+                              color: Theme.of(context).highlightColor,
                               size: 18,
                             ),
                           ),
@@ -400,10 +458,10 @@ class _PinState extends State<Pin> {
                               color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: const Text(
+                            child: Text(
                               '0',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).highlightColor,
                                 fontSize: 22,
                                 fontFamily: 'Roboto Condensed',
                               ),
@@ -422,9 +480,9 @@ class _PinState extends State<Pin> {
                               color: const Color.fromARGB(20, 0, 0, 0),
                               borderRadius: BorderRadius.circular(35),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.done_outlined,
-                              color: Colors.white,
+                              color: Theme.of(context).highlightColor,
                               size: 18,
                             ),
                           ),

@@ -449,7 +449,6 @@ class _DashboardState extends State<Dashboard> {
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.symmetric(
                     horizontal: 10,
-                    vertical: 10,
                   ),
                   decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
@@ -479,10 +478,42 @@ class _DashboardState extends State<Dashboard> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Icon(
-                                      Icons.call_received_rounded,
-                                      color: Theme.of(context).indicatorColor,
-                                      size: 20,
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Visibility(
+                                          visible:
+                                              transaction['type'] == 'Bill',
+                                          child: Icon(
+                                            Icons.sell_outlined,
+                                            color: Theme.of(context)
+                                                .indicatorColor,
+                                            size: 20,
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              transaction['type'] == 'Withdraw',
+                                          child: Icon(
+                                            Icons
+                                                .account_balance_wallet_outlined,
+                                            color: Theme.of(context)
+                                                .indicatorColor,
+                                            size: 20,
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              transaction['type'] == 'Payment',
+                                          child: Icon(
+                                            Icons.credit_score_rounded,
+                                            color: Theme.of(context)
+                                                .indicatorColor,
+                                            size: 20,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     Column(
                                       children: [
@@ -505,20 +536,22 @@ class _DashboardState extends State<Dashboard> {
                                       ],
                                     ),
                                     Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
-                                        Text(
-                                          transaction['type'],
-                                          style: TextStyle(
-                                              color:
-                                                  Theme.of(context).hintColor,
-                                              fontSize: 16,
-                                              fontFamily: 'Roboto Condensed'),
-                                        ),
                                         Text(
                                           transaction['amount'],
                                           style: TextStyle(
                                               color: Theme.of(context)
                                                   .indicatorColor,
+                                              fontSize: 16,
+                                              fontFamily: 'Roboto Condensed'),
+                                        ),
+                                        Text(
+                                          transaction['type'],
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .highlightColor,
                                               fontSize: 12,
                                               fontFamily: 'Roboto Condensed'),
                                         )
