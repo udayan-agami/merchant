@@ -17,18 +17,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  static const SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle(
-    systemNavigationBarColor: Color(0xFF050933),
-    systemNavigationBarIconBrightness: Brightness.light,
-    systemNavigationBarDividerColor: Color(0xFF050933),
-  );
-
   final List transactionList = [];
   int pageIndex = 1;
   PageController _pageController = PageController(initialPage: 1);
   var selectedLanguage = box.get('language', defaultValue: 1);
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle(
+      systemNavigationBarColor: Theme.of(context).primaryColor,
+      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarDividerColor: Theme.of(context).primaryColor,
+    );
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColorDark,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:agami/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,6 +23,12 @@ class _PinState extends State<Pin> {
   var selectedLanguage = box.get('language', defaultValue: 1);
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle(
+      systemNavigationBarColor: Theme.of(context).primaryColorDark,
+      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarDividerColor: Theme.of(context).primaryColorDark,
+    );
+    SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorDark,
       body: SafeArea(

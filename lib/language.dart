@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:agami/home.dart';
 import 'package:agami/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 
 var box = Hive.box('agamiMerchant');
@@ -18,6 +19,12 @@ class _LanguageState extends State<Language> {
   var language = box.get('language', defaultValue: 1);
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle(
+      systemNavigationBarColor: Theme.of(context).primaryColor,
+      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarDividerColor: Theme.of(context).primaryColor,
+    );
+    SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorDark,
       body: SafeArea(

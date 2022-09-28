@@ -580,12 +580,14 @@ class _DashboardState extends State<Dashboard> {
     });
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
+      print(token);
       var url =
           'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/today?token=$token';
       final uri = Uri.parse(url);
       final response = await http.get(uri);
       final body = response.body;
       final json = jsonDecode(body);
+      print(json);
       if (json['error'] == 0) {
         box.put('token', json['token']);
         setState(() {
@@ -594,7 +596,8 @@ class _DashboardState extends State<Dashboard> {
           balance = json['balance'].toString();
           growth = json['growth'].toString();
           comparison = json['comparison'].toString();
-          weekdata = List<double>.from(json['weekdata']);
+          weekdata = List<double>.from(
+              json['weekdata'].map((i) => i.toDouble()).toList());
           weekdates = json['days'];
           transactionList = json['transactions'];
           isLoading = false;

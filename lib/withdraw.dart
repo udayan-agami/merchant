@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
+
 import './business.dart';
 import './pin.dart';
 import './Splashscreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
@@ -39,6 +40,12 @@ class _WithdrawState extends State<Withdraw> {
   //methods
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle(
+      systemNavigationBarColor: Theme.of(context).primaryColor,
+      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarDividerColor: Theme.of(context).primaryColor,
+    );
+    SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorDark,
       body: SafeArea(
@@ -383,10 +390,8 @@ class _WithdrawState extends State<Withdraw> {
                           fontFamily: 'Roboto Condensed',
                         ),
                         keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        maxLength: 6,
+                        inputFormatters: [],
+                        maxLength: 9,
                         autocorrect: false,
                         onChanged: (value) {
                           setState(() {

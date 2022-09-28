@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import './Splashscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_listener/hive_listener.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,8 +26,8 @@ void main() async {
 
   await Hive.initFlutter();
   await Hive.openBox('agamiMerchant');
-
-  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(MyApp()));
 }
 
 //theme data

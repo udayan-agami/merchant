@@ -1,13 +1,10 @@
-import 'dart:convert';
-
 import 'package:agami/sign.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
 import './pin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class Otp extends StatefulWidget {
   final String phone;
@@ -31,6 +28,12 @@ class _OtpState extends State<Otp> {
   var helper = true;
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle(
+      systemNavigationBarColor: Theme.of(context).primaryColor,
+      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarDividerColor: Theme.of(context).primaryColor,
+    );
+    SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return Scaffold(
       backgroundColor: const Color(0xFF174DB1),
       body: SafeArea(
@@ -108,21 +111,6 @@ class _OtpState extends State<Otp> {
                       helper = true;
                     }),
                     decoration: InputDecoration(
-                      constraints: BoxConstraints(maxHeight: 80),
-                      suffix: TextButton(
-                        onPressed: _resendCode,
-                        style: TextButton.styleFrom(
-                          backgroundColor: const Color(0xFF004FC9),
-                        ),
-                        child: const Text(
-                          'Resend',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Roboto Condensed',
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
                       helperStyle: TextStyle(
                         color: helper == true ? Colors.grey : Colors.redAccent,
                       ),
@@ -269,23 +257,23 @@ class _OtpState extends State<Otp> {
     }
   }
 
-  void _resendCode() async {
-    await auth.verifyPhoneNumber(
-      phoneNumber: widget.phone,
-      timeout: const Duration(seconds: 60),
-      codeAutoRetrievalTimeout: (String verificationId) {
-        // Auto-resolution timed out...
-      },
-      codeSent: (String verificationId, int? forceResendingToken) {},
-      verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const Pin(),
-          ),
-        );
-      },
-      verificationFailed: (FirebaseAuthException error) {},
-    );
-  }
+  // void _resendCode() async {
+  //   await auth.verifyPhoneNumber(
+  //     phoneNumber: widget.phone,
+  //     timeout: const Duration(seconds: 60),
+  //     codeAutoRetrievalTimeout: (String verificationId) {
+  //       // Auto-resolution timed out...
+  //     },
+  //     codeSent: (String verificationId, int? forceResendingToken) {},
+  //     verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => const Pin(),
+  //         ),
+  //       );
+  //     },
+  //     verificationFailed: (FirebaseAuthException error) {},
+  //   );
+  // }
 }

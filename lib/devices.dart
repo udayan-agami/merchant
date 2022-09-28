@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:agami/Splashscreen.dart';
 import 'package:agami/pin.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,6 +32,12 @@ class _DevicesState extends State<Devices> {
 
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle(
+      systemNavigationBarColor: Theme.of(context).primaryColor,
+      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarDividerColor: Theme.of(context).primaryColor,
+    );
+    SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorDark,
       body: SafeArea(
@@ -464,7 +471,7 @@ class _DevicesState extends State<Devices> {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null && token != null) {
       var url =
-          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/newdevice?token=$token&qr=$barcodeScanRes';
+          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/newdevice?token=$token&amat=$barcodeScanRes';
       final uri = Uri.parse(url);
       final response = await http.get(uri);
       final body = response.body;

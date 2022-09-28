@@ -1,15 +1,9 @@
-import 'dart:convert';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:http/http.dart' as http;
 import './otp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-
-import 'pin.dart';
+import './pin.dart';
 
 class Sign extends StatefulWidget {
   const Sign({Key? key}) : super(key: key);
@@ -32,6 +26,12 @@ class _SignState extends State<Sign> {
   );
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle(
+      systemNavigationBarColor: Theme.of(context).primaryColor,
+      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarDividerColor: Theme.of(context).primaryColor,
+    );
+    SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return Scaffold(
       backgroundColor: const Color(0xFF403255),
       body: SafeArea(

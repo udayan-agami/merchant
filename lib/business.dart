@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:agami/Splashscreen.dart';
 import 'package:agami/pin.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
@@ -10,6 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 var box = Hive.box('agamiMerchant');
 var storage = FirebaseStorage.instance;
@@ -36,6 +37,12 @@ class _BusinessState extends State<Business> {
 
   @override
   Widget build(BuildContext context) {
+    SystemUiOverlayStyle overlayStyle = SystemUiOverlayStyle(
+      systemNavigationBarColor: Theme.of(context).primaryColor,
+      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarDividerColor: Theme.of(context).primaryColor,
+    );
+    SystemChrome.setSystemUIOverlayStyle(overlayStyle);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorDark,
       body: SafeArea(
@@ -81,20 +88,20 @@ class _BusinessState extends State<Business> {
                       ),
                       IconButton(
                         onPressed: () async {
-                          var storageRef = storage.ref();
-                          final uid = FirebaseAuth.instance.currentUser!.uid;
-                          final imageUrl = await storageRef
-                              .child("banner")
-                              .child("banner-$uid.jpg")
-                              .getDownloadURL();
+                          final phonenumber =
+                              FirebaseAuth.instance.currentUser!.phoneNumber;
                           showDialog(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
                                 backgroundColor: Theme.of(context).primaryColor,
-                                content: Image.network(
-                                  imageUrl,
-                                  scale: 1,
+                                content: QrImage(
+                                  data:
+                                      'https://agamimerchant.com/$phonenumber',
+                                  version: QrVersions.auto,
+                                  padding: EdgeInsets.all(20),
+                                  foregroundColor:
+                                      Theme.of(context).highlightColor,
                                 ),
                               );
                             },
