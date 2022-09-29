@@ -337,14 +337,14 @@ class _WithdrawState extends State<Withdraw> {
                           hintText: selectedLanguage == 1 ? 'Amount' : 'পরিমাণ',
                           hintStyle: TextStyle(
                             color: Theme.of(context).hintColor,
-                            fontFamily: 'Roboto Condensed',
+                            fontFamily: 'Roboto Condensed, Ador Noirrit',
                             fontSize: 14,
                           ),
                           labelText: selectedLanguage == 1
                               ? 'Withdraw amount'
                               : 'উত্তোলনের পরিমাণ',
                           labelStyle: TextStyle(
-                            fontFamily: 'Roboto Condensed',
+                            fontFamily: 'Roboto Condensed, Ador Noirrit',
                             fontSize: 14,
                             color: Theme.of(context).highlightColor,
                           ),
@@ -390,7 +390,11 @@ class _WithdrawState extends State<Withdraw> {
                           fontFamily: 'Roboto Condensed',
                         ),
                         keyboardType: TextInputType.number,
-                        inputFormatters: [],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r"^([0-9]{0,6})(\.\d{0,2})?"),
+                          ),
+                        ],
                         maxLength: 9,
                         autocorrect: false,
                         onChanged: (value) {
@@ -450,9 +454,11 @@ class _WithdrawState extends State<Withdraw> {
                             ),
                             isExpanded: false,
                             hint: Text(
-                              'Select a payment method',
+                              selectedLanguage == 1
+                                  ? 'Select a payment method'
+                                  : 'উত্তোলনের মাধ্যম নির্ণয় করুন',
                               style: TextStyle(
-                                fontFamily: 'Roboto Condensed',
+                                fontFamily: 'Roboto Condensed, ADor Noirrit',
                                 fontSize: 14,
                                 color: Theme.of(context).highlightColor,
                               ),

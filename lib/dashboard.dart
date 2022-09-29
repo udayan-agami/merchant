@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
+import 'package:share_plus/share_plus.dart';
 import './Splashscreen.dart';
 import './pin.dart';
 import './home.dart';
@@ -38,6 +39,7 @@ class _DashboardState extends State<Dashboard> {
   var comparison = '';
   var today = '';
   var yesterday = '';
+  var _creatingBill = false;
   String? avatar = FirebaseAuth.instance.currentUser!.photoURL;
 
   @override
@@ -864,6 +866,11 @@ class _DashboardState extends State<Dashboard> {
                               maxLength: 6,
                               keyboardType: TextInputType.number,
                               autocorrect: false,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r"^([0-9]{0,6})(\.\d{0,2})?"),
+                                ),
+                              ],
                               onChanged: (value) {
                                 setState(() {
                                   amount = value;
@@ -984,7 +991,6 @@ class _DashboardState extends State<Dashboard> {
               backgroundColor: Theme.of(context).primaryColorDark,
               body: SingleChildScrollView(
                 child: Container(
-                  height: MediaQuery.of(context).size.height - 20,
                   margin: EdgeInsets.all(10),
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -994,15 +1000,36 @@ class _DashboardState extends State<Dashboard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Padding(
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColorDark,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                         padding: const EdgeInsets.all(15),
-                        child: Text(
-                          selectedLanguage == 1 ? 'Bill Status' : 'বিল অবস্থা',
-                          style: TextStyle(
-                            fontFamily: 'Roboto Condensed, Ador Noirrit',
-                            color: Theme.of(context).highlightColor,
-                            fontSize: 22,
-                          ),
+                        width: double.infinity,
+                        child: Column(
+                          children: [
+                            Text(
+                              selectedLanguage == 1
+                                  ? 'Bill Status'
+                                  : 'বিল অবস্থা',
+                              style: TextStyle(
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                color: Theme.of(context).highlightColor,
+                                fontSize: 22,
+                              ),
+                            ),
+                            Text(
+                              selectedLanguage == 1
+                                  ? 'Bill Created Successfully'
+                                  : 'বিল সফলভাবে প্রস্তুত হয়েছে',
+                              style: TextStyle(
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                color: Theme.of(context).highlightColor,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       QrImage(
@@ -1011,19 +1038,6 @@ class _DashboardState extends State<Dashboard> {
                         size: 200.0,
                         padding: EdgeInsets.all(20),
                         foregroundColor: Theme.of(context).highlightColor,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Text(
-                          selectedLanguage == 1
-                              ? 'Bill Created Successfully'
-                              : 'বিল সফলভাবে প্রস্তুত হয়েছে',
-                          style: TextStyle(
-                            fontFamily: 'Roboto Condensed, Ador Noirrit',
-                            color: Theme.of(context).highlightColor,
-                            fontSize: 18,
-                          ),
-                        ),
                       ),
                       Container(
                         padding: EdgeInsets.all(30),
@@ -1053,7 +1067,7 @@ class _DashboardState extends State<Dashboard> {
                           Clipboard.setData(ClipboardData(text: json['link']));
                         },
                         child: Padding(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.only(top: 20, bottom: 15),
                           child: Chip(
                             backgroundColor:
                                 Theme.of(context).primaryColorLight,
@@ -1077,21 +1091,26 @@ class _DashboardState extends State<Dashboard> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            margin: EdgeInsets.all(5),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColorDark,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            width: 100,
-                            height: 30,
-                            child: Text(
-                              selectedLanguage == 1 ? "Share" : "ভাগাভাগি",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: 'Roboto Condensed, Ador Noirrit',
-                                color: Theme.of(context).highlightColor,
+                          GestureDetector(
+                            onTap: () {
+                              _onShare(context, json['link']);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(5),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColorDark,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              width: 100,
+                              height: 30,
+                              child: Text(
+                                selectedLanguage == 1 ? "Share" : "ভাগাভাগি",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                  color: Theme.of(context).highlightColor,
+                                ),
                               ),
                             ),
                           ),
@@ -1186,6 +1205,16 @@ class _DashboardState extends State<Dashboard> {
         ),
       );
     }
+  }
+
+  void _onShare(BuildContext context, String text) async {
+    final box = context.findRenderObject() as RenderBox?;
+
+    await Share.share(
+      text,
+      subject: "",
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+    );
   }
 }
 

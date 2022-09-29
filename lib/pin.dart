@@ -18,6 +18,7 @@ class Pin extends StatefulWidget {
 }
 
 class _PinState extends State<Pin> {
+  var _auth = FirebaseAuth.instance;
   var enteredPin = '';
   var pinLabel = 'Enter PIN';
   var selectedLanguage = box.get('language', defaultValue: 1);
@@ -241,11 +242,11 @@ class _PinState extends State<Pin> {
                               borderRadius: BorderRadius.circular(35),
                             ),
                             child: Text(
-                              '1',
+                              selectedLanguage == 1 ? '1' : '১',
                               style: TextStyle(
                                 color: Theme.of(context).highlightColor,
                                 fontSize: 22,
-                                fontFamily: 'Roboto Condensed',
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
                               ),
                             ),
                           ),
@@ -261,11 +262,11 @@ class _PinState extends State<Pin> {
                               borderRadius: BorderRadius.circular(35),
                             ),
                             child: Text(
-                              '2',
+                              selectedLanguage == 1 ? '2' : '২',
                               style: TextStyle(
                                 color: Theme.of(context).highlightColor,
                                 fontSize: 22,
-                                fontFamily: 'Roboto Condensed',
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
                               ),
                             ),
                           ),
@@ -281,11 +282,11 @@ class _PinState extends State<Pin> {
                               borderRadius: BorderRadius.circular(35),
                             ),
                             child: Text(
-                              '3',
+                              selectedLanguage == 1 ? '3' : '৩',
                               style: TextStyle(
                                 color: Theme.of(context).highlightColor,
                                 fontSize: 22,
-                                fontFamily: 'Roboto Condensed',
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
                               ),
                             ),
                           ),
@@ -309,11 +310,11 @@ class _PinState extends State<Pin> {
                               borderRadius: BorderRadius.circular(35),
                             ),
                             child: Text(
-                              '4',
+                              selectedLanguage == 1 ? '4' : '৪',
                               style: TextStyle(
                                 color: Theme.of(context).highlightColor,
                                 fontSize: 22,
-                                fontFamily: 'Roboto Condensed',
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
                               ),
                             ),
                           ),
@@ -329,11 +330,11 @@ class _PinState extends State<Pin> {
                               borderRadius: BorderRadius.circular(35),
                             ),
                             child: Text(
-                              '5',
+                              selectedLanguage == 1 ? '5' : '৫',
                               style: TextStyle(
                                 color: Theme.of(context).highlightColor,
                                 fontSize: 22,
-                                fontFamily: 'Roboto Condensed',
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
                               ),
                             ),
                           ),
@@ -349,11 +350,11 @@ class _PinState extends State<Pin> {
                               borderRadius: BorderRadius.circular(35),
                             ),
                             child: Text(
-                              '6',
+                              selectedLanguage == 1 ? '6' : '৬',
                               style: TextStyle(
                                 color: Theme.of(context).highlightColor,
                                 fontSize: 22,
-                                fontFamily: 'Roboto Condensed',
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
                               ),
                             ),
                           ),
@@ -377,11 +378,11 @@ class _PinState extends State<Pin> {
                               borderRadius: BorderRadius.circular(35),
                             ),
                             child: Text(
-                              '7',
+                              selectedLanguage == 1 ? '7' : '৭',
                               style: TextStyle(
                                 color: Theme.of(context).highlightColor,
                                 fontSize: 22,
-                                fontFamily: 'Roboto Condensed',
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
                               ),
                             ),
                           ),
@@ -397,11 +398,11 @@ class _PinState extends State<Pin> {
                               borderRadius: BorderRadius.circular(35),
                             ),
                             child: Text(
-                              '8',
+                              selectedLanguage == 1 ? '8' : '৮',
                               style: TextStyle(
                                 color: Theme.of(context).highlightColor,
                                 fontSize: 22,
-                                fontFamily: 'Roboto Condensed',
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
                               ),
                             ),
                           ),
@@ -417,11 +418,11 @@ class _PinState extends State<Pin> {
                               borderRadius: BorderRadius.circular(35),
                             ),
                             child: Text(
-                              '9',
+                              selectedLanguage == 1 ? '9' : '৯',
                               style: TextStyle(
                                 color: Theme.of(context).highlightColor,
                                 fontSize: 22,
-                                fontFamily: 'Roboto Condensed',
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
                               ),
                             ),
                           ),
@@ -466,11 +467,11 @@ class _PinState extends State<Pin> {
                               borderRadius: BorderRadius.circular(35),
                             ),
                             child: Text(
-                              '0',
+                              selectedLanguage == 1 ? '0' : '০',
                               style: TextStyle(
                                 color: Theme.of(context).highlightColor,
                                 fontSize: 22,
-                                fontFamily: 'Roboto Condensed',
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
                               ),
                             ),
                           ),
