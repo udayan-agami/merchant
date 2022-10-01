@@ -67,7 +67,7 @@ class _HomeState extends State<Home> {
                 tabs: [
                   GButton(
                     icon: Icons.featured_play_list_outlined,
-                    text: selectedLanguage == 1 ? 'History' : 'ইতিবৃত্ত',
+                    text: selectedLanguage == 1 ? 'History' : 'ইতিহাস',
                     iconColor: Theme.of(context).hintColor,
                     iconActiveColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
@@ -83,7 +83,7 @@ class _HomeState extends State<Home> {
                   ),
                   GButton(
                     icon: Icons.admin_panel_settings_outlined,
-                    text: selectedLanguage == 1 ? 'Settings' : 'বিন্যাস',
+                    text: selectedLanguage == 1 ? 'Settings' : 'সেটিংস',
                     iconColor: Theme.of(context).hintColor,
                     iconActiveColor: Colors.white,
                     padding: const EdgeInsets.symmetric(

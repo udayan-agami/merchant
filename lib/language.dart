@@ -48,7 +48,7 @@ class _LanguageState extends State<Language> {
                     ),
                   ),
                   Text(
-                    language == 1 ? 'Language Settings' : 'ভাষা সম্পাদনা',
+                    language == 1 ? 'Language Settings' : 'ভাষা সেটিংস',
                     style: TextStyle(
                       color: Theme.of(context).highlightColor,
                       fontFamily: 'Roboto Condensed, Ador Noirrit',

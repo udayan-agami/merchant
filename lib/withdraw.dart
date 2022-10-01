@@ -98,7 +98,7 @@ class _WithdrawState extends State<Withdraw> {
                     Text(
                       selectedLanguage == 1
                           ? 'Avaible withdrawal'
-                          : 'উত্তোলনযোগ্য',
+                          : 'উত্তোলনযোগ্য অর্থ',
                       style: TextStyle(
                         color: Theme.of(context).highlightColor,
                         fontFamily: 'Roboto Condensed, Ador Noirrit',
@@ -271,8 +271,8 @@ class _WithdrawState extends State<Withdraw> {
                     children: [
                       Text(
                         selectedLanguage == 1
-                            ? "It's manfatory to upload a PDF your Trade licence and wait for verification before request to withdraw."
-                            : "উত্তোলনের পূর্বে ট্রেড লাইসেন্সের পিডিএফ আপলোড করে ভেরিফিকেশন পর্যন্ত অপেক্ষা করা অত্যাবশ্যক।",
+                            ? "You must upload a PDF of your Trade license and wait for verification before requesting to withdraw."
+                            : "অর্থ উত্তোলনের পূর্বে ট্রেড লাইসেন্সের পিডিএফ আপলোড করে ভেরিফাইড হওয়া পর্যন্ত অপেক্ষা করুন।",
                         style: TextStyle(
                           fontFamily: 'Roboto Condensed, Ador Noirrit',
                           color: Theme.of(context).highlightColor,
@@ -303,7 +303,7 @@ class _WithdrawState extends State<Withdraw> {
                           child: Text(
                             selectedLanguage == 1
                                 ? 'Go to Business settings'
-                                : 'ব্যবসা পরিচিতিতে গমন',
+                                : 'ব্যবসার সেটিংসে যান',
                             style: TextStyle(
                               fontFamily: 'Roboto Condensed, Ador Noirrit',
                               fontSize: 16,
@@ -456,7 +456,7 @@ class _WithdrawState extends State<Withdraw> {
                             hint: Text(
                               selectedLanguage == 1
                                   ? 'Select a payment method'
-                                  : 'উত্তোলনের মাধ্যম নির্ণয় করুন',
+                                  : 'উত্তোলনের মাধ্যম নির্বাচন করুন',
                               style: TextStyle(
                                 fontFamily: 'Roboto Condensed, ADor Noirrit',
                                 fontSize: 14,
@@ -580,7 +580,9 @@ class _WithdrawState extends State<Withdraw> {
                             ElevatedButton(
                               onPressed: _requestWithdraw,
                               child: Text(
-                                'Confirm',
+                                selectedLanguage == 1
+                                    ? 'Confirm'
+                                    : 'নিশ্চিত করুন',
                                 style: TextStyle(
                                   fontFamily: 'Roboto Condensed',
                                   fontSize: 14,
@@ -644,7 +646,6 @@ class _WithdrawState extends State<Withdraw> {
       );
       final body = response.body;
       final json = jsonDecode(body);
-      print(json);
       if (json['error'] == 0) {
         setState(() {
           balance = json['newbalance'];

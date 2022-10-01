@@ -85,7 +85,7 @@ class _HistoryState extends State<History> {
                             Text(
                               selectedLanguage == 1
                                   ? 'Bill Basket'
-                                  : 'আদেয়ক নথি',
+                                  : 'বিল ঝুড়ি',
                               style: TextStyle(
                                 fontFamily: 'Roboto Condensed, Ador Noirrit',
                                 fontSize: 22,
@@ -94,8 +94,8 @@ class _HistoryState extends State<History> {
                             ),
                             Text(
                               selectedLanguage == 1
-                                  ? 'View all bills at a glance'
-                                  : 'এক পলকে সকল আদেয়ক',
+                                  ? 'View all bill at a glance'
+                                  : 'এক নজরে সকল বিল',
                               style: TextStyle(
                                   fontFamily: 'Roboto Condensed, Ador Noirrit',
                                   fontSize: 14,
@@ -207,7 +207,9 @@ class _HistoryState extends State<History> {
                                 Column(
                                   children: [
                                     Text(
-                                      selectedLanguage == 1 ? 'Bills' : 'রশিদ',
+                                      selectedLanguage == 1
+                                          ? 'Bills'
+                                          : 'বিলসমূহ',
                                       style: TextStyle(
                                         color: Theme.of(context).highlightColor,
                                         fontFamily:
@@ -315,7 +317,7 @@ class _HistoryState extends State<History> {
                             padding: const EdgeInsets.all(5),
                             child: FilterChip(
                               label: Text(
-                                selectedLanguage == 1 ? 'Bills' : 'রশিদ',
+                                selectedLanguage == 1 ? 'Bills' : 'বিলসমূহ',
                                 textAlign: TextAlign.center,
                               ),
                               showCheckmark: false,
@@ -453,7 +455,9 @@ class _HistoryState extends State<History> {
                             padding: const EdgeInsets.all(5),
                             child: FilterChip(
                               label: Text(
-                                selectedLanguage == 1 ? 'Ascending' : 'অধিরোহণ',
+                                selectedLanguage == 1
+                                    ? 'Ascending'
+                                    : 'উর্ধ্বক্রমানুসারে',
                                 textAlign: TextAlign.center,
                               ),
                               showCheckmark: false,
@@ -496,7 +500,7 @@ class _HistoryState extends State<History> {
                               child: SizedBox(
                                 width: 70,
                                 child: Text(
-                                  selectedLanguage == 1 ? 'Apply' : 'অন্বেষণ',
+                                  selectedLanguage == 1 ? 'Search' : 'খুঁজুন',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily:

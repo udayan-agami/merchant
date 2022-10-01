@@ -218,7 +218,7 @@ class _SignState extends State<Sign> {
         );
       },
       verificationFailed: (FirebaseAuthException e) {
-        print(e);
+        print('error sending otp');
       },
       codeSent: (String verificationId, int? resendToken) {
         Navigator.pushReplacement(

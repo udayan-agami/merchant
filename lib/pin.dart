@@ -54,7 +54,7 @@ class _PinState extends State<Pin> {
                       ),
                     ),
                     child: Text(
-                      'Help',
+                      selectedLanguage == 1 ? 'Help' : 'সাহায্য',
                       style: TextStyle(
                         fontFamily: 'Roboto Condensed Ador Noirrit',
                         fontSize: 12,
@@ -82,7 +82,7 @@ class _PinState extends State<Pin> {
                       ),
                     ),
                     child: Text(
-                      'Logout',
+                      selectedLanguage == 1 ? 'Logout' : 'লগ আউট',
                       style: TextStyle(
                         fontFamily: 'Roboto Condensed Ador Noirrit',
                         fontSize: 12,

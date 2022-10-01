@@ -16,24 +16,14 @@ class _DisplayThemeState extends State<DisplayTheme> {
     [
       {"title": "Classic", "color": 0xFFFFFFFF, "object": 0xFFE6E6E6, "id": 1},
       {"title": "Day", "color": 0xFFFFD600, "object": 0xFFCCAb00, "id": 2},
-      {"title": "Tinted", "color": 0xFF181D5A, "object": 0xFF050933, "id": 3},
+      {"title": "Default", "color": 0xFF181D5A, "object": 0xFF050933, "id": 3},
       {"title": "Night", "color": 0xFF2C3E50, "object": 0xFF233240, "id": 4},
     ],
     [
-      {"title": "অভিজাত", "color": 0xFFFFFFFF, "object": 0xFFE6E6E6, "id": 1},
-      {
-        "title": "রৌদ্রোজ্জ্বল",
-        "color": 0xFFFFD600,
-        "object": 0xFFCCAb00,
-        "id": 2
-      },
-      {"title": "নীলাভ", "color": 0xFF181D5A, "object": 0xFF050933, "id": 3},
-      {
-        "title": "অন্ধকারাচ্ছন্ন",
-        "color": 0xFF2C3E50,
-        "object": 0xFF233240,
-        "id": 4
-      },
+      {"title": "ক্লাসিক", "color": 0xFFFFFFFF, "object": 0xFFE6E6E6, "id": 1},
+      {"title": "লাইট", "color": 0xFFFFD600, "object": 0xFFCCAb00, "id": 2},
+      {"title": "ডিফল্ট", "color": 0xFF181D5A, "object": 0xFF050933, "id": 3},
+      {"title": "ডার্ক", "color": 0xFF2C3E50, "object": 0xFF233240, "id": 4},
     ],
   ];
 
@@ -74,7 +64,7 @@ class _DisplayThemeState extends State<DisplayTheme> {
                       ),
                     ),
                     Text(
-                      selectedLanguage == 1 ? 'Theme' : 'দৃশ্য',
+                      selectedLanguage == 1 ? 'Theme' : 'থিম',
                       style: TextStyle(
                         color: Theme.of(context).highlightColor,
                         fontFamily: 'Roboto Condensed, Ador Noirrit',

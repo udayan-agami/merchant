@@ -136,7 +136,7 @@ class _DevicesState extends State<Devices> {
                     Text(
                       selectedLanguage == 1
                           ? 'Use Agami Pay on web by scaning QR'
-                          : 'ওয়েবে আগামি মার্চেন্ট ব্যবহার করতে কিউআর স্ক্যান করুন',
+                          : 'ওয়েবে আগামি-পে ব্যবহার করতে কিউআর কোড স্ক্যান করুন',
                       style: TextStyle(
                         fontFamily: 'Roboto Condensed, Ador Noirrit',
                         fontSize: 13,

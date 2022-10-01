@@ -582,14 +582,12 @@ class _DashboardState extends State<Dashboard> {
     });
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      print(token);
       var url =
           'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/today?token=$token';
       final uri = Uri.parse(url);
       final response = await http.get(uri);
       final body = response.body;
       final json = jsonDecode(body);
-      print(json);
       if (json['error'] == 0) {
         box.put('token', json['token']);
         setState(() {
@@ -643,9 +641,7 @@ class _DashboardState extends State<Dashboard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            selectedLanguage == 1
-                                ? 'Create bill request'
-                                : 'রশিদ তৈরি',
+                            selectedLanguage == 1 ? 'Create bill' : 'বিল তৈরি',
                             style: TextStyle(
                               fontFamily: 'Roboto Condensed, Ador Noirrit',
                               fontSize: 22,
@@ -726,7 +722,7 @@ class _DashboardState extends State<Dashboard> {
                                     label: Text(
                                       selectedLanguage == 1
                                           ? 'Regular bill'
-                                          : 'সার্বজনীন বিল',
+                                          : 'নিয়মিত বিল',
                                       textAlign: TextAlign.center,
                                     ),
                                     backgroundColor:
@@ -786,7 +782,7 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                   hintText: selectedLanguage == 1
                                       ? 'Biller ID or Phone (Optional)'
-                                      : 'বিলদাতার আইডি বা ফোন (অনাবশ্যক)',
+                                      : 'বিলদাতার আইডি বা ফোন (ঐচ্ছিক)',
                                   hintStyle: TextStyle(
                                     color: Theme.of(context).hintColor,
                                     fontFamily:
@@ -954,7 +950,7 @@ class _DashboardState extends State<Dashboard> {
                               child: Text(
                                 selectedLanguage == 1
                                     ? 'Create Bill'
-                                    : 'প্রস্তুত',
+                                    : 'বিল তৈরি করুন',
                                 style: TextStyle(
                                   color: Theme.of(context).highlightColor,
                                   fontSize: 18,
@@ -1022,7 +1018,7 @@ class _DashboardState extends State<Dashboard> {
                             Text(
                               selectedLanguage == 1
                                   ? 'Bill Created Successfully'
-                                  : 'বিল সফলভাবে প্রস্তুত হয়েছে',
+                                  : 'বিল সফলভাবে তৈরি হয়েছে',
                               style: TextStyle(
                                 fontFamily: 'Roboto Condensed, Ador Noirrit',
                                 color: Theme.of(context).highlightColor,
@@ -1105,7 +1101,7 @@ class _DashboardState extends State<Dashboard> {
                               width: 100,
                               height: 30,
                               child: Text(
-                                selectedLanguage == 1 ? "Share" : "ভাগাভাগি",
+                                selectedLanguage == 1 ? "Share" : "শেয়ার",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontFamily: 'Roboto Condensed, Ador Noirrit',
@@ -1183,7 +1179,7 @@ class _DashboardState extends State<Dashboard> {
                   child: Text(
                     selectedLanguage == 1
                         ? 'Amount and description of bill can not be null'
-                        : 'অলিখিত বিলের পরিমাণ ও হেতু অগ্রহণযোগ্য',
+                        : 'বিলের পরিমাণ ও বর্ণনা পূরণ আবশ্যক',
                     style: TextStyle(
                       fontFamily: 'Roboto Condensed, Ador Noirrit',
                       fontSize: 14,

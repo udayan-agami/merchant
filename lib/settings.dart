@@ -34,7 +34,7 @@ class _SettingsState extends State<Settings> {
     [
       {
         "title": "Business Details",
-        "subtitle": "Shop name and location",
+        "subtitle": "Business name and location",
         "icon": 0xf3ef,
         "page": 1
       },
@@ -69,7 +69,7 @@ class _SettingsState extends State<Settings> {
         "page": 6
       },
       {
-        "title": "About Agami Merchant",
+        "title": "About Agami Pay",
         "subtitle": "Terms and conditions",
         "icon": 0xf0376,
         "page": 7
@@ -83,39 +83,34 @@ class _SettingsState extends State<Settings> {
     ],
     [
       {
-        "title": "ব্যবসা পরিচিতি",
-        "subtitle": "বিপণী বিতানের নাম ও ঠিকানা",
+        "title": "ব্যবসার বিবরণ",
+        "subtitle": "ব্যবসার নাম ও ঠিকানা",
         "icon": 0xf3ef,
         "page": 1
       },
       {"title": "ভাষা", "subtitle": "ভাষা পরিবর্তন", "icon": 0xf45e, "page": 2},
-      {
-        "title": "দৃশ্য",
-        "subtitle": "দৃশ্যমান রঙ পরিবর্তন",
-        "icon": 0xef9f,
-        "page": 3
-      },
+      {"title": "থিম", "subtitle": "থিম পরিবর্তন", "icon": 0xef9f, "page": 3},
       {
         "title": "উত্তোলন",
-        "subtitle": "উত্তোলন এর মাধ্যম নির্ধারণ",
+        "subtitle": "উত্তোলন এর মাধ্যম নির্বাচন",
         "icon": 0xee33,
         "page": 4
       },
       {
         "title": "ডিভাইস",
-        "subtitle": "অন্যান্য ডিভাইস সংযোগ",
+        "subtitle": "ওয়েবে কানেকশন",
         "icon": 0xf6a8,
         "page": 5
       },
       {
-        "title": "সাহায্য সহযোগিতা",
-        "subtitle": "সমস্যা ও ত্রুটি নিয়ে আলোচনা",
+        "title": "হেল্প এবং সাপোর্ট",
+        "subtitle": "সমস্যা ও ত্রুটি নিয়ে মতামত",
         "icon": 0xf01f5,
         "page": 6
       },
       {
-        "title": "আগামি মার্চেন্ট সমন্ধীয়",
-        "subtitle": "নিয়ম ও শর্তসমূহ",
+        "title": "আগামি-পে সম্পর্কে",
+        "subtitle": "নীতিমালা ও শর্তসমূহ",
         "icon": 0xf0376,
         "page": 7
       },
@@ -141,7 +136,7 @@ class _SettingsState extends State<Settings> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    selectedLanguage == 1 ? 'Settings' : 'বিন্যাস',
+                    selectedLanguage == 1 ? 'Settings' : 'সেটিংস',
                     style: TextStyle(
                       color: Theme.of(context).highlightColor,
                       fontFamily: 'Roboto Condensed, Ador Noirrit',

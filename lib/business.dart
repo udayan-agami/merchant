@@ -27,6 +27,7 @@ class _BusinessState extends State<Business> {
   var selectedLanguage = box.get('language', defaultValue: 1);
   final token = box.get('token', defaultValue: 'null');
   String? avatar = FirebaseAuth.instance.currentUser!.photoURL;
+  String? phone = FirebaseAuth.instance.currentUser!.phoneNumber;
   List businessDetails = [];
 
   @override
@@ -79,7 +80,7 @@ class _BusinessState extends State<Business> {
                       Text(
                         selectedLanguage == 1
                             ? 'Business Details'
-                            : 'ব্যবসা পরিচিতি',
+                            : 'ব্যবসার বিবরণ',
                         style: TextStyle(
                           color: Theme.of(context).highlightColor,
                           fontFamily: 'Roboto Condensed, Ador Noirrit',
@@ -97,7 +98,7 @@ class _BusinessState extends State<Business> {
                                 backgroundColor: Theme.of(context).primaryColor,
                                 content: QrImage(
                                   data:
-                                      'https://agamimerchant.com/$phonenumber',
+                                      'https://merchant.agamipay.com/$phonenumber',
                                   version: QrVersions.auto,
                                   padding: EdgeInsets.all(20),
                                   foregroundColor:
@@ -249,7 +250,7 @@ class _BusinessState extends State<Business> {
                                         ),
                                       ),
                                       Text(
-                                        '01725-523652',
+                                        '$phone',
                                         style: TextStyle(
                                           color:
                                               Theme.of(context).highlightColor,
@@ -365,7 +366,7 @@ class _BusinessState extends State<Business> {
                                         Text(
                                           selectedLanguage == 1
                                               ? 'Legal documents'
-                                              : 'এতদ সম্পর্কীয় দলিলাদি',
+                                              : 'আইনি নথি',
                                           style: TextStyle(
                                             color: Theme.of(context)
                                                 .highlightColor,
@@ -414,8 +415,8 @@ class _BusinessState extends State<Business> {
                                                                             0][
                                                                         'document'] ==
                                                                     'verified'
-                                                            ? 'ট্রেড লাইসেন্স প্রতিপাদিত'
-                                                            : 'ট্রেড লাইসেন্স প্রতিপাদিত হয়নি',
+                                                            ? 'ট্রেড লাইসেন্স যাচাই সম্পন্ন'
+                                                            : 'ট্রেড লাইসেন্স যাচাই অসম্পন্ন',
                                                 style: TextStyle(
                                                   color: Theme.of(context)
                                                       .highlightColor,
