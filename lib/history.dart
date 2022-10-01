@@ -904,8 +904,13 @@ class _HistoryState extends State<History> {
     });
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
+      var df =
+          '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day} 12:59:59 PM';
+
+      var dt =
+          '${DateTime.now().subtract(const Duration(days: 30)).year}-${DateTime.now().subtract(const Duration(days: 30)).month}-${DateTime.now().subtract(const Duration(days: 30)).day} 12:00:00 AM';
       var url =
-          "https://us-central1-amardokan-5e0da.cloudfunctions.net/app/history?token=$token";
+          "https://us-central1-amardokan-5e0da.cloudfunctions.net/app/history?token=$token&datefrom=$df&dateto=$dt&order=desc";
       final uri = Uri.parse(url);
       final response = await http.get(uri);
       final body = response.body;
