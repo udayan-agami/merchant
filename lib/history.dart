@@ -49,7 +49,7 @@ class _HistoryState extends State<History> {
     chips['to'] =
         '${DateTime.now().subtract(const Duration(days: 30)).day}-${DateTime.now().subtract(const Duration(days: 30)).month}-${DateTime.now().subtract(const Duration(days: 30)).year}';
     dateto =
-        '${DateTime.now().subtract(const Duration(days: 30)).year}-${DateTime.now().subtract(const Duration(days: 30)).month}-${DateTime.now().subtract(const Duration(days: 30)).day} 00:00:00 AM';
+        '${DateTime.now().subtract(const Duration(days: 30)).year}-${DateTime.now().subtract(const Duration(days: 30)).month}-${DateTime.now().subtract(const Duration(days: 30)).day} 12:00:00 AM';
     super.initState();
   }
 
@@ -892,7 +892,7 @@ class _HistoryState extends State<History> {
           chips['to'] =
               '${value.day.toString()}-${value.month.toString()}-${value.year.toString()}';
           dateto =
-              '${value.year.toString()}-${value.month.toString()}-${value.day.toString()} 00:00:00 AM';
+              '${value.year.toString()}-${value.month.toString()}-${value.day.toString()} 12:00:00 AM';
         }
       });
     });
