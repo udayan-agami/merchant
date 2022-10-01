@@ -338,11 +338,11 @@ class _SettingsState extends State<Settings> {
   }
 
   void _redirectTerms() async {
-    await launchUrl(Uri.parse('https://agamilabs.com/agamimerchant/#terms'));
+    await launchUrl(Uri.parse('https://agamipay.com/terms'));
   }
 
   void _redirectHelp() async {
-    await launchUrl(Uri.parse('https://agamilabs.com/agamimerchant/#help'));
+    await launchUrl(Uri.parse('https://agamipay.com/support'));
   }
 
   void _attachImage() async {

@@ -39,7 +39,6 @@ class _DashboardState extends State<Dashboard> {
   var comparison = '';
   var today = '';
   var yesterday = '';
-  var _creatingBill = false;
   String? avatar = FirebaseAuth.instance.currentUser!.photoURL;
 
   @override
