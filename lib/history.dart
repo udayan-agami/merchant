@@ -1,11 +1,14 @@
 import 'dart:convert';
-
+import 'package:agami/home.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:hive/hive.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:share_plus/share_plus.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import './Splashscreen.dart';
 import './pin.dart';
 
@@ -751,102 +754,111 @@ class _HistoryState extends State<History> {
                           for (var transaction in transactionList)
                             Wrap(
                               children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColorDark,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  margin: EdgeInsets.only(
-                                      bottom: transaction ==
-                                              transactionList[
-                                                  transactionList.length - 1]
-                                          ? 0
-                                          : 2),
-                                  padding: const EdgeInsets.all(10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Visibility(
-                                            visible:
-                                                transaction['type'] == 'Bill',
-                                            child: Icon(
-                                              Icons.sell_outlined,
-                                              color: Theme.of(context)
-                                                  .indicatorColor,
-                                              size: 20,
-                                            ),
-                                          ),
-                                          Visibility(
-                                            visible: transaction['type'] ==
-                                                'Withdraw',
-                                            child: Icon(
-                                              Icons
-                                                  .account_balance_wallet_outlined,
-                                              color: Theme.of(context)
-                                                  .indicatorColor,
-                                              size: 20,
-                                            ),
-                                          ),
-                                          Visibility(
-                                            visible: transaction['type'] ==
-                                                'Payment',
-                                            child: Icon(
-                                              Icons.credit_score_rounded,
-                                              color: Theme.of(context)
-                                                  .indicatorColor,
-                                              size: 20,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            transaction['date'],
-                                            style: TextStyle(
-                                                fontFamily: 'Roboto Condensed',
-                                                fontSize: 18,
-                                                color: Theme.of(context)
-                                                    .hintColor),
-                                          ),
-                                          Text(
-                                            transaction['trx'],
-                                            style: TextStyle(
-                                                color:
-                                                    Theme.of(context).hintColor,
-                                                fontSize: 12,
-                                                fontFamily: 'Roboto Condensed'),
-                                          )
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            transaction['amount'],
-                                            style: TextStyle(
+                                GestureDetector(
+                                  onTap: () {
+                                    _trxDetails(transaction);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColorDark,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    margin: EdgeInsets.only(
+                                        bottom: transaction ==
+                                                transactionList[
+                                                    transactionList.length - 1]
+                                            ? 0
+                                            : 2),
+                                    padding: const EdgeInsets.all(10),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Visibility(
+                                              visible:
+                                                  transaction['type'] == 'Bill',
+                                              child: Icon(
+                                                Icons.sell_outlined,
                                                 color: Theme.of(context)
                                                     .indicatorColor,
-                                                fontSize: 16,
-                                                fontFamily: 'Roboto Condensed'),
-                                          ),
-                                          Text(
-                                            transaction['type'],
-                                            style: TextStyle(
+                                                size: 20,
+                                              ),
+                                            ),
+                                            Visibility(
+                                              visible: transaction['type'] ==
+                                                  'Withdraw',
+                                              child: Icon(
+                                                Icons
+                                                    .account_balance_wallet_outlined,
                                                 color: Theme.of(context)
-                                                    .highlightColor,
-                                                fontSize: 12,
-                                                fontFamily: 'Roboto Condensed'),
-                                          )
-                                        ],
-                                      ),
-                                    ],
+                                                    .indicatorColor,
+                                                size: 20,
+                                              ),
+                                            ),
+                                            Visibility(
+                                              visible: transaction['type'] ==
+                                                  'Payment',
+                                              child: Icon(
+                                                Icons.credit_score_rounded,
+                                                color: Theme.of(context)
+                                                    .indicatorColor,
+                                                size: 20,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              transaction['date'],
+                                              style: TextStyle(
+                                                  fontFamily:
+                                                      'Roboto Condensed',
+                                                  fontSize: 18,
+                                                  color: Theme.of(context)
+                                                      .hintColor),
+                                            ),
+                                            Text(
+                                              transaction['trx'],
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .hintColor,
+                                                  fontSize: 12,
+                                                  fontFamily:
+                                                      'Roboto Condensed'),
+                                            )
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              transaction['amount'],
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .indicatorColor,
+                                                  fontSize: 16,
+                                                  fontFamily:
+                                                      'Roboto Condensed'),
+                                            ),
+                                            Text(
+                                              transaction['type'],
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .highlightColor,
+                                                  fontSize: 12,
+                                                  fontFamily:
+                                                      'Roboto Condensed'),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -993,4 +1005,304 @@ class _HistoryState extends State<History> {
       );
     }
   }
+
+  void _trxDetails(transaction) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Scaffold(
+            backgroundColor: Theme.of(context).primaryColorDark,
+            body: SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColorDark,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.all(15),
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          Text(
+                            selectedLanguage == 1
+                                ? 'Transaction Status'
+                                : 'ট্রানজেকশন অবস্থা',
+                            style: TextStyle(
+                              fontFamily: 'Roboto Condensed, Ador Noirrit',
+                              color: Theme.of(context).highlightColor,
+                              fontSize: 22,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    transaction['type'] == 'Bill'
+                        ? QrImage(
+                            data: transaction['link'],
+                            version: QrVersions.auto,
+                            size: 200.0,
+                            padding: EdgeInsets.all(20),
+                            foregroundColor: Theme.of(context).highlightColor,
+                          )
+                        : SizedBox(
+                            width: 100,
+                            height: 10,
+                          ),
+                    Container(
+                      padding: EdgeInsets.all(30),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColorDark,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          for (var item in transaction['info'])
+                            Text(
+                              item.keys.toList().first +
+                                  ' : ' +
+                                  item.values.toList().first,
+                              style: TextStyle(
+                                fontFamily: 'Roboto Condensed',
+                                fontSize: 16,
+                                color: Theme.of(context).highlightColor,
+                              ),
+                            )
+                        ],
+                      ),
+                    ),
+                    transaction['type'] == 'Bill'
+                        ? GestureDetector(
+                            onTap: () {
+                              Clipboard.setData(
+                                  ClipboardData(text: transaction['link']));
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 20, bottom: 15),
+                              child: Chip(
+                                backgroundColor:
+                                    Theme.of(context).primaryColorLight,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  side: BorderSide(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                                label: Text(
+                                  transaction['link'],
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto Condensed',
+                                    fontSize: 14,
+                                    color: Theme.of(context).highlightColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : SizedBox(
+                            width: 10,
+                            height: 5,
+                          ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Visibility(
+                          visible: transaction['type'] == 'Withdraw' &&
+                              transaction['status'] == 'pending',
+                          child: GestureDetector(
+                            onTap: () {
+                              declineWithdraw(transaction['trx']);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(5),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColorDark,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              width: 100,
+                              height: 30,
+                              child: Text(
+                                selectedLanguage == 1 ? "Decline" : "বাতিল",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                  color: Theme.of(context).highlightColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Visibility(
+                          visible: transaction['type'] == 'Bill' &&
+                              transaction['status'] == 'active',
+                          child: GestureDetector(
+                            onTap: () {
+                              declineBill(transaction['trx']);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(5),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColorDark,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              width: 100,
+                              height: 30,
+                              child: Text(
+                                selectedLanguage == 1 ? "Decline" : "বাতিল",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                  color: Theme.of(context).highlightColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        transaction['type'] == 'Bill'
+                            ? GestureDetector(
+                                onTap: () {
+                                  _onShare(context, transaction['link']);
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.all(5),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColorDark,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  width: 100,
+                                  height: 30,
+                                  child: Text(
+                                    selectedLanguage == 1 ? "Share" : "শেয়ার",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily:
+                                          'Roboto Condensed, Ador Noirrit',
+                                      color: Theme.of(context).highlightColor,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : SizedBox(),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                (MaterialPageRoute(
+                                    builder: (context) => Home())));
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(5),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            width: 100,
+                            height: 30,
+                            child: Text(
+                              selectedLanguage == 1
+                                  ? "Dashboard"
+                                  : "ড্যাশবোর্ড",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'Roboto Condensed, Ador Noirrit',
+                                color: Theme.of(context).highlightColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  void declineWithdraw(trx) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      var url =
+          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/declinewithdraw?token=$token&trx=$trx';
+      final uri = Uri.parse(url);
+      final response = await http.get(uri);
+      final body = response.body;
+      final json = jsonDecode(body);
+      if (json['error'] == 0) {
+        box.put('token', json['token']);
+        Navigator.push(
+            context, (MaterialPageRoute(builder: (context) => Home())));
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Pin(),
+          ),
+        );
+      }
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SplashScreen(),
+        ),
+      );
+    }
+  }
+
+  void declineBill(trx) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      var url =
+          'https://us-central1-amardokan-5e0da.cloudfunctions.net/app/declinebill?token=$token&trx=$trx';
+      final uri = Uri.parse(url);
+      final response = await http.get(uri);
+      final body = response.body;
+      final json = jsonDecode(body);
+      if (json['error'] == 0) {
+        box.put('token', json['token']);
+        Navigator.push(
+            context, (MaterialPageRoute(builder: (context) => Home())));
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Pin(),
+          ),
+        );
+      }
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SplashScreen(),
+        ),
+      );
+    }
+  }
+}
+
+void _onShare(BuildContext context, String text) async {
+  final box = context.findRenderObject() as RenderBox?;
+
+  await Share.share(
+    text,
+    subject: "",
+    sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+  );
 }
