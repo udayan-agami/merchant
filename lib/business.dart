@@ -294,7 +294,7 @@ class _BusinessState extends State<Business> {
                                   ),
                                 ))
                             : Visibility(
-                                visible: businessDetails.isEmpty ||
+                                visible: businessDetails.isNotEmpty &&
                                     businessDetails[0]['address'].length > 0,
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -452,17 +452,12 @@ class _BusinessState extends State<Business> {
                                       )
                                     : Row(
                                         children: [
-                                          Visibility(
-                                            visible: businessDetails[0]
-                                                    ['document'] !=
-                                                'verified',
-                                            child: IconButton(
-                                              onPressed: _pickFile,
-                                              icon: Icon(
-                                                Icons.cloud_upload_outlined,
-                                                color: Theme.of(context)
-                                                    .highlightColor,
-                                              ),
+                                          IconButton(
+                                            onPressed: _pickFile,
+                                            icon: Icon(
+                                              Icons.cloud_upload_outlined,
+                                              color: Theme.of(context)
+                                                  .highlightColor,
                                             ),
                                           ),
                                           Visibility(

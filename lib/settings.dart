@@ -151,7 +151,9 @@ class _SettingsState extends State<Settings> {
                         box.put('theme', 1);
                       }
                     },
-                    icon: const Icon(Icons.lightbulb_outline_rounded),
+                    icon: box.get('theme') == 1 || box.get('theme') == 2
+                        ? Icon(Icons.mode_night_outlined)
+                        : Icon(Icons.lightbulb_outline_rounded),
                     color: Theme.of(context).highlightColor,
                   )
                 ],

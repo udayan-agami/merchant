@@ -269,6 +269,20 @@ class _HistoryState extends State<History> {
                     ],
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    selectedLanguage == 1
+                        ? 'Filter your transactions'
+                        : 'আপনার লেনদেন ফিল্টার করুন',
+                    style: TextStyle(
+                      color: Theme.of(context).hintColor,
+                      fontFamily: 'Roboto Condensed, Ador Noirrit',
+                      fontSize: 11,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
                 Container(
                   margin:
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
@@ -417,6 +431,16 @@ class _HistoryState extends State<History> {
                                   color: Theme.of(context).highlightColor,
                                 ),
                               ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child: Text(
+                              selectedLanguage == 1 ? 'to' : 'থেকে',
+                              style: TextStyle(
+                                  color: Theme.of(context).highlightColor,
+                                  fontSize: 14,
+                                  fontFamily: 'Roboto Condensed, Ador Noirrit'),
                             ),
                           ),
                           Padding(
