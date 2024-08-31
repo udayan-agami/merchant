@@ -21,7 +21,7 @@ jobs:
     # Get flutter packages
     - run: flutter pub get
     # Change app icon
-    - run: flutter pub run flutter_launcher_icons:main
+    - run: flutter pub run flutter_launcher_icons
     # Build :D 
     - run: flutter build apk --split-per-abi
 
