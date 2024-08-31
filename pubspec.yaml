@@ -63,7 +63,7 @@ dev_dependencies:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
 
-flutter_luncher_icons:
+flutter_launcher_icons:
   android: "luncher_icon"
   ios: true
   image_path: "assets/icon.png"
