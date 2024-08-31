@@ -17,19 +17,23 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: 'stable'
+        flutter-version: '3.10.6'  # Specify the exact Flutter version
+        channel: stable  # Ensure you're using the stable channel
 
     - name: Install dependencies
-      run: flutter pub get
+      run: flutter pub get --no-cache  # Install dependencies without using cache
 
     - name: Run tests
-      run: flutter test
+      run: flutter test  # Run your Flutter tests
 
     - name: Build APK
-      run: flutter build apk --release
+      run: flutter build apk --release  # Build the release APK for Android
 
     - name: Upload APK
       uses: actions/upload-artifact@v3
       with:
-        name: app-release.apk
-        path: build/app/outputs/flutter-apk/app-release.apk
+        name: app-release.apk  # Name the artifact to be uploaded
+        path: build/app/outputs/flutter-apk/app-release.apk  # Path to the APK
+
+    - name: Debug Flutter Environment
+      run: flutter doctor -v  # Print out detailed Flutter environment information
