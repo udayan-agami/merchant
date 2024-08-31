@@ -172,9 +172,7 @@ class _SignState extends State<Sign> {
                     child: ElevatedButton(
                       onPressed: _fetchPhone,
                       style: ElevatedButton.styleFrom(
-                        splashFactory: NoSplash.splashFactory,
-
-                        primary: maskFormatter.getUnmaskedText().length == 11
+                        splashFactory: NoSplash.splashFactory, backgroundColor: maskFormatter.getUnmaskedText().length == 11
                             ? const Color(0xFF004FC9)
                             : const Color.fromARGB(255, 145, 161, 184),
                         elevation: 0,

@@ -17,8 +17,7 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '2.10.5'  # or any version >= 2.10.0 that matches your project's requirements
-        channel: stable
+        flutter-version: 'stable'
 
     - name: Install dependencies
       run: flutter pub get
@@ -34,6 +33,3 @@ jobs:
       with:
         name: app-release.apk
         path: build/app/outputs/flutter-apk/app-release.apk
-
-    - name: Debug Flutter Environment
-      run: flutter doctor -v

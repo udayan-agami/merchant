@@ -96,7 +96,7 @@ class _BusinessState extends State<Business> {
                             builder: (context) {
                               return AlertDialog(
                                 backgroundColor: Theme.of(context).primaryColor,
-                                content: QrImage(
+                                content: QrImageView(
                                   data:
                                       'https://merchant.agamipay.com/$phonenumber',
                                   version: QrVersions.auto,

@@ -518,8 +518,7 @@ class _HistoryState extends State<History> {
                             child: ElevatedButton(
                               onPressed: _searchHistory,
                               style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                primary: Theme.of(context).primaryColorDark,
+                                elevation: 0, backgroundColor: Theme.of(context).primaryColorDark,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(100),
                                 ),
@@ -1070,7 +1069,7 @@ class _HistoryState extends State<History> {
                       ),
                     ),
                     transaction['type'] == 'Bill'
-                        ? QrImage(
+                        ? QrImageView(
                             data: transaction['link'],
                             version: QrVersions.auto,
                             size: 200.0,

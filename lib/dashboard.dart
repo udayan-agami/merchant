@@ -1034,7 +1034,7 @@ class _DashboardState extends State<Dashboard> {
                           ],
                         ),
                       ),
-                      QrImage(
+                      QrImageView(
                         data: json['link'],
                         version: QrVersions.auto,
                         size: 200.0,
@@ -1259,7 +1259,7 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                     transaction['type'] == 'Bill'
-                        ? QrImage(
+                        ? QrImageView(
                             data: transaction['link'],
                             version: QrVersions.auto,
                             size: 200.0,

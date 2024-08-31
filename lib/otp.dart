@@ -201,7 +201,7 @@ class _OtpState extends State<Otp> {
                           child: ElevatedButton(
                             onPressed: _verifyOtp,
                             style: ElevatedButton.styleFrom(
-                              primary: maskFormatter.getUnmaskedText().length ==
+                              backgroundColor: maskFormatter.getUnmaskedText().length ==
                                       6
                                   ? const Color(0xFF004FC9)
                                   : const Color.fromARGB(255, 145, 161, 184),
